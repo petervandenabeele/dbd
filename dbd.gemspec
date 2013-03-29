@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Dbd::VERSION
   spec.authors       = ["Peter Vandenabeele"]
   spec.email         = ["peter@vandenabeele.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.description   = %q{acquiring, storing and querying facts, data and meaning}
+  spec.summary       = %q{acquiring, storing and querying facts, data and meaning}
   spec.homepage      = ""
   spec.license       = "MIT"
 
