@@ -1,5 +1,3 @@
-require "dbd/version"
-
-module Dbd
-  # Your code goes here...
-end
+require 'dbd/version'
+require 'dbd/rdf'
+require 'dbd/facts'
