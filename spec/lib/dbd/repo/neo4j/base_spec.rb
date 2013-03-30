@@ -24,14 +24,25 @@ module Dbd
 
         describe "play with a minimal graph" do
 
+          let(:max) {subject.create_node("age" => 31, "name" => "Max")}
+
+          let(:roel) {roel = subject.create_node("age" => 33, "name" => "Roel")}
+
           before(:each) do
-            max = subject.create_node("age" => 31, "name" => "Max")
-            roel = subject.create_node("age" => 33, "name" => "Roel")
             subject.create_relationship("co-founders", max, roel)
           end
 
           it "can get the root node" do
             root = subject.get_root
+          end
+
+          it "can list the indexes" do
+            subject.list_node_indexes
+          end
+
+          it "can add a node to an index" do
+            subject.add_node_to_index("name_index", "name", "Max", max)
+            subject.list_node_indexes.keys.should include("name_index")
           end
 
           it "can get all nodes with a query" do
@@ -61,7 +72,7 @@ module Dbd
             end
 
             it "has many methods" do
-              puts node.methods - Object.methods
+              #puts node.methods - Object.methods
             end
 
           end

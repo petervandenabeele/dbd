@@ -15,6 +15,14 @@ module Dbd
           @neo.create_relationship(p, s, o)
         end
 
+        def list_node_indexes
+          @neo.list_node_indexes
+        end
+
+        def add_node_to_index(index, key, value, node)
+          @neo.add_node_to_index(index, key, value, node)
+        end
+
         def execute_query(query_string)
           @neo.execute_query(query_string)
         end
