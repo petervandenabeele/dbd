@@ -24,4 +24,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rb-fsevent', '~> 0.9'
   spec.add_development_dependency 'terminal-notifier-guard'
   spec.add_dependency 'neography'
+  spec.add_dependency 'ruby_peter_v'
 end

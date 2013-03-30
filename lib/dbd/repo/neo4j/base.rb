@@ -15,6 +15,18 @@ module Dbd
           @neo.create_relationship(p, s, o)
         end
 
+        def execute_query(query_string)
+          @neo.execute_query(query_string)
+        end
+
+        def get_root
+          @neo.get_root
+        end
+
+        def load_node(uri)
+          Neography::Node.load(uri)
+        end
+
       end
     end
   end
