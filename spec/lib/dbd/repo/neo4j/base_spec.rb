@@ -36,6 +36,11 @@ module Dbd
             root = subject.get_root
           end
 
+          it "can create a node index" do
+            subject.create_node_index("name_index_2", "exact", "lucene")
+            subject.list_node_indexes.keys.should include("name_index_2")
+          end
+
           it "can list the indexes" do
             subject.list_node_indexes
           end

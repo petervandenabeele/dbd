@@ -19,6 +19,10 @@ module Dbd
           @neo.list_node_indexes
         end
 
+        def create_node_index(name, type, provider)
+          @neo.create_node_index(name, type, provider)
+        end
+
         def add_node_to_index(index, key, value, node)
           @neo.add_node_to_index(index, key, value, node)
         end
