@@ -16,6 +16,11 @@ module Dbd
           subject.create_node("age" => 31, "name" => "Max")
         end
 
+        it "can create a relationship" do
+          max = subject.create_node("age" => 31, "name" => "Max")
+          roel = subject.create_node("age" => 33, "name" => "Roel")
+          subject.create_relationship("co-founders", max, roel)
+        end
       end
     end
   end
