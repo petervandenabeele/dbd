@@ -1,6 +1,6 @@
 module Dbd
   module Repo
-    module Neo4j
+    module Neo4jRepo
       class Base
 
         def initialize

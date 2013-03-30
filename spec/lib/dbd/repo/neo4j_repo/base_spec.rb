@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Dbd
   module Repo
-    module Neo4j
+    module Neo4jRepo
       describe Base do
         it ".new works" do
           subject # does_not raise_error

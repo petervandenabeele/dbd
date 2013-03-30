@@ -1,1 +1,1 @@
-require 'dbd/repo/neo4j.rb'
+require 'dbd/repo/neo4j_repo.rb'
