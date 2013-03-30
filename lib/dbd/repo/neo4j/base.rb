@@ -27,6 +27,10 @@ module Dbd
           @neo.add_node_to_index(index, key, value, node)
         end
 
+        def get_node_index(index, key, value)
+          @neo.get_node_index(index, key, value)
+        end
+
         def execute_query(query_string)
           @neo.execute_query(query_string)
         end

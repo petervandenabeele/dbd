@@ -50,6 +50,12 @@ module Dbd
             subject.list_node_indexes.keys.should include("name_index")
           end
 
+          it "can find entries in the index" do
+            subject.add_node_to_index("name_index", "name", "Max", max)
+            result = subject.get_node_index("name_index", "name", "Max")
+            result.size.should > 0
+          end
+
           it "can get all nodes with a query" do
             result = subject.execute_query("start n=node(*) return n")
             result["data"].last.single["data"]["name"].should == "Roel"
