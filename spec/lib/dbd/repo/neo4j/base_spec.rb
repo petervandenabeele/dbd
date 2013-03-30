@@ -11,6 +11,11 @@ module Dbd
         it "has the Neography class" do
           ::Neography
         end
+
+        it "can insert a node" do
+          subject.create_node("age" => 31, "name" => "Max")
+        end
+
       end
     end
   end
