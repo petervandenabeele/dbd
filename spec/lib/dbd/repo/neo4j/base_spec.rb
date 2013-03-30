@@ -7,6 +7,10 @@ module Dbd
         it ".new works" do
           subject # does_not raise_error
         end
+
+        it "has the Neography class" do
+          ::Neography
+        end
       end
     end
   end
