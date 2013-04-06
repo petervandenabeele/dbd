@@ -11,6 +11,10 @@ module Dbd
           @neo.create_node(hash)
         end
 
+        def batch(*args)
+          @neo.batch(*args)
+        end
+
         def create_relationship(p, s, o)
           @neo.create_relationship(p, s, o)
         end

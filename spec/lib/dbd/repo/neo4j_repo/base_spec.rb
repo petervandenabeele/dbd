@@ -57,11 +57,13 @@ module Dbd
           end
 
           it "can get all nodes with a query" do
+            pending "All nodes takes too long"
             result = subject.execute_query("start n=node(*) return n")
             result["data"].last.single["data"]["name"].should == "Roel"
           end
 
           it "can get the last 5 nodes with load_node" do
+            pending "All nodes takes too long"
             result = subject.execute_query("start n=node(*) return n")
             node_uris = result["data"].last(5).map{|n| n.single["self"]}
             nodes = node_uris.map do |uri|
@@ -79,6 +81,7 @@ module Dbd
             end
 
             it "has age 33" do
+              pending "All nodes takes too long"
               node.age.should == 33
             end
 
@@ -87,6 +90,7 @@ module Dbd
             end
 
           end
+
         end
       end
     end
