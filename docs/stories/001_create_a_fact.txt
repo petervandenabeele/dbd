@@ -1,0 +1,15 @@
+001_store_a_fact
+
+As a client
+I can create a data_fact
+
+A data_fact has:
+* a very fine grained date stamp
+  (creating a de facto order)
+* a guaranteed unique UUID
+* a fact_origin UUID
+
+* a subject ID (a UUID)
+* a property (in a correct Semantic format
+  as used in ontology)
+* an object of format String
