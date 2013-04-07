@@ -10,17 +10,10 @@ module Dbd
         end
 
         it "can insert maaaaany nodes and find them in the index" do
-
-#          MANY = 1000
-#          (1..MANY).each do |age|
-#            name = "Pax_#{age}"
-#            max = subject.create_node("age" => age, "name" => name)
-#            subject.add_node_to_index("name_index", "name", name, max)
-#          end
-
-          Knodes = 75000
+          pending("DO NOT INSERT MORE NODES ... for now")
+          Knodes = 150000
           MANY = 100
-          OFFSET = 125010
+          OFFSET = 55312
 
           (OFFSET...(OFFSET+Knodes)).each do |knode|
             puts knode
