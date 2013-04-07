@@ -10,9 +10,23 @@ module Dbd
       let(:fact_2) {Fact.new(fact_origin_id, subject_id)}
 
       describe "create a facts collection" do
-        it "has a collection" do
-          subject.collection.should_not be_nil
+        it "new does not fail" do
+          subject.should_not be_nil
         end
+
+        it "the collection is not an array" do
+          subject.should_not be_a(Array)
+        end
+
+        it "the collection has Enumerable methods" do
+          subject.map #should_not raise_exception
+        end
+
+        it "adding an element works" do
+          subject << :a
+          subject.count.should == 1
+        end
+
       end
     end
   end
