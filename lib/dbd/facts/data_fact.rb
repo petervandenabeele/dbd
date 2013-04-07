@@ -2,11 +2,12 @@ module Dbd
   module Facts
     class DataFact
 
-      attr_reader :id, :time_stamp
+      attr_reader :id, :time_stamp, :fact_origin_id
 
-      def initialize
+      def initialize(fact_origin_id)
         @id = Helpers::TempUUID.new
         @time_stamp = Time.new.utc
+        @fact_origin_id = fact_origin_id
       end
 
     end
