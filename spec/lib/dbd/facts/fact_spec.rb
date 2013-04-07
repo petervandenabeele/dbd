@@ -3,7 +3,7 @@ require 'spec_helper'
 module Dbd
   module Facts
     describe Fact do
-      let(:fact_origin_id) {:fact_origin_id}
+      let(:fact_origin_id) {Factories::FactOrigin.me.id}
       let(:subject_id) {Helpers::TempUUID.new}
 
       let(:fact_1) {described_class.new(fact_origin_id, subject_id)}

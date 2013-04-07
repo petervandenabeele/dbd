@@ -4,7 +4,7 @@ module Dbd
   module Facts
     describe DataFact do
 
-      let(:fact_origin_id) {:fact_origin_id}
+      let(:fact_origin_id) {Factories::FactOrigin.me.id}
       let(:subject_id) {Helpers::TempUUID.new}
       let(:data_property) {"http://example.org/test/name"}
       let(:string_object) {"The great gatzbe"}
