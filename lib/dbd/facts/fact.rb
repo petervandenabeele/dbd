@@ -2,7 +2,7 @@ module Dbd
   module Facts
     class Fact
 
-      attr_reader :id, :time_stamp, :fact_origin_id, :subject_id, :property
+      attr_reader :id, :time_stamp, :fact_origin_id, :subject_id, :property, :object
 
       def initialize(fact_origin_id, subject_id)
         @id = Helpers::TempUUID.new
