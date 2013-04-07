@@ -1,0 +1,12 @@
+002_create_a_facts_collection
+
+As a client
+I can create a collection of facts
+
+A facts_collection has:
+* an ordered list of facts
+* ordered by time_stamp
+* a << function that adds one fact
+* the << function will validate that the time_stamp is strictly larger than the most recent time_stamp in the collection
+* there is no way (yet) to add "older" or "same date" facts
+  (e.g. from a merge) in a facts_collection
