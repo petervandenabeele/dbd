@@ -4,8 +4,10 @@ module Dbd
   module Facts
     describe Fact do
       let(:fact_origin_id) {:fact_origin_id}
-      let(:fact_1) {described_class.new(fact_origin_id)}
-      let(:fact_2) {described_class.new(fact_origin_id)}
+      let(:subject_id) {Helpers::TempUUID.new}
+
+      let(:fact_1) {described_class.new(fact_origin_id, subject_id)}
+      let(:fact_2) {described_class.new(fact_origin_id, subject_id)}
 
       describe "create a fact" do
         it "has a unique id (UUID)" do
@@ -26,6 +28,10 @@ module Dbd
 
         it "new needs needs a fact_origin id" do
           fact_1.fact_origin_id.should == fact_origin_id
+        end
+
+        it "new stores a subject_id" do
+          fact_1.subject_id.should == subject_id
         end
       end
     end
