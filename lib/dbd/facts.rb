@@ -1,1 +1,1 @@
-require 'dbd/facts/base.rb'
+require 'dbd/facts/rdf_base.rb'

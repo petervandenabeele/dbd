@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Dbd
   module Facts
-    describe Base do
+    describe RdfBase do
       it "module exists" do
         described_class # should not raise error
       end
@@ -11,16 +11,16 @@ module Dbd
         RDF # should not raise error
       end
 
-      describe "play with a graph" do
+      describe "play with a rdf_graph" do
 
-        let(:graph) {RDF::Graph.new << [:hi, RDF::DC.title, "Hello, world!"]}
+        let(:rdf_graph) {RDF::Graph.new << [:hi, RDF::DC.title, "Hello, world!"]}
 
-        it "Create a graph" do
-          graph # should_not raise_error
+        it "Create a rdf_graph" do
+          rdf_graph # should_not raise_error
         end
 
         it "writing data" do
-          graph.dump(:ntriples).chomp.should ==
+          rdf_graph.dump(:ntriples).chomp.should ==
             '_:hi <http://purl.org/dc/terms/title> "Hello, world!" .'
         end
 

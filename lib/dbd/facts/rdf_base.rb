@@ -1,6 +1,6 @@
 module Dbd
   module Facts
-    module Base
+    module RdfBase
     end
   end
 end
