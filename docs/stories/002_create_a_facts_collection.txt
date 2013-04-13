@@ -7,6 +7,8 @@ A facts_collection has:
 * an ordered list of facts
 * ordered by time_stamp
 * a << function that adds one fact
+* the enumerable functions allow to loop over the facts
+* other array functions (e.g. []) do not work (no random access)
 * the << function will validate that the time_stamp is strictly larger than the most recent time_stamp in the collection
 * there is no way (yet) to add "older" or "same date" facts
   (e.g. from a merge) in a facts_collection

@@ -27,6 +27,12 @@ module Dbd
           subject.count.should == 1
         end
 
+        it "other functions (e.g. []) do not work" do
+          subject << :a
+          subject << :b
+          lambda {subject[1]} . should raise_exception NoMethodError
+        end
+
       end
     end
   end
