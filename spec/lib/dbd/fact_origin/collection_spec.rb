@@ -31,6 +31,21 @@ module Dbd
         end
       end
 
+      describe "by_id" do
+        it "raises error when id no found" do
+          lambda { subject.by_id("noop") } . should raise_error(NotPresentError)
+        end
+
+        it "finds entry with correct id" do
+          subject << fact_origin_1
+          subject << fact_origin_2
+          id_1 = fact_origin_1.id
+          id_2 = fact_origin_2.id
+          subject.by_id(id_1).id.should == id_1
+          subject.by_id(id_2).id.should == id_2
+        end
+      end
+
     end
   end
 end
