@@ -1,0 +1,15 @@
+003_create_a_fact_origin.txt
+
+As a client
+I can create a fact origin
+
+A fact_origin has:
+* id
+* context
+* original_source
+* created_by
+* created_at
+* entered_by
+* entered_at
+* valid_from
+* valid_until
