@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 module Dbd
-  module Facts
+  module Fact
     describe DataFact do
 
       let(:fact_origin_id) {Factories::FactOrigin.me.id}

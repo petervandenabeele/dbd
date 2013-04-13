@@ -1,5 +1,5 @@
 module Dbd
-  module Facts
+  module Fact
     class DataFact < Fact
 
       def initialize(fact_origin_id, subject_id, data_property, object)

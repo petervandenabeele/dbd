@@ -1,5 +1,5 @@
 module Dbd
-  module Facts
+  module Fact
     class Collection
 
       include Enumerable

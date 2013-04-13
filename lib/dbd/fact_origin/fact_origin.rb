@@ -1,5 +1,5 @@
 module Dbd
-  module Facts
+  module FactOrigin
     class FactOrigin
 
       STRING_PROPERTIES = [

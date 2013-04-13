@@ -1,5 +1,5 @@
 module Dbd
-  module Facts
+  module Fact
     module RdfBase
     end
   end

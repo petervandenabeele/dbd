@@ -1,7 +1,7 @@
 module Factories
   module FactOrigin
     def self.me
-      ::Dbd::Facts::FactOrigin.new(
+      ::Dbd::FactOrigin::FactOrigin.new(
         context: "public",
         original_source: "http://example.org/foo",
         created_by: "peter_v",

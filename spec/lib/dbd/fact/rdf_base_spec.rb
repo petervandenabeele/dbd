@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 module Dbd
-  module Facts
+  module Fact
     describe RdfBase do
       it "module exists" do
         described_class # should not raise error

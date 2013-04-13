@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 module Dbd
-  module Facts
+  module FactOrigin
     describe FactOrigin do
       describe "#new" do
 
