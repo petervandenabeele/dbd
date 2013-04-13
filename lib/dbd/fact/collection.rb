@@ -1,20 +1,16 @@
+require 'dbd/helpers/collection'
+
 module Dbd
   module Fact
     class Collection
 
-      include Enumerable
+      include Helpers::Collection
 
       class OutOfOrderError < StandardError
       end
 
       def initialize()
-        @internal_collection = []
-      end
-
-      def each
-        @internal_collection.each do |e|
-          yield e
-        end
+        super
       end
 
       def newest_time_stamp
@@ -24,7 +20,7 @@ module Dbd
 
       def <<(element)
         raise OutOfOrderError if (self.newest_time_stamp && element.time_stamp <= self.newest_time_stamp)
-        @internal_collection << element
+        super
       end
 
     end

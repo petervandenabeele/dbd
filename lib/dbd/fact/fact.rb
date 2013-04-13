@@ -1,3 +1,5 @@
+require 'dbd/helpers/temp_uuid'
+
 module Dbd
   module Fact
     class Fact
