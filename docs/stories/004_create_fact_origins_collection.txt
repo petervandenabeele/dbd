@@ -1,0 +1,8 @@
+004_create_fact_origins_collection
+
+As a client
+I can add and retrieve fact_origins to and from a collection
+
+* I create a fact_origin
+* I add the fact_origins to the facts_collection
+* I can efficiently (O(1)) find a fact_origin by id
