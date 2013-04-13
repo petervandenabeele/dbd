@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Dbd
   module Helpers
-    describe Collection do
+    describe ArrayCollection do
 
       let(:element_1) {:element_1}
       let(:subject) do

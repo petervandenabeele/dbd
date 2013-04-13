@@ -6,7 +6,7 @@ module Dbd
 
     class Collection
 
-      include Helpers::Collection
+      include Helpers::ArrayCollection
 
       def by_id(id)
         find{|e| e.id == id} or raise NotPresentError

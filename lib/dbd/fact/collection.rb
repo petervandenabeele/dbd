@@ -1,10 +1,10 @@
-require 'dbd/helpers/collection'
+require 'dbd/helpers/array_collection'
 
 module Dbd
   module Fact
     class Collection
 
-      include Helpers::Collection
+      include Helpers::ArrayCollection
 
       class OutOfOrderError < StandardError
       end

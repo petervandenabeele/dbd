@@ -1,6 +1,6 @@
 module Dbd
   module Helpers
-    module Collection
+    module ArrayCollection
 
       include Enumerable
 
