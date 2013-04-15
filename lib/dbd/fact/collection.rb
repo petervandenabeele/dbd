@@ -1,5 +1,3 @@
-require 'dbd/helpers/array_collection'
-
 module Dbd
   module Fact
     class Collection
