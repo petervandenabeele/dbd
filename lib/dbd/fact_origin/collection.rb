@@ -1,15 +1,16 @@
 module Dbd
   module FactOrigin
 
-    class NotPresentError < StandardError
+    class OverwriteKeyError < StandardError
     end
 
     class Collection
 
-      include Helpers::ArrayCollection
+      include Helpers::HashCollection
 
-      def by_id(id)
-        find{|e| e.id == id} or raise NotPresentError
+      def <<(fact_origin)
+        raise OverwriteKeyError if self[fact_origin.id]
+        super
       end
 
     end

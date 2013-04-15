@@ -18,34 +18,30 @@ module Dbd
         it "the collection has Enumerable methods" do
           subject.map #should_not raise_exception
         end
+      end
 
+      describe "<< : " do
         it "adding an element works" do
           subject << fact_origin_1
           subject.count.should == 1
         end
 
-        it "other functions (e.g. []) do not work" do
+        it "trying to overwrite an element raise OverwriteKeyError" do
           subject << fact_origin_1
-          subject << fact_origin_2
-          lambda {subject[1]} . should raise_exception NoMethodError
+          lambda {subject << fact_origin_1} . should raise_error(OverwriteKeyError)
         end
       end
 
-      describe "by_id" do
-        it "raises error when id no found" do
-          lambda { subject.by_id("noop") } . should raise_error(NotPresentError)
-        end
-
+      describe "[] : " do
         it "finds entry with correct id" do
           subject << fact_origin_1
           subject << fact_origin_2
           id_1 = fact_origin_1.id
           id_2 = fact_origin_2.id
-          subject.by_id(id_1).id.should == id_1
-          subject.by_id(id_2).id.should == id_2
+          subject[id_1].id.should == id_1
+          subject[id_2].id.should == id_2
         end
       end
-
     end
   end
 end
