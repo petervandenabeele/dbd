@@ -27,7 +27,6 @@ module Dbd
 
         it "other functions (e.g. []) do not work" do
           subject << fact_1
-          subject << fact_2
           lambda {subject[1]} . should raise_exception NoMethodError
         end
       end
@@ -45,28 +44,23 @@ module Dbd
         it "returns the newest time_stamp" do
           subject << fact_1
           subject << fact_2
-          fact_1.time_stamp.should_not == fact_2.time_stamp
           subject.newest_time_stamp.should == fact_2.time_stamp
         end
       end
 
       describe "validate that only 'newer' elements are added" do
-
         it "adding an element with a newer time_stamp succeeds" do
-          fact_1
-          fact_2
           subject << fact_1
           subject << fact_2
         end
 
         it "adding an element with an older time_stamp fails" do
-          fact_1
-          fact_2
+          fact_1 # will be older then fact_2
           subject << fact_2
           lambda { subject << fact_1 } . should raise_error(Collection::OutOfOrderError)
         end
 
-        it "adding an element with ani equal time_stamp fails" do
+        it "adding an element with an equal time_stamp fails" do
           fact_1
           subject << fact_1
           lambda { subject << fact_1 } . should raise_error(Collection::OutOfOrderError)

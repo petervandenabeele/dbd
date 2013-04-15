@@ -4,10 +4,12 @@ module Dbd
   module Fact
     describe Fact do
       let(:fact_origin_id) {Factories::FactOrigin.me.id}
-      let(:subject_id) {Factories::Fact::subject_id}
+      let(:subject_id_1) {Factories::Fact.fact_1.subject_id}
+      let(:subject_id_2) {Factories::Fact.fact_2.subject_id}
 
-      let(:fact_1) {described_class.new(fact_origin_id, subject_id)}
-      let(:fact_2) {described_class.new(fact_origin_id, subject_id)}
+      let(:fact_1) {described_class.new(fact_origin_id, subject_id_1)}
+      let(:fact_2) {described_class.new(fact_origin_id, subject_id_2)}
+
 
       describe "create a fact" do
         it "has a unique id (UUID)" do
@@ -31,17 +33,7 @@ module Dbd
         end
 
         it "new stores a subject_id" do
-          fact_1.subject_id.should == subject_id
-        end
-      end
-
-      describe "Factories do not fail" do
-        it "Factories::Fact.fact_1 is OK" do
-          Factories::Fact.fact_1.should_not be_nil
-        end
-
-        it "Factories::Fact.fact_2 is OK" do
-          Factories::Fact.fact_2.should_not be_nil
+          fact_1.subject_id.should == subject_id_1
         end
       end
     end
