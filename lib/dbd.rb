@@ -1,4 +1,5 @@
 require 'ruby_peter_v'
+require 'uuidtools'
 require 'dbd/version'
 require 'dbd/rdf'
 

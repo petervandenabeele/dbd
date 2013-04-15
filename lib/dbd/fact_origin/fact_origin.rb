@@ -20,7 +20,7 @@ module Dbd
       end
 
       def initialize(options = {})
-        @id = Helpers::TempUUID.new
+        @id = UUIDTools::UUID.random_create
         options.each do |k, v|
           self.instance_variable_set(:"@#{k}", v)
         end

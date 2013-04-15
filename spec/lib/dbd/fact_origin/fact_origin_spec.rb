@@ -18,7 +18,7 @@ module Dbd
         end
 
         it "has a unique id (UUID)" do
-          fact_origin_1.id.should be_a(Helpers::TempUUID)
+          fact_origin_1.id.should be_a(UUIDTools::UUID)
         end
 
         it "two fact_origins have different id" do
@@ -55,6 +55,16 @@ module Dbd
 
         it "has a valid_until" do
           fact_origin_full_option.valid_until.should be_a(Time)
+        end
+      end
+
+      describe "Factories do not fail" do
+        it "Factories::FactOrigin.me is OK" do
+          Factories::FactOrigin.me.should_not be_nil
+        end
+
+        it "Factories::FactOrigin.tijd is OK" do
+          Factories::FactOrigin.tijd.should_not be_nil
         end
       end
     end

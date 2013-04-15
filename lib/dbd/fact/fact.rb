@@ -1,5 +1,3 @@
-require 'dbd/helpers/temp_uuid'
-
 module Dbd
   module Fact
     class Fact
@@ -7,7 +5,7 @@ module Dbd
       attr_reader :id, :time_stamp, :fact_origin_id, :subject_id, :property, :object
 
       def initialize(fact_origin_id, subject_id)
-        @id = Helpers::TempUUID.new
+        @id = UUIDTools::UUID.random_create
         @time_stamp = Time.new.utc
         @fact_origin_id = fact_origin_id
         @subject_id = subject_id

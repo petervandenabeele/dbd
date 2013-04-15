@@ -5,7 +5,7 @@ module Dbd
     describe DataFact do
 
       let(:fact_origin_id) {Factories::FactOrigin.me.id}
-      let(:subject_id) {Helpers::TempUUID.new}
+      let(:subject_id) {Factories::Fact.subject_id}
       let(:data_property) {"http://example.org/test/name"}
       let(:string_object) {"The great gatzbe"}
 

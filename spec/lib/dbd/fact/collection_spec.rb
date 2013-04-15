@@ -3,11 +3,9 @@ require 'spec_helper'
 module Dbd
   module Fact
     describe Collection do
-      let(:fact_origin_id) {Factories::FactOrigin.me.id}
-      let(:subject_id) {Helpers::TempUUID.new}
 
-      let(:fact_1) {Fact.new(fact_origin_id, subject_id)}
-      let(:fact_2) {Fact.new(fact_origin_id, subject_id)}
+      let(:fact_1) {Factories::Fact.fact_1}
+      let(:fact_2) {Factories::Fact.fact_2}
 
       describe "create a facts collection" do
         it "new does not fail" do
