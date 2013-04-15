@@ -7,10 +7,6 @@ module Dbd
       class OutOfOrderError < StandardError
       end
 
-      def initialize()
-        super
-      end
-
       def newest_time_stamp
         newest_entry = @internal_collection.last
         newest_entry && newest_entry.time_stamp
