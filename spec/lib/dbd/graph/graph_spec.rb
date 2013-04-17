@@ -26,7 +26,6 @@ module Dbd
           subject.count.should == 2
           subject.to_a.should == [:a, :b]
         end
-
       end
 
       describe "to_CSV" do

@@ -23,5 +23,14 @@ module Factories
         valid_from: Time.utc(2000,"jan",1,0,0,0),
         valid_until: Time.utc(2200,"jan",1,0,0,0))
     end
+
+    module Collection
+      def self.me_tijd
+        ::Dbd::FactOrigin::Collection.new.tap do |fact_origins|
+          fact_origins << FactOrigin.me
+          fact_origins << FactOrigin.tijd
+        end
+      end
+    end
   end
 end

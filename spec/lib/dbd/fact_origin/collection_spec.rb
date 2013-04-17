@@ -42,6 +42,27 @@ module Dbd
           subject[id_2].id.should == id_2
         end
       end
+
+      describe "Factories::FactOrigin::Collection.me_tijd" do
+        it "does not fail" do
+          Factories::FactOrigin::Collection.me_tijd #should_not raise_error
+        end
+
+        it "it a FactOrigin::Collection" do
+          Factories::FactOrigin::Collection.me_tijd.should(
+            be_a(Collection))
+        end
+
+        it "it has 2 entries" do
+          Factories::FactOrigin::Collection.me_tijd.count.should == 2
+        end
+
+        it "all entries should be a FactOrigin::FactOrigin" do
+          Factories::FactOrigin::Collection.me_tijd.each do |k,v|
+            v.should be_a(FactOrigin)
+          end
+        end
+      end
     end
   end
 end
