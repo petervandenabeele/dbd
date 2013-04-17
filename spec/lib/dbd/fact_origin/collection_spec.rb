@@ -58,7 +58,7 @@ module Dbd
         end
 
         it "all entries should be a FactOrigin::FactOrigin" do
-          Factories::FactOrigin::Collection.me_tijd.each do |k,v|
+          Factories::FactOrigin::Collection.me_tijd.values.each do |v|
             v.should be_a(FactOrigin)
           end
         end

@@ -35,6 +35,11 @@ module Dbd
           subject[element_1.id].should == element_1
         end
 
+        it "#values returns all values (like a hash)" do
+          subject << element_1
+          subject.values.should == [element_1]
+        end
+
       end
     end
   end

@@ -18,9 +18,12 @@ module Dbd
         @internal_collection[element.id] = element
       end
 
-
       def [](key)
         @internal_collection[key]
+      end
+
+      def values
+        @internal_collection.values
       end
     end
   end
