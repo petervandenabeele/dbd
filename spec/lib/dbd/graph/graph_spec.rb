@@ -9,28 +9,24 @@ module Dbd
         end
       end
 
-      describe "has an 'collections' array" do
+      describe "has enumerable methods" do
         it "empty for new object" do
-          subject.collections.should == []
+          subject.count.should == 0
         end
 
         it "adding 1 entry works" do
           subject << :a
-          subject.collections.size.should == 1
+          subject.count.should == 1
         end
 
         it "adding 2 entries works" do
           subject << :a
-          subject.collections.size.should == 1
+          subject.count.should == 1
           subject << :b
-          subject.collections.size.should == 2
-          subject.collections.first.should == :a
-          subject.collections[1].should == :b
+          subject.count.should == 2
+          subject.to_a.should == [:a, :b]
         end
 
-        it "the returned array is frozen" do
-          subject.collections.should be_frozen
-        end
       end
 
       describe "to_CSV" do
@@ -45,7 +41,6 @@ module Dbd
         it "returns a string with comma's" do
           subject.to_CSV.should match(/\A"[^",]+","[^",]+","[^",]+"/)
         end
-
       end
     end
   end
