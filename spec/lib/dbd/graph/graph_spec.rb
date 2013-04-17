@@ -38,7 +38,28 @@ module Dbd
         end
 
         it "returns a string with comma's" do
+          subject << Factories::FactOrigin::Collection.me_tijd
           subject.to_CSV.should match(/\A"[^",]+","[^",]+","[^",]+"/)
+        end
+      end
+
+      describe "with a single fact_origin collection" do
+        it "has two lines" do
+          subject << Factories::FactOrigin::Collection.me_tijd
+          subject.to_CSV.lines.size.should == 2
+        end
+
+        it "ends with a newline" do
+          subject << Factories::FactOrigin::Collection.me_tijd
+          subject.to_CSV.lines.last[-1].should == "\n"
+        end
+      end
+
+      describe "with two fact_origin collections" do
+        it "has four lines" do
+          subject << Factories::FactOrigin::Collection.me_tijd
+          subject << Factories::FactOrigin::Collection.me_tijd
+          subject.to_CSV.lines.size.should == 4
         end
       end
     end
