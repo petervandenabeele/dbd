@@ -1,3 +1,5 @@
+require 'csv'
+
 module Dbd
   module Graph
     module ToCSV
@@ -10,12 +12,13 @@ module Dbd
       #
       # @api public
       def to_CSV
-        self.map do |e|
-          e.map do
-            "\"abc-def-ghi\",\"blah foo bar\",\"2013-05-01 13:36:45.456893045\""
+        CSV.generate(force_quotes: true) do |csv|
+          self.each do |fact_origin_collection|
+            fact_origin_collection.each do |id, fact_origin|
+              csv << ["abc-def-ghi", "blah foo bar", "2013-05-01 13:36:45.456893045"]
+            end
           end
-        end.flatten.join("\n").encode("utf-8") + "\n"
-        # see rejected bug http://bugs.ruby-lang.org/issues/8289
+        end.encode("utf-8")
       end
 
     end
