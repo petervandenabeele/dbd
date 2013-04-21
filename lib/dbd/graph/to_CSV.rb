@@ -15,7 +15,7 @@ module Dbd
         CSV.generate(force_quotes: true) do |csv|
           self.each do |fact_origin_collection|
             fact_origin_collection.each do |id, fact_origin|
-              csv << ["abc-def-ghi", "blah foo bar", "2013-05-01 13:36:45.456893045"]
+              csv << fact_origin.values
             end
           end
         end.encode("utf-8")

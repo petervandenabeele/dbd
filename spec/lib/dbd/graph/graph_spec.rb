@@ -62,6 +62,53 @@ module Dbd
           subject.to_CSV.lines.size.should == 4
         end
       end
+
+      describe "has all properties of the fact_origin_collection" do
+
+        before do
+          subject << Factories::FactOrigin::Collection.me_tijd
+        end
+
+        let(:first_line) do
+          subject.to_CSV.lines.to_a.first.chomp
+        end
+
+        it "has id as first value" do
+          first_line.split(',')[0].should match(/"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"/)
+        end
+
+        it "has context as second value" do
+          first_line.split(',')[1].should == '"public"'
+        end
+
+        it "has original_source as third value" do
+          first_line.split(',')[2].should == '"http://example.org/foo"'
+        end
+
+        it "has created_by as 4th value" do
+          first_line.split(',')[3].should == '"peter_v"'
+        end
+
+        it "has entered_by as 5th value" do
+          first_line.split(',')[4].should == '"peter_v"'
+        end
+
+        it "has created_at as 6th value" do
+          first_line.split(',')[5].should match(/"\d{4}-\d\d-\d\d \d\d:\d\d:\d\d UTC"/)
+        end
+
+        it "has entered_at as 7th value" do
+          first_line.split(',')[6].should match(/"\d{4}-\d\d-\d\d \d\d:\d\d:\d\d UTC"/)
+        end
+
+        it "has valid_from as 8th value" do
+          first_line.split(',')[7].should match(/"\d{4}-\d\d-\d\d \d\d:\d\d:\d\d UTC"/)
+        end
+
+        it "has valid_until as 9th value" do
+          first_line.split(',')[8].should match(/"\d{4}-\d\d-\d\d \d\d:\d\d:\d\d UTC"/)
+        end
+      end
     end
   end
 end

@@ -2,21 +2,24 @@ module Dbd
   module FactOrigin
     class FactOrigin
 
-      STRING_PROPERTIES = [
+      STRING_ATTRIBUTES = [
         :context,
         :original_source,
         :created_by,
         :entered_by]
 
-      DATE_PROPERTIES = [
+      DATE_ATTRIBUTES = [
         :created_at,
         :entered_at,
         :valid_from,
         :valid_until]
 
-      attr_reader :id
-      (STRING_PROPERTIES + DATE_PROPERTIES).each do |property|
-        attr_reader property
+      def self.attributes
+        [:id] + STRING_ATTRIBUTES + DATE_ATTRIBUTES
+      end
+
+      attributes.each do |attribute|
+        attr_reader attribute
       end
 
       def initialize(options = {})
@@ -24,6 +27,10 @@ module Dbd
         options.each do |k, v|
           self.instance_variable_set(:"@#{k}", v)
         end
+      end
+
+      def values
+        self.class.attributes.map{|attribute| self.send(attribute)}
       end
 
     end
