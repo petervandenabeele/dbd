@@ -66,6 +66,24 @@ module Dbd
           lambda { subject << fact_1 } . should raise_error(Collection::OutOfOrderError)
         end
       end
+
+      describe "oldest_time_stamp" do
+        it "returns nil for empty collection" do
+          subject.oldest_time_stamp.should be_nil
+        end
+
+        it "returns a time_stamp" do
+          subject << fact_1
+          subject.oldest_time_stamp.should be_a(fact_1.time_stamp.class)
+        end
+
+        it "returns the oldest time_stamp" do
+          subject << fact_1
+          subject << fact_2
+          subject.oldest_time_stamp.should == fact_1.time_stamp
+        end
+      end
+
     end
   end
 end

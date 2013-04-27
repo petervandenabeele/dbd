@@ -12,6 +12,11 @@ module Dbd
         newest_entry && newest_entry.time_stamp
       end
 
+      def oldest_time_stamp
+        oldest_entry = @internal_collection.first
+        oldest_entry && oldest_entry.time_stamp
+      end
+
       def <<(element)
         raise OutOfOrderError if (self.newest_time_stamp && element.time_stamp <= self.newest_time_stamp)
         super
