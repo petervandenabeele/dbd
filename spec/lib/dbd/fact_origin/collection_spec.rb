@@ -69,6 +69,12 @@ module Dbd
           Factories::FactOrigin::Collection.special #should_not raise_error
         end
       end
+
+      describe "is_ordered?" do
+        it "is false for FactOrigin::Collection" do
+          subject.is_ordered?.should be_false
+        end
+      end
     end
   end
 end

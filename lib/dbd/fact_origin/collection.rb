@@ -8,6 +8,10 @@ module Dbd
 
       include Helpers::HashCollection
 
+      def is_ordered?
+        false
+      end
+
       def <<(fact_origin)
         raise OverwriteKeyError if self[fact_origin.id]
         super

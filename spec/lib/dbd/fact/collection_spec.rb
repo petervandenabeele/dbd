@@ -93,6 +93,12 @@ module Dbd
           Factories::Fact::Collection.fact_3_4 #should_not raise_error
         end
       end
+
+      describe "is_ordered?" do
+        it "is true for Fact::Collection" do
+          subject.is_ordered?.should be_true
+        end
+      end
     end
   end
 end
