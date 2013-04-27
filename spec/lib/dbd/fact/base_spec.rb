@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Dbd
   module Fact
-    describe Fact do
+    describe Base do
       let(:fact_origin_id) {Factories::FactOrigin.me.id}
       let(:subject_id_1) {Factories::Fact.fact_1.subject_id}
       let(:subject_id_2) {Factories::Fact.fact_2.subject_id}

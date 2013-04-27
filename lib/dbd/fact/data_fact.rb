@@ -1,6 +1,6 @@
 module Dbd
   module Fact
-    class DataFact < Fact
+    class DataFact < Base
 
       def initialize(fact_origin_id, subject_id, data_property, object)
         super(fact_origin_id, subject_id)

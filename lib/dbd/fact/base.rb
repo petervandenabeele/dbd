@@ -1,6 +1,6 @@
 module Dbd
   module Fact
-    class Fact
+    class Base
 
       attr_reader :id, :time_stamp, :fact_origin_id, :subject_id, :property, :object
 
