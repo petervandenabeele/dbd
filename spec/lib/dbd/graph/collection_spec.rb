@@ -54,6 +54,23 @@ module Dbd
         end
       end
 
+      describe "oldest_time_stamp" do
+        it "returns nil for empty collection" do
+          subject.oldest_time_stamp.should be_nil
+        end
+
+        it "returns a time_stamp" do
+          subject << fact_collection_1_2
+          subject.oldest_time_stamp.should be_a(fact_1.time_stamp.class)
+        end
+
+        it "returns the oldest time_stamp" do
+          subject << fact_collection_1_2
+          subject << fact_collection_3_4
+          subject.oldest_time_stamp.should == fact_collection_1_2.first.time_stamp
+        end
+      end
+
     end
   end
 end
