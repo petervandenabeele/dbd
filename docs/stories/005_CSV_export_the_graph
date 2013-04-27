@@ -13,7 +13,8 @@ I can ask a CSV export of the graph
 * allow newlines in the strings inbetween ""
 * try to use default Ruby CSV library
 
-* each fact_origin must come before the fact it describes
 * facts are ordered by time_stamp
+* fact_origins are unique on id
+* each fact_origin must come before the fact it describes
 * fact_origins and facts may be intermixed at random
   (only the 2 constraints above are required)
