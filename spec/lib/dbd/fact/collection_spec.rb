@@ -84,6 +84,15 @@ module Dbd
         end
       end
 
+      describe "Factories::Fact::Collection" do
+        it ".fact_1_2 does not fail" do
+          Factories::Fact::Collection.fact_1_2 #should_not raise_error
+        end
+
+        it ".fact_3_4 does not fail" do
+          Factories::Fact::Collection.fact_3_4 #should_not raise_error
+        end
+      end
     end
   end
 end

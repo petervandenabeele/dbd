@@ -5,6 +5,8 @@ module Dbd
     describe Collection do
 
       let(:fact_origin_collection_1) {Factories::FactOrigin::Collection.me_tijd}
+      let(:fact_collection_1_2) {Factories::Fact::Collection.fact_1_2}
+      let(:fact_collection_3_4) {Factories::Fact::Collection.fact_3_4}
 
       describe "create a graph_collection" do
         it "new does not fail" do
@@ -19,6 +21,17 @@ module Dbd
         it "adding 2 fact_origin_collections works" do
           subject << fact_origin_collection_1
           subject << fact_origin_collection_1
+          subject.count.should == 2
+        end
+
+        it "adding a fact_collection works" do
+          subject << fact_collection_1_2
+          subject.count.should == 1
+        end
+
+        it "adding 2 fact_collections works" do
+          subject << fact_collection_1_2
+          subject << fact_collection_3_4
           subject.count.should == 2
         end
       end
