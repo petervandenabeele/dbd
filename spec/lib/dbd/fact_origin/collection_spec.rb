@@ -26,9 +26,9 @@ module Dbd
           subject.count.should == 1
         end
 
-        it "trying to overwrite an element raise OverwriteKeyError" do
+        it "trying to overwrite an element raise OverwriteiIdError" do
           subject << fact_origin_1
-          lambda {subject << fact_origin_1} . should raise_error(OverwriteKeyError)
+          lambda {subject << fact_origin_1} . should raise_error(OverwriteIdError)
         end
       end
 

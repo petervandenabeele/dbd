@@ -1,7 +1,7 @@
 module Dbd
   module FactOrigin
 
-    class OverwriteKeyError < StandardError
+    class OverwriteIdError < StandardError
     end
 
     class Collection
@@ -13,7 +13,7 @@ module Dbd
       end
 
       def <<(fact_origin)
-        raise OverwriteKeyError if self[fact_origin.id]
+        raise OverwriteIdError if self[fact_origin.id]
         super
       end
 
