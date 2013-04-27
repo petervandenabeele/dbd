@@ -1,1 +1,1 @@
-require 'dbd/graph/graph.rb'
+require 'dbd/graph/base.rb'

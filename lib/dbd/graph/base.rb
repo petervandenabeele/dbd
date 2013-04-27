@@ -2,7 +2,7 @@ require 'csv'
 
 module Dbd
   module Graph
-    class Graph
+    class Base
 
       include Helpers::ArrayCollection
 

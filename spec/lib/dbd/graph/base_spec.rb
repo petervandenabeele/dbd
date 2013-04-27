@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Dbd
   module Graph
-    describe Graph do
+    describe Base do
       describe "create a graph" do
         it "does not fail" do
           described_class.new # should_not raise_error
