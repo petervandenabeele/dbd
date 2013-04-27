@@ -14,18 +14,18 @@ module Dbd
           it "empty for new object" do
             subject.collections.count.should == 0
           end
+        end
 
-          it "adding 1 entry works" do
-            subject.collections << :a
+        describe "adding fact_origin collections" do
+          it "adding 1 fact_origin_collection works" do
+            subject.collections << Factories::FactOrigin::Collection.me_tijd
             subject.collections.count.should == 1
           end
 
-          it "adding 2 entries works" do
-            subject.collections << :a
-            subject.collections.count.should == 1
-            subject.collections << :b
+          it "adding 2 fact_origin_collection works" do
+            subject.collections << Factories::FactOrigin::Collection.me_tijd
+            subject.collections << Factories::FactOrigin::Collection.me_tijd
             subject.collections.count.should == 2
-            subject.collections.to_a.should == [:a, :b]
           end
         end
       end
