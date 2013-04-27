@@ -3,30 +3,13 @@ require 'spec_helper'
 module Dbd
   module Graph
     describe Base do
+
+      let(:fact_origin_collection_1) { Factories::FactOrigin::Collection.me_tijd }
+      let(:fact_origin_collection_special) { Factories::FactOrigin::Collection.special }
+
       describe "create a graph" do
         it "does not fail" do
           described_class.new # should_not raise_error
-        end
-      end
-
-      describe "#collections" do
-        describe "has enumerable methods" do
-          it "empty for new object" do
-            subject.collections.count.should == 0
-          end
-        end
-
-        describe "adding fact_origin collections" do
-          it "adding 1 fact_origin_collection works" do
-            subject.collections << Factories::FactOrigin::Collection.me_tijd
-            subject.collections.count.should == 1
-          end
-
-          it "adding 2 fact_origin_collection works" do
-            subject.collections << Factories::FactOrigin::Collection.me_tijd
-            subject.collections << Factories::FactOrigin::Collection.me_tijd
-            subject.collections.count.should == 2
-          end
         end
       end
 
@@ -40,14 +23,14 @@ module Dbd
         end
 
         it "returns a string with comma's" do
-          subject.collections << Factories::FactOrigin::Collection.me_tijd
+          subject.collections << fact_origin_collection_1
           subject.to_CSV.should match(/\A"[^",]+","[^",]+","[^",]+"/)
         end
 
         describe "with a single fact_origin collection" do
 
           before do
-            subject.collections << Factories::FactOrigin::Collection.me_tijd
+            subject.collections << fact_origin_collection_1
           end
 
           it "has two lines" do
@@ -61,8 +44,8 @@ module Dbd
 
         describe "with two fact_origin collections" do
           it "has four lines" do
-            subject.collections << Factories::FactOrigin::Collection.me_tijd
-            subject.collections << Factories::FactOrigin::Collection.me_tijd
+            subject.collections << fact_origin_collection_1
+            subject.collections << fact_origin_collection_1
             subject.to_CSV.lines.size.should == 4
           end
         end
@@ -70,7 +53,7 @@ module Dbd
         describe "has all properties of the fact_origin_collection" do
 
           before do
-            subject.collections << Factories::FactOrigin::Collection.me_tijd
+            subject.collections << fact_origin_collection_1
           end
 
           let(:first_line) do
@@ -117,7 +100,7 @@ module Dbd
         describe "handles comma, double quote and newline correctly" do
 
           before do
-            subject.collections << Factories::FactOrigin::Collection.special
+            subject.collections << fact_origin_collection_special
           end
 
           it "has original_source with special characters and double quote escaped" do

@@ -11,9 +11,15 @@ module Dbd
           subject.should_not be_nil
         end
 
-        it "adding an element works" do
+        it "adding a fact_origin_collection works" do
           subject << fact_origin_collection_1
           subject.count.should == 1
+        end
+
+        it "adding 2 fact_origin_collections works" do
+          subject << fact_origin_collection_1
+          subject << fact_origin_collection_1
+          subject.count.should == 2
         end
       end
     end
