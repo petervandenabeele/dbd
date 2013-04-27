@@ -57,9 +57,9 @@ module Dbd
           Factories::FactOrigin::Collection.me_tijd.count.should == 2
         end
 
-        it "all entries should be a FactOrigin::FactOrigin" do
+        it "all entries should be a FactOrigin::Base" do
           Factories::FactOrigin::Collection.me_tijd.values.each do |v|
-            v.should be_a(FactOrigin)
+            v.should be_a(Base)
           end
         end
       end

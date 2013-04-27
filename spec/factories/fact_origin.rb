@@ -1,7 +1,7 @@
 module Factories
   module FactOrigin
     def self.me
-      ::Dbd::FactOrigin::FactOrigin.new(
+      ::Dbd::FactOrigin::Base.new(
         context: "public",
         original_source: "http://example.org/foo",
         created_by: "peter_v",
@@ -13,7 +13,7 @@ module Factories
     end
 
     def self.tijd
-      ::Dbd::FactOrigin::FactOrigin.new(
+      ::Dbd::FactOrigin::Base.new(
         context: "public",
         original_source: "http://tijd.be/article#13946",
         created_by: "peter_v",
@@ -25,7 +25,7 @@ module Factories
     end
 
     def self.special
-      ::Dbd::FactOrigin::FactOrigin.new(
+      ::Dbd::FactOrigin::Base.new(
         context: "public",
         original_source: "this has a comma , a newline \n and a double quote \"",
         created_by: "peter_v",

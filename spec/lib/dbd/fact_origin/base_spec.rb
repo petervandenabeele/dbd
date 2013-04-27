@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Dbd
   module FactOrigin
-    describe FactOrigin do
+    describe Base do
 
       let(:fact_origin_1) do
         described_class.new()

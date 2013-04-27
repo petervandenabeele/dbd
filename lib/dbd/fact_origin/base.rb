@@ -1,6 +1,6 @@
 module Dbd
   module FactOrigin
-    class FactOrigin
+    class Base
 
       STRING_ATTRIBUTES = [
         :context,
