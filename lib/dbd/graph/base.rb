@@ -4,7 +4,11 @@ module Dbd
   module Graph
     class Base
 
-      include Helpers::ArrayCollection
+      attr_reader :collections
+
+      def initialize
+        @collections = Collection.new
+      end
 
       # Export a graph to a CSV
       #
@@ -15,7 +19,7 @@ module Dbd
       # @api public
       def to_CSV
         CSV.generate(force_quotes: true) do |csv|
-          self.each do |fact_origin_collection|
+          self.collections.each do |fact_origin_collection|
             fact_origin_collection.each do |id, fact_origin|
               csv << fact_origin.values
             end
