@@ -109,6 +109,17 @@ module Dbd
           first_line.split(',')[8].should match(/"\d{4}-\d\d-\d\d \d\d:\d\d:\d\d UTC"/)
         end
       end
+
+      describe "handles comma, double quote and newline correctly" do
+
+        before do
+          subject << Factories::FactOrigin::Collection.special
+        end
+
+        it "has original_source with special characters and double quote escaped" do
+          subject.to_CSV.should match(/"this has a comma , a newline \n and a double quote """/)
+        end
+      end
     end
   end
 end

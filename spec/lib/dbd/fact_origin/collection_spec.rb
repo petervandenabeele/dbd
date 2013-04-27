@@ -63,6 +63,12 @@ module Dbd
           end
         end
       end
+
+      describe "Factories::FactOrigin::Collection.special" do
+        it "does not fail" do
+          Factories::FactOrigin::Collection.special #should_not raise_error
+        end
+      end
     end
   end
 end

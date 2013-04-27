@@ -84,6 +84,10 @@ module Dbd
         it "Factories::FactOrigin.tijd is OK" do
           Factories::FactOrigin.tijd.should_not be_nil
         end
+
+        it "Factories::FactOrigin.special is OK" do
+          Factories::FactOrigin.special.should_not be_nil
+        end
       end
     end
   end
