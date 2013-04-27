@@ -28,7 +28,7 @@ module Dbd
         end
       end
 
-      describe "to_CSV" do
+      describe "#to_CSV" do
         it "returns a string" do
           subject.to_CSV.should be_a(String)
         end
