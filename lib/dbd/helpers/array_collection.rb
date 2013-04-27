@@ -18,6 +18,10 @@ module Dbd
         @internal_collection << element
       end
 
+      def last
+        @internal_collection.last
+      end
+
     end
   end
 end

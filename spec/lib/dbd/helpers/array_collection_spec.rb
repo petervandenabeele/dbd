@@ -5,6 +5,7 @@ module Dbd
     describe ArrayCollection do
 
       let(:element_1) {:element_1}
+      let(:element_2) {:element_2}
       let(:subject) do
         o = Object.new
         o.extend(described_class)
@@ -20,9 +21,12 @@ module Dbd
         it "the collection is not an array" do
           subject.should_not be_a(Array)
         end
+      end
 
+      describe "accessor functions" do
         it "the collection has Enumerable methods" do
           subject.map #should_not raise_exception
+          subject.first #should_not raise_exception
         end
 
         it "adding an element works" do
@@ -33,6 +37,18 @@ module Dbd
         it "other functions (e.g. []) do not work" do
           subject << element_1
           lambda {subject[1]} . should raise_exception NoMethodError
+        end
+
+        describe "last" do
+          it "returns nil on empty collection" do
+            subject.last.should be_nil
+          end
+
+          it "returns the last element" do
+            subject << element_1
+            subject << element_2
+            subject.last.should == element_2
+          end
         end
       end
     end
