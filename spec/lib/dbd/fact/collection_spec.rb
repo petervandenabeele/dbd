@@ -116,6 +116,14 @@ module Dbd
             e.should be_a(DataFact)
           end
         end
+
+        it "uses fact_origin_id if supplied" do
+          fact_origin_id = Factories::FactOrigin.me.id
+          subject = Factories::DataFact::Collection.data_fact_1_2(fact_origin_id)
+          subject.each do |data_fact|
+            data_fact.fact_origin_id.should == fact_origin_id
+          end
+        end
       end
 
       describe "is_ordered?" do
