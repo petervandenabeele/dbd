@@ -31,6 +31,15 @@ module Dbd
           data_fact_1.property.should be_a(String)
           data_fact_1.object.should be_a(String)
         end
+
+        it "with an explicit fact_origin_id" do
+          fact_origin_id_1 = fact_origin_id
+          data_fact_1 = Factories::DataFact.data_fact_1(fact_origin_id_1)
+          data_fact_1.fact_origin_id.should == fact_origin_id_1
+          data_fact_1.subject_id.should be_a(Factories::Fact.fact_1.subject_id.class)
+          data_fact_1.property.should be_a(String)
+          data_fact_1.object.should be_a(String)
+        end
       end
     end
   end
