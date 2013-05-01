@@ -5,6 +5,8 @@ I can ask a CSV export of the graph
 
 * a graph is built now as an (ordered) set of
   fact_origin_collections and fact_collections
+  (currently limited to 1 fact_origin_collection
+   and 1 fact_collection)
 
 * use UTF-8
 * use comma's (tabs are too hard to confuse with spaces)

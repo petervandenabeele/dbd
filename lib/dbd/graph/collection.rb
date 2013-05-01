@@ -4,7 +4,7 @@ module Dbd
 
       include Helpers::ArrayCollection
 
-      class OutOfOrderError < StandardError
+      class InternalError < StandardError
       end
 
       def newest_time_stamp
@@ -18,9 +18,7 @@ module Dbd
       end
 
       def <<(e)
-        raise OutOfOrderError if (self.newest_time_stamp &&
-                                  e.is_ordered? &&
-                                  e.oldest_time_stamp <= self.newest_time_stamp)
+        raise InternalError, "Only 1 collection allowed in a Graph::Collection" if self.count > 0
         super
       end
 

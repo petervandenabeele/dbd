@@ -42,14 +42,6 @@ module Dbd
           end
         end
 
-        describe "with two fact_origin collections" do
-          it "has four lines" do
-            subject.collections << fact_origin_collection_1
-            subject.collections << fact_origin_collection_1
-            subject.to_CSV.lines.size.should == 4
-          end
-        end
-
         describe "has all properties of the fact_origin_collection" do
 
           before do
