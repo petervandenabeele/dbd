@@ -94,6 +94,30 @@ module Dbd
         end
       end
 
+
+      describe "Factories::DataFact::Collection.data_fact_1_2" do
+
+        let(:subject) { Factories::DataFact::Collection.data_fact_1_2 }
+
+        it "does not fail" do
+          subject #should_not raise_error
+        end
+
+        it "it a FactOrigin::Collection" do
+          subject.should(be_a(Collection))
+        end
+
+        it "it has 2 entries" do
+          subject.count.should == 2
+        end
+
+        it "all entries should be a DataFact" do
+          subject.each do |e|
+            e.should be_a(DataFact)
+          end
+        end
+      end
+
       describe "is_ordered?" do
         it "is true for Fact::Collection" do
           subject.is_ordered?.should be_true

@@ -8,5 +8,22 @@ module Factories
         "http://example.org/test/name",
         "The great gatzbe")
     end
+
+    def self.data_fact_2(fact_origin_id = nil)
+      ::Dbd::Fact::DataFact.new(
+        fact_origin_id || Factories::FactOrigin.me.id,
+        UUIDTools::UUID.random_create,
+        "http://example.org/test/name",
+        "Superman")
+    end
+
+    module Collection
+      def self.data_fact_1_2
+        ::Dbd::Fact::Collection.new.tap do |facts|
+          facts << DataFact.data_fact_1
+          facts << DataFact.data_fact_2
+        end
+      end
+    end
   end
 end
