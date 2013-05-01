@@ -13,43 +13,43 @@ module Dbd
         end
       end
 
-      describe "#to_CSV" do
+      describe "#to_fact_origin_CSV" do
         it "returns a string" do
-          subject.to_CSV.should be_a(String)
+          subject.to_fact_origin_CSV.should be_a(String)
         end
 
         it "returns a string in UTF-8 encoding" do
-          subject.to_CSV.encoding.should == Encoding::UTF_8
+          subject.to_fact_origin_CSV.encoding.should == Encoding::UTF_8
         end
 
         it "returns a string with comma's" do
-          subject.collections << fact_origin_collection_1
-          subject.to_CSV.should match(/\A"[^",]+","[^",]+","[^",]+"/)
+          subject.fact_origin_collections << fact_origin_collection_1
+          subject.to_fact_origin_CSV.should match(/\A"[^",]+","[^",]+","[^",]+"/)
         end
 
         describe "with a single fact_origin collection" do
 
           before do
-            subject.collections << fact_origin_collection_1
+            subject.fact_origin_collections << fact_origin_collection_1
           end
 
           it "has two lines" do
-            subject.to_CSV.lines.size.should == 2
+            subject.to_fact_origin_CSV.lines.size.should == 2
           end
 
           it "ends with a newline" do
-            subject.to_CSV.lines.last[-1].should == "\n"
+            subject.to_fact_origin_CSV.lines.last[-1].should == "\n"
           end
         end
 
         describe "has all properties of the fact_origin_collection" do
 
           before do
-            subject.collections << fact_origin_collection_1
+            subject.fact_origin_collections << fact_origin_collection_1
           end
 
           let(:first_line) do
-            subject.to_CSV.lines.to_a.first.chomp
+            subject.to_fact_origin_CSV.lines.to_a.first.chomp
           end
 
           it "has id as first value" do
@@ -96,11 +96,11 @@ module Dbd
         describe "handles comma, double quote and newline correctly" do
 
           before do
-            subject.collections << fact_origin_collection_special
+            subject.fact_origin_collections << fact_origin_collection_special
           end
 
           it "has original_source with special characters and double quote escaped" do
-            subject.to_CSV.should match(/"this has a comma , a newline \n and a double quote """/)
+            subject.to_fact_origin_CSV.should match(/"this has a comma , a newline \n and a double quote """/)
           end
         end
       end

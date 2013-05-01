@@ -4,10 +4,10 @@ module Dbd
   module Graph
     class Base
 
-      attr_reader :collections
+      attr_reader :fact_origin_collections
 
       def initialize
-        @collections = Collection.new
+        @fact_origin_collections = Collection.new
       end
 
       # Export a graph to a CSV
@@ -17,9 +17,9 @@ module Dbd
       # @return a comma separated CSV with double quoted strings
       #
       # @api public
-      def to_CSV
+      def to_fact_origin_CSV
         CSV.generate(force_quotes: true) do |csv|
-          self.collections.each do |fact_origin_collection|
+          self.fact_origin_collections.each do |fact_origin_collection|
             fact_origin_collection.each do |id, fact_origin|
               csv << fact_origin.values
             end
