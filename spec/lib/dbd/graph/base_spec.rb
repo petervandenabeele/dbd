@@ -80,20 +80,24 @@ module Dbd
             first_line.split(',')[4].should == '"peter_v"'
           end
 
-          it "has created_at as 6th value" do
-            first_line.split(',')[5].should match(/"\d{4}-\d\d-\d\d \d\d:\d\d:\d\d UTC"/)
+          it "has entered_by as 6th value" do
+            first_line.split(',')[5].should == '"Copyright 2013 peter_v; all rights reserved"'
           end
 
-          it "has entered_at as 7th value" do
+          it "has created_at as 7th value" do
             first_line.split(',')[6].should match(/"\d{4}-\d\d-\d\d \d\d:\d\d:\d\d UTC"/)
           end
 
-          it "has valid_from as 8th value" do
+          it "has entered_at as 8th value" do
             first_line.split(',')[7].should match(/"\d{4}-\d\d-\d\d \d\d:\d\d:\d\d UTC"/)
           end
 
-          it "has valid_until as 9th value" do
+          it "has valid_from as 9th value" do
             first_line.split(',')[8].should match(/"\d{4}-\d\d-\d\d \d\d:\d\d:\d\d UTC"/)
+          end
+
+          it "has valid_until as 10th value" do
+            first_line.split(',')[9].should match(/"\d{4}-\d\d-\d\d \d\d:\d\d:\d\d UTC"/)
           end
         end
 

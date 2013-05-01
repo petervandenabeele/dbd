@@ -41,6 +41,10 @@ module Dbd
           fact_origin_full_option.entered_by.should be_a(String)
         end
 
+        it "has a license" do
+          fact_origin_full_option.license.should be_a(String)
+        end
+
         it "has a created_at" do
           fact_origin_full_option.created_at.should be_a(Time)
         end
@@ -59,16 +63,16 @@ module Dbd
       end
 
       describe "attributes and values" do
-        it "there are 9 attributes" do
-          described_class.attributes.size.should == 9
+        it "there are 10 attributes" do
+          described_class.attributes.size.should == 10
         end
 
         it "first attribute is :id" do
           described_class.attributes.first.should == :id
         end
 
-        it "there are 9 values" do
-          fact_origin_full_option.values.size.should == 9
+        it "there are 10 values" do
+          fact_origin_full_option.values.size.should == 10
         end
 
         it "second value is a context" do

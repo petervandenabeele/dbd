@@ -6,7 +6,8 @@ module Dbd
         :context,
         :original_source,
         :created_by,
-        :entered_by]
+        :entered_by,
+        :license]
 
       DATE_ATTRIBUTES = [
         :created_at,
