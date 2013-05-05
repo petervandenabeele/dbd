@@ -1,0 +1,16 @@
+006_refactor_fact_origin_to_provenance_fact
+
+As a client
+I can use a ProvenanceFact
+
+* a ProvenanceFact is a subclass of a Fact
+  with additional features:
+  * it's time_stamp must be earlier than any Fact that
+    refers to it through it's provenance_fact_id.
+* a graph is represented internally as an
+  ordered set of provenance_fact_collections
+  and fact_collections (currently limited
+  to 1 provenance_fact_collection and 1
+  fact_collection)
+
+* Facts are ordered by time_stamp
