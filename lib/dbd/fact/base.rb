@@ -3,18 +3,25 @@ module Dbd
     class Base
 
       def self.attributes
-        [:id, :time_stamp, :fact_origin_id, :subject_id, :property, :object]
+        [:id,
+         :time_stamp,
+         :fact_origin_id,
+         :subject,
+         :property,
+         :object]
       end
 
       attributes.each do |attribute|
         attr_reader attribute
       end
 
-      def initialize(fact_origin_id, subject_id)
+      def initialize(fact_origin_id, subject, property, object)
         @id = UUIDTools::UUID.random_create
         @time_stamp = Time.new.utc
         @fact_origin_id = fact_origin_id
-        @subject_id = subject_id
+        @subject = subject
+        @property = property
+        @object = object
       end
 
       def values

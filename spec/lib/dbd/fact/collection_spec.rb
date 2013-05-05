@@ -95,15 +95,15 @@ module Dbd
       end
 
 
-      describe "Factories::DataFact::Collection.data_fact_1_2" do
+      describe "Factories::Fact::Collection.fact_1_2" do
 
-        let(:subject) { Factories::DataFact::Collection.data_fact_1_2 }
+        let(:subject) { Factories::Fact::Collection.fact_1_2 }
 
         it "does not fail" do
           subject #should_not raise_error
         end
 
-        it "it a FactOrigin::Collection" do
+        it "is a Fact::Collection" do
           subject.should(be_a(Collection))
         end
 
@@ -111,17 +111,17 @@ module Dbd
           subject.count.should == 2
         end
 
-        it "all entries should be a DataFact" do
+        it "all entries should be a Fact::Base" do
           subject.each do |e|
-            e.should be_a(DataFact)
+            e.should be_a(Fact::Base)
           end
         end
 
         it "uses fact_origin_id if supplied" do
           fact_origin_id = Factories::FactOrigin.me.id
-          subject = Factories::DataFact::Collection.data_fact_1_2(fact_origin_id)
-          subject.each do |data_fact|
-            data_fact.fact_origin_id.should == fact_origin_id
+          subject = Factories::Fact::Collection.fact_1_2(fact_origin_id)
+          subject.each do |fact|
+            fact.fact_origin_id.should == fact_origin_id
           end
         end
       end

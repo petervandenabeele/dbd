@@ -4,13 +4,28 @@ module Dbd
   module Fact
     describe Base do
       let(:fact_origin_id) { Factories::FactOrigin.me.id }
-      let(:subject_id_1) { Factories::Fact.fact_1.subject_id }
-      let(:subject_id_2) { Factories::Fact.fact_2.subject_id }
+      let(:subject) { UUIDTools::UUID.random_create }
+      let(:data_property)  { "http://example.org/test/name" }
+      let(:string_object_1)  { "Gandhi" }
+      let(:string_object_2)  { "Mandela" }
 
-      let(:fact_1) { described_class.new(fact_origin_id, subject_id_1) }
-      let(:fact_2) { described_class.new(fact_origin_id, subject_id_2) }
-      let(:data_fact_1) { Factories::DataFact.data_fact_1 }
+      # fact_1 is a data_fact
+      let(:fact_1) do
+        described_class.new(
+          fact_origin_id,
+          subject,
+          data_property,
+          string_object_1)
+      end
 
+      # fact_2 may be an object_fact later
+      let(:fact_2) do
+        described_class.new(
+          fact_origin_id,
+          subject,
+          data_property,
+          string_object_2)
+      end
 
       describe "create a fact" do
         it "has a unique id (UUID)" do
@@ -29,12 +44,24 @@ module Dbd
           fact_1.time_stamp.should < fact_2.time_stamp
         end
 
-        it "new needs needs a fact_origin id" do
+        it "new needs a fact_origin id" do
           fact_1.fact_origin_id.should == fact_origin_id
         end
 
-        it "new stores a subject_id" do
-          fact_1.subject_id.should == subject_id_1
+        it "new stores a subject" do
+          fact_1.subject.should == subject
+        end
+      end
+
+      describe "create a data_fact" do
+        describe "with a string object type" do
+          it "new stores a property" do
+            fact_1.property.should == data_property
+          end
+
+          it "new stores a String object" do
+            fact_1.object.should == string_object_1
+          end
         end
       end
 
@@ -48,11 +75,27 @@ module Dbd
         end
 
         it "there are 6 values" do
-          data_fact_1.values.size.should == 6
+          fact_1.values.size.should == 6
         end
 
         it "second value is a time_stamp" do
-          data_fact_1.values[1].should be_a(Time)
+          fact_1.values[1].should be_a(Time)
+        end
+      end
+
+      describe "factory works" do
+        it "without fact_origin_id" do
+          fact_1 = Factories::Fact.fact_1
+          fact_1.fact_origin_id.should be_a(fact_origin_id.class)
+          fact_1.subject.should be_a(subject.class)
+          fact_1.property.should be_a(data_property.class)
+          fact_1.object.should be_a(string_object_1.class)
+        end
+
+        it "with an explicit fact_origin_id" do
+          fact_origin_id_1 = fact_origin_id
+          fact_1 = Factories::Fact.fact_1(fact_origin_id_1)
+          fact_1.fact_origin_id.should == fact_origin_id_1
         end
       end
     end

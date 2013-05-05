@@ -7,7 +7,7 @@ module Dbd
       let(:fact_origin_collection_1) { Factories::FactOrigin::Collection.me_tijd }
       let(:fact_origin_collection_special) { Factories::FactOrigin::Collection.special }
       let(:fact_origin_1) { Factories::FactOrigin.me }
-      let(:data_fact_collection_1_2) { Factories::DataFact::Collection.data_fact_1_2(fact_origin_1.id) }
+      let(:fact_collection_1_2) { Factories::Fact::Collection.fact_1_2(fact_origin_1.id) }
 
       describe "create a graph" do
         it "does not fail" do
@@ -117,14 +117,14 @@ module Dbd
         end
 
         it "returns a string with comma's" do
-          subject.fact_collections << data_fact_collection_1_2
+          subject.fact_collections << fact_collection_1_2
           subject.to_fact_CSV.should match(/\A"[^",]+","[^",]+","[^",]+"/)
         end
 
         describe "with a single fact collection" do
 
           before do
-            subject.fact_collections << data_fact_collection_1_2
+            subject.fact_collections << fact_collection_1_2
           end
 
           it "has two lines" do
@@ -139,7 +139,7 @@ module Dbd
         describe "has all properties of the fact_collection" do
 
           before do
-            subject.fact_collections << data_fact_collection_1_2
+            subject.fact_collections << fact_collection_1_2
           end
 
           let(:first_line) do
@@ -167,7 +167,7 @@ module Dbd
           end
 
           it "has object as 6th value" do
-            first_line.split(',')[5].should == '"The great gatzbe"'
+            first_line.split(',')[5].should == '"Gandhi"'
           end
         end
 
