@@ -2,9 +2,14 @@ module Dbd
   module Fact
     class Collection
 
+      class OutOfOrderError < StandardError
+      end
+
       include Helpers::ArrayCollection
 
-      class OutOfOrderError < StandardError
+      def initialize
+        super
+        @hash_by_subject = Hash.new { |h, k| h[k] = [] }
       end
 
       def newest_time_stamp
@@ -19,7 +24,13 @@ module Dbd
 
       def <<(element)
         raise OutOfOrderError if (self.newest_time_stamp && element.time_stamp <= self.newest_time_stamp)
-        super
+        super.tap do |index|
+          @hash_by_subject[element.subject] << index
+        end
+      end
+
+      def by_subject(fact_subject)
+        @hash_by_subject[fact_subject].map{ |index| @internal_collection[index]}
       end
 
     end

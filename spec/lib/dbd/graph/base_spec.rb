@@ -15,6 +15,12 @@ module Dbd
       end
 
       describe "#to_CSV with provenance_facts" do
+        before do
+          provenance_fact_collection_1.each do |provenance_fact|
+            subject.fact_collection << provenance_fact
+          end
+        end
+
         it "returns a string" do
           subject.to_CSV.should be_a(String)
         end
@@ -24,16 +30,10 @@ module Dbd
         end
 
         it "returns a string with comma's" do
-          subject.fact_collections << provenance_fact_collection_1
           subject.to_CSV.should match(/\A"[^",]+","[^",]+","[^",]*","[^",]+"/)
         end
 
         describe "with a single provenance_fact collection" do
-
-          before do
-            subject.fact_collections << provenance_fact_collection_1
-          end
-
           it "has three logical lines (but one with embedded newline)" do
             subject.to_CSV.lines.size.should == 4
           end
@@ -44,10 +44,6 @@ module Dbd
         end
 
         describe "has all properties of the provenance_fact_collection" do
-
-          before do
-            subject.fact_collections << provenance_fact_collection_1
-          end
 
           let(:first_line) do
             subject.to_CSV.lines.to_a.first.chomp
@@ -79,11 +75,6 @@ module Dbd
         end
 
         describe "handles comma, double quote and newline correctly" do
-
-          before do
-            subject.fact_collections << provenance_fact_collection_1
-          end
-
           it "has original_source with special characters and double quote escaped" do
             subject.to_CSV.should match(/"this has a comma , a newline \n and a double quote """/)
           end
@@ -91,6 +82,12 @@ module Dbd
       end
 
       describe "#to_CSV with facts" do
+        before do
+          fact_collection_1_2.each do |fact|
+            subject.fact_collection << fact
+           end
+        end
+
         it "returns a string" do
           subject.to_CSV.should be_a(String)
         end
@@ -100,16 +97,10 @@ module Dbd
         end
 
         it "returns a string with comma's" do
-          subject.fact_collections << fact_collection_1_2
           subject.to_CSV.should match(/\A"[^",]+","[^",]+","[^",]+"/)
         end
 
         describe "with a single fact collection" do
-
-          before do
-            subject.fact_collections << fact_collection_1_2
-          end
-
           it "has two lines" do
             subject.to_CSV.lines.size.should == 2
           end
@@ -120,10 +111,6 @@ module Dbd
         end
 
         describe "has all properties of the fact_collection" do
-
-          before do
-            subject.fact_collections << fact_collection_1_2
-          end
 
           let(:first_line) do
             subject.to_CSV.lines.to_a.first.chomp
@@ -153,13 +140,24 @@ module Dbd
             first_line.split(',')[5].should == '"Gandhi"'
           end
         end
+      end
+
+      describe "#to_CSV with provenance_facts and facts" do
+
+        before do
+          provenance_fact_collection_1.each do |provenance_fact|
+            subject.fact_collection << provenance_fact
+          end
+          fact_collection_1_2.each do |fact|
+            subject.fact_collection << fact
+           end
+        end
+
+        it "has six lines" do
+          subject.to_CSV.lines.size.should == 6
+        end
 
         describe "handles comma, double quote and newline correctly" do
-
-          before do
-            subject.fact_collections << provenance_fact_collection_1
-          end
-
           it "has original_source with special characters and double quote escaped" do
             subject.to_CSV.should match(/"this has a comma , a newline \n and a double quote """/)
           end

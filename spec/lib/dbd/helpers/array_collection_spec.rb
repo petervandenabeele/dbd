@@ -19,6 +19,7 @@ module Dbd
         end
 
         it "the collection is not an array" do
+          # do not derive from Ruby standard classes
           subject.should_not be_a(Array)
         end
       end
@@ -34,9 +35,26 @@ module Dbd
           subject.count.should == 1
         end
 
-        it "other functions (e.g. []) do not work" do
+        it "other functions (e.g. pop) do not work" do
           subject << element_1
-          lambda {subject[1]} . should raise_exception NoMethodError
+          lambda {subject.pop} . should raise_exception NoMethodError
+        end
+
+        it "getting 1 element by array index works" do
+          subject << element_1
+          subject[0].should_not be_nil
+        end
+
+        describe "<< returns the index of the inserted element" do
+          it "works for 1 element" do
+            index = (subject << element_1)
+            subject[index].should == element_1
+          end
+          it "works for 2 elements" do
+            subject << element_1
+            index = (subject << element_2)
+            subject[index].should == element_2
+          end
         end
 
         describe "last" do

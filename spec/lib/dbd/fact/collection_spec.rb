@@ -25,9 +25,24 @@ module Dbd
           subject.count.should == 1
         end
 
-        it "other functions (e.g. []) do not work" do
+        it "first entry should be a Fact::Base" do
           subject << fact_1
-          lambda {subject[1]} . should raise_exception NoMethodError
+          subject.first.should be_a(Fact::Base)
+        end
+
+        it "other functions (e.g. pop) do not work" do
+          subject << fact_1
+          lambda {subject.pop} . should raise_exception NoMethodError
+        end
+
+        it "[index] returns the value at index" do
+          subject << fact_1
+          subject[0].should == fact_1
+        end
+
+        it "<< returns the index of the inserted element" do
+          index = (subject << fact_1)
+          subject[index].should == fact_1
         end
       end
 
@@ -85,28 +100,12 @@ module Dbd
       end
 
       describe "Factories::Fact::Collection" do
-        let(:subject) { Factories::Fact::Collection.fact_1_2 }
-
         it ".fact_1_2 does not fail" do
           Factories::Fact::Collection.fact_1_2 # should not raise_error
         end
 
         it ".fact_3_4 does not fail" do
           Factories::Fact::Collection.fact_3_4 # should_not raise_error
-        end
-
-        it "is a Fact::Collection" do
-          subject.should(be_a(Collection))
-        end
-
-        it "it has 2 entries" do
-          subject.count.should == 2
-        end
-
-        it "all entries should be a Fact::Base" do
-          subject.each do |e|
-            e.should be_a(Fact::Base)
-          end
         end
 
         it "uses provenance_fact_id if supplied" do
@@ -121,12 +120,30 @@ module Dbd
       let(:subject_1) { UUIDTools::UUID.random_create }
       let(:provenance_fact_context) { Factories::ProvenanceFact.context(subject_1) }
       let(:provenance_fact_created_by) { Factories::ProvenanceFact.created_by(subject_1) }
-      let(:provenance_provenance_factal_source) { Factories::ProvenanceFact.original_source }
+      let(:provenance_fact_original_source) { Factories::ProvenanceFact.original_source }
 
       describe "<< : " do
         it "adding an element works" do
           subject << provenance_fact_context
           subject.count.should == 1
+        end
+
+        it "returns the index of the added element" do
+          (subject << provenance_fact_context).should == 0 #  index of first element
+        end
+      end
+
+      describe "by_subject : " do
+        it "finds entries for a given subject" do
+          subject << provenance_fact_context
+          subject << provenance_fact_created_by
+          subject << provenance_fact_original_source
+          provenance_fact_context.subject.should == subject_1 # assert test set-up
+          provenance_fact_created_by.subject.should == subject_1 # assert test set-up
+          subject_2 = provenance_fact_original_source.subject
+          subject.by_subject(subject_1).first.should == provenance_fact_context
+          subject.by_subject(subject_1).last.should == provenance_fact_created_by
+          subject.by_subject(subject_2).single.should == provenance_fact_original_source
         end
       end
 
@@ -162,6 +179,7 @@ module Dbd
           end
         end
       end
+
     end
   end
 end

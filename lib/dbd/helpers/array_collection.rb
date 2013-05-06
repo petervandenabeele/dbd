@@ -4,7 +4,7 @@ module Dbd
 
       include Enumerable
 
-      def initialize()
+      def initialize
         @internal_collection = []
       end
 
@@ -16,10 +16,19 @@ module Dbd
 
       def <<(element)
         @internal_collection << element
+        # FIXME this is "probably" thread safe, not sure about performance ...
+        # FIXME I did not find a proper atomic, thread safe
+        # FIXME "insert and return index of inserted element" in the standard
+        # FIXME Array documentation.
+        @internal_collection.rindex(element)
       end
 
       def last
         @internal_collection.last
+      end
+
+      def [](index)
+        @internal_collection[index]
       end
 
     end
