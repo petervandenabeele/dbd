@@ -85,22 +85,14 @@ module Dbd
       end
 
       describe "Factories::Fact::Collection" do
+        let(:subject) { Factories::Fact::Collection.fact_1_2 }
+
         it ".fact_1_2 does not fail" do
-          Factories::Fact::Collection.fact_1_2 #should_not raise_error
+          Factories::Fact::Collection.fact_1_2 # should not raise_error
         end
 
         it ".fact_3_4 does not fail" do
-          Factories::Fact::Collection.fact_3_4 #should_not raise_error
-        end
-      end
-
-
-      describe "Factories::Fact::Collection.fact_1_2" do
-
-        let(:subject) { Factories::Fact::Collection.fact_1_2 }
-
-        it "does not fail" do
-          subject #should_not raise_error
+          Factories::Fact::Collection.fact_3_4 # should_not raise_error
         end
 
         it "is a Fact::Collection" do
@@ -117,18 +109,57 @@ module Dbd
           end
         end
 
-        it "uses fact_origin_id if supplied" do
-          fact_origin_id = Factories::FactOrigin.me.id
-          subject = Factories::Fact::Collection.fact_1_2(fact_origin_id)
+        it "uses provenance_fact_id if supplied" do
+          provenance_fact_id = Factories::ProvenanceFact.context.id
+          subject = Factories::Fact::Collection.fact_1_2(provenance_fact_id)
           subject.each do |fact|
-            fact.fact_origin_id.should == fact_origin_id
+            fact.provenance_fact_id.should == provenance_fact_id
           end
         end
       end
 
-      describe "is_ordered?" do
-        it "is true for Fact::Collection" do
-          subject.is_ordered?.should be_true
+      let(:subject_1) { UUIDTools::UUID.random_create }
+      let(:provenance_fact_context) { Factories::ProvenanceFact.context(subject_1) }
+      let(:provenance_fact_created_by) { Factories::ProvenanceFact.created_by(subject_1) }
+      let(:provenance_provenance_factal_source) { Factories::ProvenanceFact.original_source }
+
+      describe "<< : " do
+        it "adding an element works" do
+          subject << provenance_fact_context
+          subject.count.should == 1
+        end
+      end
+
+      describe "Factories::ProvenanceFact::Collection.me" do
+        it "has a context" do
+          Factories::ProvenanceFact::Collection.me.select do |provenance_fact|
+            provenance_fact.property == "https://data.vandenabeele.com/ontologies/provenance#context"
+          end.size.should == 1
+        end
+
+        it "has a created_by" do
+          Factories::ProvenanceFact::Collection.me.select do |provenance_fact|
+            provenance_fact.property == "https://data.vandenabeele.com/ontologies/provenance#created_by"
+          end.size.should == 1
+        end
+
+        it "has an original_source" do
+          Factories::ProvenanceFact::Collection.me.select do |provenance_fact|
+            provenance_fact.property == "https://data.vandenabeele.com/ontologies/provenance#original_source"
+          end.size.should == 1
+        end
+
+        describe "with subject argument" do
+          it "provenance_facts have different subjects without subject arg" do
+            collection = Factories::ProvenanceFact::Collection.me.to_a
+            collection[0].subject.should_not == collection[1].subject
+          end
+
+          it "provenance_facts have different subjects with explicit subject arg" do
+            collection = Factories::ProvenanceFact::Collection.me(subject_1).to_a
+            collection[0].subject.should == subject_1
+            collection[1].subject.should == subject_1
+          end
         end
       end
     end

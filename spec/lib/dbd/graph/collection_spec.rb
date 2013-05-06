@@ -4,7 +4,7 @@ module Dbd
   module Graph
     describe Collection do
 
-      let(:fact_origin_collection_1) { Factories::FactOrigin::Collection.me_tijd }
+      let(:provenance_fact_collection_1) { Factories::ProvenanceFact::Collection.me }
       let(:fact_1) { Factories::Fact.fact_1 }
       let(:fact_collection_1_2) { Factories::Fact::Collection.fact_1_2 }
       let(:fact_collection_3_4) { Factories::Fact::Collection.fact_3_4 }
@@ -14,14 +14,14 @@ module Dbd
           subject.should_not be_nil
         end
 
-        it "adding a fact_origin_collection works" do
-          subject << fact_origin_collection_1
+        it "adding a provenance_fact_collection works" do
+          subject << provenance_fact_collection_1
           subject.count.should == 1
         end
 
-        it "adding 2 fact_origin_collections fails" do
-          subject << fact_origin_collection_1
-          lambda { subject << fact_origin_collection_1 } . should raise_error(Collection::InternalError)
+        it "adding 2 provenance_fact_collections fails" do
+          subject << provenance_fact_collection_1
+          lambda { subject << provenance_fact_collection_1 } . should raise_error(Collection::InternalError)
         end
 
         it "adding a fact_collection works" do
@@ -40,9 +40,9 @@ module Dbd
           subject.newest_time_stamp.should be_nil
         end
 
-        it "filters out fact_origin_collections from the collection" do
-          subject << fact_origin_collection_1
-          subject.newest_time_stamp.should be_nil
+        it "also returns time_stamp for provenance_facts in the collection" do
+          subject << provenance_fact_collection_1
+          subject.newest_time_stamp.should == provenance_fact_collection_1.last.time_stamp
         end
 
         it "returns a time_stamp" do
@@ -61,9 +61,9 @@ module Dbd
           subject.oldest_time_stamp.should be_nil
         end
 
-        it "filters out fact_origin_collections from the collection" do
-          subject << fact_origin_collection_1
-          subject.oldest_time_stamp.should be_nil
+        it "also returns time_stamp for provenance_facts in the collection" do
+          subject << provenance_fact_collection_1
+          subject.oldest_time_stamp.should == provenance_fact_collection_1.first.time_stamp
         end
 
         it "returns a time_stamp" do
