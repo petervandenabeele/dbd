@@ -119,11 +119,10 @@ module Dbd
           fact_1_2 # should not raise_error
         end
 
-        it "uses provenance_fact_id if supplied" do
-          provenance_fact_id = provenance_fact_context.id
-          subject = Factories::Fact::Collection.fact_1_2(provenance_fact_id)
+        it "uses provenance_fact_subject if supplied" do
+          subject = Factories::Fact::Collection.fact_1_2(provenance_fact_subject)
           subject.each do |fact|
-            fact.provenance_fact_id.should == provenance_fact_id
+            fact.provenance_fact_subject.should == provenance_fact_subject
           end
         end
       end

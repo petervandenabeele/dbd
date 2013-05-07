@@ -6,7 +6,7 @@ module Dbd
 
       let(:provenance_fact_1) { Factories::ProvenanceFact.context }
       let(:provenance_fact_collection_1) { Factories::Fact::Collection.provenance_facts }
-      let(:fact_collection_1_2) { Factories::Fact::Collection.fact_1_2(provenance_fact_1.id) }
+      let(:fact_collection_1_2) { Factories::Fact::Collection.fact_1_2(provenance_fact_1.subject) }
 
       describe "create a graph" do
         it "does not fail" do
@@ -124,8 +124,8 @@ module Dbd
             first_line.split(',')[1].should match(/"\d{4}-\d\d-\d\d \d\d:\d\d:\d\d UTC"/)
           end
 
-          it "has provenance_fact_1.id as third value" do
-            first_line.split(',')[2].should == "\"#{provenance_fact_1.id.to_s}\""
+          it "has provenance_fact_1.subject as third value" do
+            first_line.split(',')[2].should == "\"#{provenance_fact_1.subject.to_s}\""
           end
 
           it "has subject_id as 4th value" do

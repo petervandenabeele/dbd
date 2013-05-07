@@ -37,8 +37,8 @@ module Dbd
           provenance_fact_1.id.should_not == provenance_fact_2.id
         end
 
-        it "has nil provenance_id" do
-          provenance_fact_1.provenance_fact_id.should be_nil
+        it "has nil provenance_subject" do
+          provenance_fact_1.provenance_fact_subject.should be_nil
         end
 
         it "has correct subject" do

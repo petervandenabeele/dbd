@@ -3,7 +3,7 @@ require 'spec_helper'
 module Dbd
   module Fact
     describe Base do
-      let(:provenance_fact_id) { Factories::ProvenanceFact.context.id }
+      let(:provenance_fact_subject) { Factories::ProvenanceFact.context.subject }
       let(:subject) { UUIDTools::UUID.random_create }
       let(:data_property)  { "http://example.org/test/name" }
       let(:string_object_1)  { "Gandhi" }
@@ -12,7 +12,7 @@ module Dbd
       # fact_1 is a data_fact
       let(:fact_1) do
         described_class.new(
-          provenance_fact_id,
+          provenance_fact_subject,
           subject,
           data_property,
           string_object_1)
@@ -21,7 +21,7 @@ module Dbd
       # fact_2 may be an object_fact later
       let(:fact_2) do
         described_class.new(
-          provenance_fact_id,
+          provenance_fact_subject,
           subject,
           data_property,
           string_object_2)
@@ -44,8 +44,8 @@ module Dbd
           fact_1.time_stamp.should < fact_2.time_stamp
         end
 
-        it "new needs a provenance_fact id" do
-          fact_1.provenance_fact_id.should == provenance_fact_id
+        it "new needs a provenance_fact_subject" do
+          fact_1.provenance_fact_subject.should == provenance_fact_subject
         end
 
         it "new stores a subject" do
@@ -84,18 +84,17 @@ module Dbd
       end
 
       describe "factory works" do
-        it "without provenance_fact_id" do
+        it "without provenance_fact_subject" do
           fact_1 = Factories::Fact.fact_1
-          fact_1.provenance_fact_id.should be_a(provenance_fact_id.class)
+          fact_1.provenance_fact_subject.should be_a(provenance_fact_subject.class)
           fact_1.subject.should be_a(subject.class)
           fact_1.property.should be_a(data_property.class)
           fact_1.object.should be_a(string_object_1.class)
         end
 
-        it "with an explicit provenance_fact_id" do
-          provenance_fact_id_1 = provenance_fact_id
-          fact_1 = Factories::Fact.fact_1(provenance_fact_id_1)
-          fact_1.provenance_fact_id.should == provenance_fact_id_1
+        it "with an explicit provenance_fact_subject" do
+          fact_1 = Factories::Fact.fact_1(provenance_fact_subject)
+          fact_1.provenance_fact_subject.should == provenance_fact_subject
         end
       end
     end
