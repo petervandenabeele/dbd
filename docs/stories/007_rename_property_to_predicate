@@ -1,0 +1,6 @@
+007_rename_property_to_predicate
+
+As a client
+I can use a Fact with standard terms "subject, predicate, object"
+
+* refactor property into predicate

@@ -43,7 +43,7 @@ module Dbd
           end
         end
 
-        describe "has all properties of the provenance_fact_collection" do
+        describe "has all attributes of the provenance_fact_collection" do
 
           let(:first_line) do
             subject.to_CSV.lines.to_a.first.chomp
@@ -57,7 +57,7 @@ module Dbd
             first_line.split(',')[1].should match(/"\d{4}-\d\d-\d\d \d\d:\d\d:\d\d UTC"/)
           end
 
-          it "has an empty third value" do
+          it "has an empty third value (signature of a provenance_fact)" do
             first_line.split(',')[2].should == "\"\""
           end
 
@@ -65,7 +65,7 @@ module Dbd
             first_line.split(',')[3].should match(/"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"/)
           end
 
-          it "has data_property as 5th value" do
+          it "has data_predicate as 5th value" do
             first_line.split(',')[4].should == '"https://data.vandenabeele.com/ontologies/provenance#context"'
           end
 
@@ -110,7 +110,7 @@ module Dbd
           end
         end
 
-        describe "has all properties of the fact_collection" do
+        describe "has all attributes of the fact_collection" do
 
           let(:first_line) do
             subject.to_CSV.lines.to_a.first.chomp
@@ -132,7 +132,7 @@ module Dbd
             first_line.split(',')[3].should match(/"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"/)
           end
 
-          it "has data_property as 5th value" do
+          it "has data_predicate as 5th value" do
             first_line.split(',')[4].should == '"http://example.org/test/name"'
           end
 

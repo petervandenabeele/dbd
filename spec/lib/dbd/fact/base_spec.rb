@@ -5,7 +5,7 @@ module Dbd
     describe Base do
       let(:provenance_fact_subject) { Factories::ProvenanceFact.context.subject }
       let(:subject) { UUIDTools::UUID.random_create }
-      let(:data_property)  { "http://example.org/test/name" }
+      let(:data_predicate)  { "http://example.org/test/name" }
       let(:string_object_1)  { "Gandhi" }
       let(:string_object_2)  { "Mandela" }
 
@@ -14,7 +14,7 @@ module Dbd
         described_class.new(
           provenance_fact_subject,
           subject,
-          data_property,
+          data_predicate,
           string_object_1)
       end
 
@@ -23,7 +23,7 @@ module Dbd
         described_class.new(
           provenance_fact_subject,
           subject,
-          data_property,
+          data_predicate,
           string_object_2)
       end
 
@@ -55,8 +55,8 @@ module Dbd
 
       describe "create a data_fact" do
         describe "with a string object type" do
-          it "new stores a property" do
-            fact_1.property.should == data_property
+          it "new stores a predicate" do
+            fact_1.predicate.should == data_predicate
           end
 
           it "new stores a String object" do
@@ -96,7 +96,7 @@ module Dbd
           fact_1 = Factories::Fact.fact_1
           fact_1.provenance_fact_subject.should be_a(provenance_fact_subject.class)
           fact_1.subject.should be_a(subject.class)
-          fact_1.property.should be_a(data_property.class)
+          fact_1.predicate.should be_a(data_predicate.class)
           fact_1.object.should be_a(string_object_1.class)
         end
 

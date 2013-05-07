@@ -7,7 +7,7 @@ module Dbd
          :time_stamp,
          :provenance_fact_subject,
          :subject,
-         :property,
+         :predicate,
          :object]
       end
 
@@ -15,12 +15,12 @@ module Dbd
         attr_reader attribute
       end
 
-      def initialize(provenance_fact_subject, subject, property, object)
+      def initialize(provenance_fact_subject, subject, predicate, object)
         @id = UUIDTools::UUID.random_create
         @time_stamp = Time.new.utc
         @provenance_fact_subject = provenance_fact_subject
         @subject = subject
-        @property = property
+        @predicate = predicate
         @object = object
       end
 

@@ -185,19 +185,19 @@ module Dbd
 
         it "has a context" do
           collection.select do |provenance_fact|
-            provenance_fact.property == "https://data.vandenabeele.com/ontologies/provenance#context"
+            provenance_fact.predicate == "https://data.vandenabeele.com/ontologies/provenance#context"
           end.size.should == 1
         end
 
         it "has a created_by" do
           collection.select do |provenance_fact|
-            provenance_fact.property == "https://data.vandenabeele.com/ontologies/provenance#created_by"
+            provenance_fact.predicate == "https://data.vandenabeele.com/ontologies/provenance#created_by"
           end.size.should == 1
         end
 
         it "has an original_source" do
           collection.select do |provenance_fact|
-            provenance_fact.property == "https://data.vandenabeele.com/ontologies/provenance#original_source"
+            provenance_fact.predicate == "https://data.vandenabeele.com/ontologies/provenance#original_source"
           end.size.should == 1
         end
 

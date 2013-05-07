@@ -41,8 +41,8 @@ module Dbd
           provenance_fact_1.subject.should == provenance_subject
         end
 
-        it "has correct property" do
-          provenance_fact_1.property.should == "https://data.vandenabeele.com/ontologies/provenance#context"
+        it "has correct predicate" do
+          provenance_fact_1.predicate.should == "https://data.vandenabeele.com/ontologies/provenance#context"
         end
 
         it "has correct object" do
