@@ -106,33 +106,32 @@ module Dbd
         end
       end
 
-      # A hash with all the provenance_fact subjects that are used by at least one fact.
-      # Needed for the validation that no provenance_fact may be added about a fact that
-      # is already in the fact stream.
-      describe "provenance_fact_subject" do
-        it "exists" do
-          subject.provenance_fact_subjects.should_not be_nil
-        end
-
-        it "is empty initially" do
-          subject.provenance_fact_subjects.should be_empty
-        end
-
-        it "adding a provenance_fact alone does not create an entry" do
-          subject << provenance_fact_context
-          subject.provenance_fact_subjects.should be_empty
-        end
-
-        it "adding a provenance_fact and a depending fact create an entry" do
-          subject << provenance_fact_context
-          subject << fact_1
-          subject.provenance_fact_subjects[provenance_fact_subject].should == true
-        end
-
+     describe "provenance_facts must all come before first use by a fact" do
         it "adding a provenance_fact, depending fact, another provenance_fact with same subject fail" do
           subject << provenance_fact_context
           subject << fact_1
           lambda { subject << provenance_fact_created_by } . should raise_error(Collection::OutOfOrderError)
+        end
+
+        # A hash with all the provenance_fact subjects that are used by at least one fact.
+        # Needed for the validation that no provenance_fact may be added about a fact that
+        # is already in the fact stream.
+        describe "provenance_fact_subject" do
+          # testing an internal variable ...
+          it "is empty initially" do
+            subject.instance_variable_get(:@provenance_fact_subjects).should be_empty
+          end
+
+          it "adding a provenance_fact alone does not create an entry" do
+            subject << provenance_fact_context
+            subject.instance_variable_get(:@provenance_fact_subjects).should be_empty
+          end
+
+          it "adding a provenance_fact and a depending fact create an entry" do
+            subject << provenance_fact_context
+            subject << fact_1
+            subject.instance_variable_get(:@provenance_fact_subjects)[provenance_fact_subject].should == true
+          end
         end
       end
 

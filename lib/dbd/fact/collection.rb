@@ -7,8 +7,6 @@ module Dbd
 
       include Helpers::ArrayCollection
 
-      attr_reader :provenance_fact_subjects
-
       def initialize
         super
         @hash_by_subject = Hash.new { |h, k| h[k] = [] }
