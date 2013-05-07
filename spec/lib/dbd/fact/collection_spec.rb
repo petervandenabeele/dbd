@@ -30,19 +30,13 @@ module Dbd
           subject.first.should be_a(Fact::Base)
         end
 
-        it "other functions (e.g. pop) do not work" do
+        it "other functions (e.g. []) do not work" do
           subject << fact_1
-          lambda {subject.pop} . should raise_exception NoMethodError
+          lambda { subject[0] } . should raise_exception NoMethodError
         end
 
-        it "[index] returns the value at index" do
-          subject << fact_1
-          subject[0].should == fact_1
-        end
-
-        it "<< returns the index of the inserted element" do
-          index = (subject << fact_1)
-          subject[index].should == fact_1
+        it "<< returns self, so chaining is possible" do
+          (subject << fact_1).should == subject
         end
       end
 
@@ -104,10 +98,6 @@ module Dbd
           Factories::Fact::Collection.fact_1_2 # should not raise_error
         end
 
-        it ".fact_3_4 does not fail" do
-          Factories::Fact::Collection.fact_3_4 # should_not raise_error
-        end
-
         it "uses provenance_fact_id if supplied" do
           provenance_fact_id = Factories::ProvenanceFact.context.id
           subject = Factories::Fact::Collection.fact_1_2(provenance_fact_id)
@@ -128,8 +118,8 @@ module Dbd
           subject.count.should == 1
         end
 
-        it "returns the index of the added element" do
-          (subject << provenance_fact_context).should == 0 #  index of first element
+        it "returns self to allow chaining" do
+          (subject << provenance_fact_context).should == subject
         end
       end
 

@@ -14,21 +14,18 @@ module Dbd
         end
       end
 
-      def <<(element)
-        @internal_collection << element
-        # FIXME this is "probably" thread safe, not sure about performance ...
-        # FIXME I did not find a proper atomic, thread safe
-        # FIXME "insert and return index of inserted element" in the standard
-        # FIXME Array documentation.
-        @internal_collection.rindex(element)
-      end
-
       def last
         @internal_collection.last
       end
 
-      def [](index)
-        @internal_collection[index]
+      # no instance method so it is not in the API of mixin classes
+      def self.add_and_return_index(element, collection)
+        collection << element
+        # FIXME this is "probably" thread safe, not sure about performance ...
+        # FIXME I did not find a proper atomic, thread safe
+        # FIXME "insert and return index of inserted element" in the
+        # FIXME standard Array documentation.
+        collection.rindex(element)
       end
 
     end

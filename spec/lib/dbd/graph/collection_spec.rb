@@ -7,7 +7,6 @@ module Dbd
       let(:provenance_fact_collection_1) { Factories::ProvenanceFact::Collection.me }
       let(:fact_1) { Factories::Fact.fact_1 }
       let(:fact_collection_1_2) { Factories::Fact::Collection.fact_1_2 }
-      let(:fact_collection_3_4) { Factories::Fact::Collection.fact_3_4 }
 
       describe "create a graph_collection" do
         it "new does not fail" do
@@ -29,9 +28,17 @@ module Dbd
           subject.count.should == 1
         end
 
-        it "adding 2 fact_collections works" do
+        it "adding 2 fact_collections fails" do
           subject << fact_collection_1_2
-          lambda { subject << fact_collection_3_4 } . should raise_error(Collection::InternalError)
+          lambda { subject << fact_collection_1_2 } . should raise_error(Collection::InternalError)
+        end
+
+        it "add_and_return_index is private" do
+          lambda { subject.add_and_return_index(fact_collection_1_2) } . should raise_error(NoMethodError)
+        end
+
+        it "[] is private" do
+          lambda { subject[0] } . should raise_error(NoMethodError)
         end
       end
 

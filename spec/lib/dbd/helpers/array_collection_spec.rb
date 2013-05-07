@@ -25,48 +25,52 @@ module Dbd
       end
 
       describe "accessor functions" do
+
+        let(:internal_collection) do
+          subject.instance_variable_get("@internal_collection")
+        end
+
+        let(:index) do
+          described_class.add_and_return_index(element_1, internal_collection)
+        end
+
+        before(:each) { index }
+
         it "the collection has Enumerable methods" do
           subject.map #should_not raise_exception
           subject.first #should_not raise_exception
         end
 
         it "adding an element works" do
-          subject << element_1
           subject.count.should == 1
         end
 
         it "other functions (e.g. pop) do not work" do
-          subject << element_1
           lambda {subject.pop} . should raise_exception NoMethodError
         end
 
-        it "getting 1 element by array index works" do
-          subject << element_1
-          subject[0].should_not be_nil
-        end
-
-        describe "<< returns the index of the inserted element" do
+        describe "add_and_return_index returns the index of the inserted element" do
           it "works for 1 element" do
-            index = (subject << element_1)
-            subject[index].should == element_1
+            index.should == 0
           end
+
           it "works for 2 elements" do
-            subject << element_1
-            index = (subject << element_2)
-            subject[index].should == element_2
+            index_2 = described_class.add_and_return_index(element_2, internal_collection)
+            index_2.should == 1
           end
         end
 
         describe "last" do
-          it "returns nil on empty collection" do
-            subject.last.should be_nil
-          end
-
           it "returns the last element" do
-            subject << element_1
-            subject << element_2
+            described_class.add_and_return_index(element_2, internal_collection)
             subject.last.should == element_2
           end
+        end
+      end
+
+      describe "on empty collection" do
+        it "#last returns nil" do
+          subject.last.should be_nil
         end
       end
     end

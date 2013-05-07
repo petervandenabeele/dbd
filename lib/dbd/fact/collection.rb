@@ -24,9 +24,9 @@ module Dbd
 
       def <<(element)
         raise OutOfOrderError if (self.newest_time_stamp && element.time_stamp <= self.newest_time_stamp)
-        super.tap do |index|
-          @hash_by_subject[element.subject] << index
-        end
+        index = Helpers::ArrayCollection.add_and_return_index(element, @internal_collection)
+        @hash_by_subject[element.subject] << index
+        self
       end
 
       def by_subject(fact_subject)

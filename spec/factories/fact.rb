@@ -24,14 +24,6 @@ module Factories
           facts << Fact.fact_2(provenance_fact_id)
         end
       end
-
-      def self.fact_3_4(provenance_fact_id = nil)
-        ::Dbd::Fact::Collection.new.tap do |facts|
-          # different timestamp from fact_2 above
-          facts << Fact.fact_1(provenance_fact_id)
-          facts << Fact.fact_2(provenance_fact_id)
-        end
-      end
     end
   end
 end
