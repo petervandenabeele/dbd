@@ -5,7 +5,7 @@ module Dbd
     describe Base do
 
       let(:provenance_fact_1) { Factories::ProvenanceFact.context }
-      let(:provenance_fact_collection_1) { Factories::ProvenanceFact::Collection.me }
+      let(:provenance_fact_collection_1) { Factories::Fact::Collection.provenance_facts }
       let(:fact_collection_1_2) { Factories::Fact::Collection.fact_1_2(provenance_fact_1.id) }
 
       describe "create a graph" do

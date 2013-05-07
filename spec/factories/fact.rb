@@ -24,6 +24,14 @@ module Factories
           facts << Fact.fact_2(provenance_fact_id)
         end
       end
+
+      def self.provenance_facts(subject = nil)
+        ::Dbd::Fact::Collection.new.tap do |provenance_facts|
+          provenance_facts << ProvenanceFact.context(subject)
+          provenance_facts << ProvenanceFact.created_by(subject)
+          provenance_facts << ProvenanceFact.original_source(subject)
+        end
+      end
     end
   end
 end

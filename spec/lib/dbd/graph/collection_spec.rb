@@ -4,7 +4,7 @@ module Dbd
   module Graph
     describe Collection do
 
-      let(:provenance_fact_collection_1) { Factories::ProvenanceFact::Collection.me }
+      let(:provenance_fact_collection_1) { Factories::Fact::Collection.provenance_facts }
       let(:fact_1) { Factories::Fact.fact_1 }
       let(:fact_collection_1_2) { Factories::Fact::Collection.fact_1_2 }
 
@@ -34,7 +34,9 @@ module Dbd
           subject << fact_collection_1_2
           lambda { subject << fact_collection_1_2 } . should raise_error(Collection::InternalError)
         end
+      end
 
+      describe "index related functions from ArrayCollection do not leak into the API" do
         it "add_and_return_index is private" do
           lambda { subject.add_and_return_index(fact_collection_1_2) } . should raise_error(NoMethodError)
         end

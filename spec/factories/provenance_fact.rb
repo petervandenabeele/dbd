@@ -30,14 +30,5 @@ module Factories
         "this has a comma , a newline \n and a double quote \"")
     end
 
-    module Collection
-      def self.me(subject = nil)
-        ::Dbd::Fact::Collection.new.tap do |provenance_facts|
-          provenance_facts << ProvenanceFact.context(subject)
-          provenance_facts << ProvenanceFact.created_by(subject)
-          provenance_facts << ProvenanceFact.original_source(subject)
-        end
-      end
-    end
   end
 end
