@@ -26,22 +26,13 @@ module Dbd
 
       describe "accessor functions" do
 
-        let(:internal_collection) do
-          subject.instance_variable_get("@internal_collection")
-        end
-
-        let(:index) do
-          described_class.add_and_return_index(element_1, internal_collection)
-        end
-
-        before(:each) { index }
-
         it "the collection has Enumerable methods" do
           subject.map #should_not raise_exception
           subject.first #should_not raise_exception
         end
 
-        it "adding an element works" do
+        it "<< works" do
+          subject << element_1
           subject.count.should == 1
         end
 
@@ -50,6 +41,17 @@ module Dbd
         end
 
         describe "add_and_return_index returns the index of the inserted element" do
+
+          let(:internal_collection) do
+            subject.instance_variable_get("@internal_collection")
+          end
+
+          let(:index) do
+            described_class.add_and_return_index(element_1, internal_collection)
+          end
+
+          before(:each) { index }
+
           it "works for 1 element" do
             index.should == 0
           end
@@ -62,7 +64,8 @@ module Dbd
 
         describe "last" do
           it "returns the last element" do
-            described_class.add_and_return_index(element_2, internal_collection)
+            subject << element_1
+            subject << element_2
             subject.last.should == element_2
           end
         end

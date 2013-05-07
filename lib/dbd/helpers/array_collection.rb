@@ -8,6 +8,10 @@ module Dbd
         @internal_collection = []
       end
 
+      def <<(element)
+        @internal_collection << element
+      end
+
       def each
         @internal_collection.each do |e|
           yield e

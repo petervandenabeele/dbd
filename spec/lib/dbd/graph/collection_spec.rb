@@ -12,7 +12,9 @@ module Dbd
         it "new does not fail" do
           subject.should_not be_nil
         end
+      end
 
+      describe "adding a collection" do
         it "adding a provenance_fact_collection works" do
           subject << provenance_fact_collection_1
           subject.count.should == 1

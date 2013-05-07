@@ -19,7 +19,7 @@ module Dbd
 
       def <<(e)
         raise InternalError, "Only 1 collection allowed in a Graph::Collection" if self.count > 0
-        Helpers::ArrayCollection.add_and_return_index(e, @internal_collection)
+        @internal_collection << e
         self
       end
 
