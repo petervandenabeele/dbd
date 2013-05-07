@@ -83,6 +83,14 @@ module Dbd
         end
       end
 
+      describe "update_provenance_fact_subject" do
+        it "sets the value for provenance_fact_subject to true for a fact" do
+          h = {}
+          fact_1.update_provenance_fact_subject(h)
+          h[fact_1.provenance_fact_subject].should == true
+        end
+      end
+
       describe "factory works" do
         it "without provenance_fact_subject" do
           fact_1 = Factories::Fact.fact_1

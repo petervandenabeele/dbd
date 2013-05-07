@@ -6,7 +6,11 @@ I can use a ProvenanceFact
 * a ProvenanceFact is a subclass of a Fact
   with additional features:
   * it's time_stamp must be earlier than any Fact that
-    refers to it through it's provenance_fact_id.
+    refers to it through it's provenance_fact_subject.
+    (otherwise said: the collection of ProvenanceFacts
+     about a subject must be complete before it is used;
+     no provenance_fact may be added about a fact that
+     already in the fact stream)
 * a graph is represented internally as a single
   fact_collection
 * for the provenance_facts, efficient access to all

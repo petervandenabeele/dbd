@@ -24,10 +24,6 @@ module Dbd
           "peter_v")
       end
 
-      let(:provenance_fact_full_option) do
-        Factories::ProvenanceFact.me
-      end
-
       describe "#new" do
         it "has a unique id (UUID)" do
           provenance_fact_1.id.should be_a(UUIDTools::UUID)
@@ -51,6 +47,14 @@ module Dbd
 
         it "has correct object" do
           provenance_fact_1.object.should == "public"
+        end
+      end
+
+      describe "update_provenance_fact_subject" do
+        it "does nothing for a provenance_fact" do
+          h = {}
+          provenance_fact_1.update_provenance_fact_subject(h)
+          h.should be_empty
         end
       end
 

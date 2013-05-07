@@ -4,12 +4,12 @@ module Dbd
   module Fact
     describe Collection do
 
-      let(:fact_1) { Factories::Fact.fact_1 }
-      let(:fact_2) { Factories::Fact.fact_2 }
-
       let(:provenance_fact_context) { Factories::ProvenanceFact.context }
       let(:provenance_fact_subject) { provenance_fact_context.subject }
       let(:provenance_fact_created_by) { Factories::ProvenanceFact.created_by(provenance_fact_subject) }
+
+      let(:fact_1) { Factories::Fact.fact_1(provenance_fact_subject) }
+      let(:fact_2) { Factories::Fact.fact_2(provenance_fact_subject) }
       let(:fact_1_2) { Factories::Fact::Collection.fact_1_2(provenance_fact_subject) }
 
       describe "create a facts collection" do
@@ -42,6 +42,14 @@ module Dbd
 
         it "<< returns self, so chaining is possible" do
           (subject << fact_1).should == subject
+        end
+
+        it "fact_1 has a provenance_fact_subject that refers to context and created_by" do
+          subject << provenance_fact_context
+          subject << provenance_fact_created_by
+          subject << fact_1
+          ps = fact_1.provenance_fact_subject
+          subject.by_subject(ps).should == [provenance_fact_context, provenance_fact_created_by]
         end
       end
 
@@ -98,8 +106,10 @@ module Dbd
         end
       end
 
-      # A hash with all the provenance_fact subjects that are used by a fact
-      describe "a hash with all the provenance_fact subjects that are used by at least one fact" do
+      # A hash with all the provenance_fact subjects that are used by at least one fact.
+      # Needed for the validation that no provenance_fact may be added about a fact that
+      # is already in the fact stream.
+      describe "provenance_fact_subject" do
         it "exists" do
           subject.provenance_fact_subjects.should_not be_nil
         end
@@ -108,9 +118,21 @@ module Dbd
           subject.provenance_fact_subjects.should be_empty
         end
 
-        it "adding a provenance_fact and a fact create an entry" do
-          subject << fact_1
+        it "adding a provenance_fact alone does not create an entry" do
           subject << provenance_fact_context
+          subject.provenance_fact_subjects.should be_empty
+        end
+
+        it "adding a provenance_fact and a depending fact create an entry" do
+          subject << provenance_fact_context
+          subject << fact_1
+          subject.provenance_fact_subjects[provenance_fact_subject].should == true
+        end
+
+        it "adding a provenance_fact, depending fact, another provenance_fact with same subject fail" do
+          subject << provenance_fact_context
+          subject << fact_1
+          lambda { subject << provenance_fact_created_by } . should raise_error(Collection::OutOfOrderError)
         end
       end
 
