@@ -7,10 +7,10 @@ I can use a ProvenanceFact
   with additional features:
   * it's time_stamp must be earlier than any Fact that
     refers to it through it's provenance_fact_id.
-* a graph is represented internally as an
-  ordered set of provenance_fact_collections
-  and fact_collections (currently limited
-  to 1 provenance_fact_collection and 1
-  fact_collection)
+* a graph is represented internally as a single
+  fact_collection
+* for the provenance_facts, efficient access to all
+  provenance_facts by_subject is possible with a
+  ruby Hash (internally coded in O(1) in C)
 
 * Facts are ordered by time_stamp

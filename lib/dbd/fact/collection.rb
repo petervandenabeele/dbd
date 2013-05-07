@@ -7,9 +7,12 @@ module Dbd
 
       include Helpers::ArrayCollection
 
+      attr_reader :provenance_fact_subjects
+
       def initialize
         super
         @hash_by_subject = Hash.new { |h, k| h[k] = [] }
+        @provenance_fact_subjects = {}
       end
 
       def newest_time_stamp
@@ -32,7 +35,6 @@ module Dbd
       def by_subject(fact_subject)
         @hash_by_subject[fact_subject].map{ |index| @internal_collection[index]}
       end
-
     end
   end
 end
