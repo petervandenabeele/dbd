@@ -7,6 +7,8 @@ module Dbd
       let(:provenance_fact_1) { Factories::ProvenanceFact.context }
       let(:provenance_fact_collection_1) { Factories::Fact::Collection.provenance_facts }
       let(:fact_collection_1_2) { Factories::Fact::Collection.fact_1_2(provenance_fact_1.subject) }
+      # temporary hack until Graph#store_fact_set is implemented
+      let(:fact_collection) { subject.instance_variable_get(:@fact_collection) }
 
       describe "create a graph" do
         it "does not fail" do
@@ -17,7 +19,7 @@ module Dbd
       describe "#to_CSV with only provenance_facts" do
         before do
           provenance_fact_collection_1.each do |provenance_fact|
-            subject.fact_collection << provenance_fact
+            fact_collection << provenance_fact
           end
         end
 
@@ -84,7 +86,7 @@ module Dbd
       describe "#to_CSV with only facts" do
         before do
           fact_collection_1_2.each do |fact|
-            subject.fact_collection << fact
+            fact_collection << fact
            end
         end
 
@@ -146,10 +148,10 @@ module Dbd
 
         before do
           provenance_fact_collection_1.each do |provenance_fact|
-            subject.fact_collection << provenance_fact
+            fact_collection << provenance_fact
           end
           fact_collection_1_2.each do |fact|
-            subject.fact_collection << fact
+            fact_collection << fact
            end
         end
 
