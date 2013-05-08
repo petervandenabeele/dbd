@@ -10,13 +10,10 @@ module Dbd
         @fact_collection = Fact::Collection.new
       end
 
-      # Export the fact collection in a graph to a CSV
+      ##
+      # Export the graph to a CSV string
       #
-      # @param (none)
-      #
-      # @return a comma separated CSV with double quoted strings
-      #
-      # @api public
+      # @return [String] comma separated string with double quoted cells
       def to_CSV
         CSV.generate(force_quotes: true) do |csv|
           fact_collection.each do |fact|

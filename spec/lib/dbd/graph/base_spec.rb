@@ -14,7 +14,7 @@ module Dbd
         end
       end
 
-      describe "#to_CSV with provenance_facts" do
+      describe "#to_CSV with only provenance_facts" do
         before do
           provenance_fact_collection_1.each do |provenance_fact|
             subject.fact_collection << provenance_fact
@@ -81,7 +81,7 @@ module Dbd
         end
       end
 
-      describe "#to_CSV with facts" do
+      describe "#to_CSV with only facts" do
         before do
           fact_collection_1_2.each do |fact|
             subject.fact_collection << fact
@@ -155,12 +155,6 @@ module Dbd
 
         it "has six lines" do
           subject.to_CSV.lines.size.should == 6
-        end
-
-        describe "handles comma, double quote and newline correctly" do
-          it "has original_source with special characters and double quote escaped" do
-            subject.to_CSV.should match(/"this has a comma , a newline \n and a double quote """/)
-          end
         end
       end
     end

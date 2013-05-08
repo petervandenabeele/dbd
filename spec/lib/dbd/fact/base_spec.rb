@@ -44,22 +44,22 @@ module Dbd
           fact_1.time_stamp.should < fact_2.time_stamp
         end
 
-        it "new needs a provenance_fact_subject" do
+        it "new sets the provenance_fact_subject" do
           fact_1.provenance_fact_subject.should == provenance_fact_subject
         end
 
-        it "new stores a subject" do
+        it "new sets the subject" do
           fact_1.subject.should == subject
         end
       end
 
       describe "create a data_fact" do
         describe "with a string object type" do
-          it "new stores a predicate" do
+          it "new sets the predicate" do
             fact_1.predicate.should == data_predicate
           end
 
-          it "new stores a String object" do
+          it "new sets the object" do
             fact_1.object.should == string_object_1
           end
         end
@@ -83,16 +83,16 @@ module Dbd
         end
       end
 
-      describe "update_provenance_fact_subject" do
+      describe "update_provenance_fact_subjects" do
         it "sets the value for provenance_fact_subject to true for a fact" do
           h = {}
-          fact_1.update_provenance_fact_subject(h)
+          fact_1.update_provenance_fact_subjects(h)
           h[fact_1.provenance_fact_subject].should == true
         end
       end
 
       describe "factory works" do
-        it "without provenance_fact_subject" do
+        it "without explicit provenance_fact_subject" do
           fact_1 = Factories::Fact.fact_1
           fact_1.provenance_fact_subject.should be_a(provenance_fact_subject.class)
           fact_1.subject.should be_a(subject.class)

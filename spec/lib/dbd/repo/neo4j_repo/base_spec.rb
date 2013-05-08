@@ -4,10 +4,6 @@ module Dbd
   module Repo
     module Neo4jRepo
       describe Base do
-        it ".new works" do
-          subject # does_not raise_error
-        end
-
         it "has the Neography class" do
           ::Neography
         end
@@ -88,9 +84,7 @@ module Dbd
             it "has many methods" do
               #puts node.methods - Object.methods
             end
-
           end
-
         end
       end
     end

@@ -14,10 +14,6 @@ module Dbd
       end
 
       describe "create an elements collection" do
-        it "new does not fail" do
-          subject.should_not be_nil
-        end
-
         it "the collection is not an array" do
           # do not derive from Ruby standard classes
           subject.should_not be_a(Array)
@@ -25,13 +21,12 @@ module Dbd
       end
 
       describe "accessor functions" do
-
         it "the collection has Enumerable methods" do
           subject.map #should_not raise_exception
           subject.first #should_not raise_exception
         end
 
-        it "<< works" do
+        it "<< adds the element" do
           subject << element_1
           subject.count.should == 1
         end

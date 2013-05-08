@@ -13,7 +13,7 @@ module Dbd
 
       describe "play with a rdf_graph" do
 
-        let(:rdf_graph) {RDF::Graph.new << [:hi, RDF::DC.title, "Hello, world!"]}
+        let(:rdf_graph) { RDF::Graph.new << [:hi, RDF::DC.title, "Hello, world!"] }
 
         it "Create a rdf_graph" do
           rdf_graph # should_not raise_error

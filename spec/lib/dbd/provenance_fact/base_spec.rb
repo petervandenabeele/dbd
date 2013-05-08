@@ -50,10 +50,10 @@ module Dbd
         end
       end
 
-      describe "update_provenance_fact_subject" do
+      describe "update_provenance_fact_subjects" do
         it "does nothing for a provenance_fact" do
           h = {}
-          provenance_fact_1.update_provenance_fact_subject(h)
+          provenance_fact_1.update_provenance_fact_subjects(h)
           h.should be_empty
         end
       end
@@ -63,7 +63,7 @@ module Dbd
           Factories::ProvenanceFact.context.should_not be_nil
         end
 
-        it "Factories::ProvenanceFact.created_by" do
+        it "Factories::ProvenanceFact.created_by is OK" do
           Factories::ProvenanceFact.created_by.should_not be_nil
         end
 

@@ -4,19 +4,17 @@ module Dbd
   module Fact
     describe Collection do
 
-      let(:provenance_fact_context) { Factories::ProvenanceFact.context }
-      let(:provenance_fact_subject) { provenance_fact_context.subject }
-      let(:provenance_fact_created_by) { Factories::ProvenanceFact.created_by(provenance_fact_subject) }
+      let(:subject_1) { UUIDTools::UUID.random_create }
 
-      let(:fact_1) { Factories::Fact.fact_1(provenance_fact_subject) }
-      let(:fact_2) { Factories::Fact.fact_2(provenance_fact_subject) }
-      let(:fact_1_2) { Factories::Fact::Collection.fact_1_2(provenance_fact_subject) }
+      let(:provenance_fact_context) { Factories::ProvenanceFact.context(subject_1) }
+      let(:provenance_fact_created_by) { Factories::ProvenanceFact.created_by(subject_1) }
+      let(:provenance_fact_original_source) { Factories::ProvenanceFact.original_source }
 
-      describe "create a facts collection" do
-        it "new does not fail" do
-          subject.should_not be_nil
-        end
+      let(:fact_1) { Factories::Fact.fact_1(subject_1) }
+      let(:fact_2) { Factories::Fact.fact_2(subject_1) }
+      let(:fact_1_2) { Factories::Fact::Collection.fact_1_2(subject_1) }
 
+      describe ".new : " do
         it "the collection is not an array" do
           subject.should_not be_a(Array)
         end
@@ -24,13 +22,27 @@ module Dbd
         it "the collection has Enumerable methods" do
           subject.map #should_not raise_exception
         end
+      end
 
-        it "adding an element works" do
-          subject << fact_1
-          subject.count.should == 1
+      describe ".methods : " do
+
+        describe "#<< : " do
+          it "adding a fact works" do
+            subject << fact_1
+            subject.count.should == 1
+          end
+
+          it "adding a provenance_fact works" do
+            subject << provenance_fact_context
+            subject.count.should == 1
+          end
+
+          it "returns self to allow chaining" do
+            (subject << provenance_fact_context).should == subject
+          end
         end
 
-        it "first entry should be a Fact::Base" do
+        it "#first should be a Fact::Base" do
           subject << fact_1
           subject.first.should be_a(Fact::Base)
         end
@@ -40,9 +52,12 @@ module Dbd
           lambda { subject[0] } . should raise_exception NoMethodError
         end
 
-        it "<< returns self, so chaining is possible" do
+        it "#<< returns self, so chaining is possible" do
           (subject << fact_1).should == subject
         end
+      end
+
+      describe "adding a fact with a ref to a provenance_fact" do
 
         it "fact_1 has a provenance_fact_subject that refers to context and created_by" do
           subject << provenance_fact_context
@@ -106,13 +121,14 @@ module Dbd
         end
       end
 
-     describe "provenance_facts must all come before first use by a fact" do
+      describe "provenance_facts must all come before first use by a fact" do
         it "adding a provenance_fact, depending fact, another provenance_fact with same subject fail" do
           subject << provenance_fact_context
           subject << fact_1
           lambda { subject << provenance_fact_created_by } . should raise_error(Collection::OutOfOrderError)
         end
 
+        # testing private functionality (kept temporarily as documentation)
         # A hash with all the provenance_fact subjects that are used by at least one fact.
         # Needed for the validation that no provenance_fact may be added about a fact that
         # is already in the fact stream.
@@ -130,37 +146,20 @@ module Dbd
           it "adding a provenance_fact and a depending fact create an entry" do
             subject << provenance_fact_context
             subject << fact_1
-            subject.instance_variable_get(:@provenance_fact_subjects)[provenance_fact_subject].should == true
+            subject.instance_variable_get(:@provenance_fact_subjects)[subject_1].should == true
           end
         end
       end
 
       describe "Factories::Fact::Collection" do
-        it ".fact_1_2 does not fail" do
+        it ".fact_1_2 factory does not fail" do
           fact_1_2 # should not raise_error
         end
 
         it "uses provenance_fact_subject if supplied" do
-          subject = Factories::Fact::Collection.fact_1_2(provenance_fact_subject)
-          subject.each do |fact|
-            fact.provenance_fact_subject.should == provenance_fact_subject
+          fact_1_2.each do |fact|
+            fact.provenance_fact_subject.should == subject_1
           end
-        end
-      end
-
-      let(:subject_1) { UUIDTools::UUID.random_create }
-      let(:provenance_fact_context) { Factories::ProvenanceFact.context(subject_1) }
-      let(:provenance_fact_created_by) { Factories::ProvenanceFact.created_by(subject_1) }
-      let(:provenance_fact_original_source) { Factories::ProvenanceFact.original_source }
-
-      describe "<< : " do
-        it "adding an element works" do
-          subject << provenance_fact_context
-          subject.count.should == 1
-        end
-
-        it "returns self to allow chaining" do
-          (subject << provenance_fact_context).should == subject
         end
       end
 

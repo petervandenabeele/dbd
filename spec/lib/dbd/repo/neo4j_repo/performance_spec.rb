@@ -4,8 +4,7 @@ module Dbd
   module Repo
     module Neo4jRepo
       describe Base do
-
-        it "can insert a node" do
+        it "can create a node" do
           subject.create_node("age" => 31, "name" => "Max")
         end
 
@@ -38,7 +37,6 @@ module Dbd
           # result.should_not be_nil
           # result.size.should > 0
         end
-
       end
     end
   end

@@ -28,7 +28,7 @@ module Dbd
         raise OutOfOrderError if (@provenance_fact_subjects[element.subject])
         index = Helpers::ArrayCollection.add_and_return_index(element, @internal_collection)
         @hash_by_subject[element.subject] << index
-        element.update_provenance_fact_subject(@provenance_fact_subjects)
+        element.update_provenance_fact_subjects(@provenance_fact_subjects)
         self
       end
 
