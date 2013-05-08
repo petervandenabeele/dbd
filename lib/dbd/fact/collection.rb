@@ -35,6 +35,7 @@ module Dbd
       def by_subject(fact_subject)
         @hash_by_subject[fact_subject].map{ |index| @internal_collection[index]}
       end
+
     end
   end
 end

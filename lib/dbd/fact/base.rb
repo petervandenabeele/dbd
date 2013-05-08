@@ -25,7 +25,7 @@ module Dbd
       end
 
       def values
-        self.class.attributes.map{|attribute| self.send(attribute)}
+        self.class.attributes.map{ |attribute| self.send(attribute) }
       end
 
       def update_provenance_fact_subjects(h)
