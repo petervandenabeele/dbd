@@ -15,8 +15,12 @@ module Dbd
         attr_reader attribute
       end
 
+      def random_uuid
+        Helpers::UUID.new
+      end
+
       def initialize(provenance_fact_subject, subject, predicate, object)
-        @id = UUIDTools::UUID.random_create
+        @id = random_uuid
         @provenance_fact_subject = provenance_fact_subject
         @subject = subject
         @predicate = predicate

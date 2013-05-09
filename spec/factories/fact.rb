@@ -1,10 +1,14 @@
 module Factories
   module Fact
 
+    def self.uuid_subject
+      ::Dbd::Helpers::UUID.new
+    end
+
     def self.fact_1(provenance_fact_subject = nil)
       ::Dbd::Fact::Base.new(
         provenance_fact_subject || Factories::ProvenanceFact.context.subject,
-        UUIDTools::UUID.random_create,
+        uuid_subject,
         "http://example.org/test/name",
         "Gandhi")
     end
@@ -12,7 +16,7 @@ module Factories
     def self.fact_2(provenance_fact_subject = nil)
       ::Dbd::Fact::Base.new(
         provenance_fact_subject || Factories::ProvenanceFact.context.subject,
-        UUIDTools::UUID.random_create,
+        uuid_subject,
         "http://example.org/test/name",
         "Mandela")
     end

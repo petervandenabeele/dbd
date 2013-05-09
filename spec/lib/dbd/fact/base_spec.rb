@@ -4,10 +4,11 @@ module Dbd
   module Fact
     describe Base do
       let(:provenance_fact_subject) { Factories::ProvenanceFact.context.subject }
-      let(:subject) { UUIDTools::UUID.random_create }
+      let(:subject) { Helpers::UUID.new }
       let(:data_predicate)  { "http://example.org/test/name" }
       let(:string_object_1)  { "Gandhi" }
       let(:string_object_2)  { "Mandela" }
+      let(:id_class) { Helpers::UUID }
 
       # fact_1 is a data_fact
       let(:fact_1) do
@@ -29,7 +30,7 @@ module Dbd
 
       describe "create a fact" do
         it "has a unique id (UUID)" do
-          fact_1.id.should be_a(UUIDTools::UUID)
+          fact_1.id.should be_a(id_class)
         end
 
         it "two facts have different id" do
