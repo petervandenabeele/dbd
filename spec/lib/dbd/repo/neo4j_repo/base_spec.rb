@@ -8,17 +8,17 @@ module Dbd
           ::Neography
         end
 
-        it "can insert a node" do
+        it "can insert a node", :neo4j => true do
           subject.create_node("age" => 31, "name" => "Max")
         end
 
-        it "can create a relationship" do
+        it "can create a relationship", :neo4j => true do
           max = subject.create_node("age" => 31, "name" => "Max")
           roel = subject.create_node("age" => 33, "name" => "Roel")
           subject.create_relationship("co-founders", max, roel)
         end
 
-        describe "play with a minimal graph" do
+        describe "play with a minimal graph", :neo4j => true do
 
           let(:max) {subject.create_node("age" => 31, "name" => "Max")}
 
@@ -52,23 +52,21 @@ module Dbd
             result.size.should > 0
           end
 
-          it "can get all nodes with a query" do
-            # pending "All nodes takes too long"
-            # result = subject.execute_query("start n=node(*) return n")
-            # result["data"].last.single["data"]["name"].should == "Roel"
-          end
+          describe "query nodes", :neo4jperformance => true do
 
-          it "can get the last 5 nodes with load_node" do
-            # pending "All nodes takes too long"
-            # result = subject.execute_query("start n=node(*) return n")
-            # node_uris = result["data"].last(5).map{|n| n.single["self"]}
-            # nodes = node_uris.map do |uri|
-            #   subject.load_node(uri)
-            # end
-            # nodes.last.should be_a(Neography::Node)
-          end
+            it "can get all nodes with a query" do
+              result = subject.execute_query("start n=node(*) return n")
+              result["data"].last.single["data"]["name"].should == "Roel"
+            end
 
-          describe "a loaded node" do
+            it "can get the last 5 nodes with load_node" do
+              result = subject.execute_query("start n=node(*) return n")
+              node_uris = result["data"].last(5).map{|n| n.single["self"]}
+              nodes = node_uris.map do |uri|
+                subject.load_node(uri)
+              end
+              nodes.last.should be_a(Neography::Node)
+            end
 
             let(:node) do
               result = subject.execute_query("start n=node(*) return n")
@@ -77,12 +75,7 @@ module Dbd
             end
 
             it "has age 33" do
-              # pending "All nodes takes too long"
-              # node.age.should == 33
-            end
-
-            it "has many methods" do
-              #puts node.methods - Object.methods
+              node.age.should == 33
             end
           end
         end
