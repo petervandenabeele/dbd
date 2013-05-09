@@ -1,2 +1,2 @@
 require 'dbd/helpers/ordered_set_collection'
-require 'dbd/helpers/UUID'
+require 'dbd/helpers/uuid'
