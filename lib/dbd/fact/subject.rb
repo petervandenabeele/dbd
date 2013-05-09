@@ -1,3 +1,5 @@
+require 'dbd/helpers/uuid'
+
 module Dbd
   module Fact
     class Subject

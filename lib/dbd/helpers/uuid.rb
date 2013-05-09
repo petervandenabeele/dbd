@@ -1,3 +1,5 @@
+require 'secureRandom'
+
 module Dbd
   module Helpers
     class UUID
@@ -7,7 +9,7 @@ module Dbd
       end
 
       def initialize
-        @value = UUIDTools::UUID.random_create
+        @value = SecureRandom.uuid
       end
 
       def to_s

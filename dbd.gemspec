@@ -26,5 +26,4 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'yard'
   spec.add_runtime_dependency 'neography'
   spec.add_runtime_dependency 'ruby_peter_v'
-  spec.add_runtime_dependency 'uuidtools'
 end
