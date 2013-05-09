@@ -52,7 +52,7 @@ module Dbd
             result.size.should > 0
           end
 
-          describe "query nodes", :neo4jperformance => true do
+          describe "query nodes", :neo4j_performance => true do
 
             it "can get all nodes with a query" do
               result = subject.execute_query("start n=node(*) return n")
