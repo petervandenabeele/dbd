@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/petervandenabeele/dbd.png?branch=master)](http://travis-ci.org/petervandenabeele/dbd)
+
 # A data store that (almost) never forgets
 
 I am tired of keeping data in many different data stores for different purposes, different contexts and losing long term data (old phone numbers, old contacts, meeting notes, etc. etc.). I want to add new data from personal and online sources and then combine, query, reason on all that data in different contexts (private, professional, for a certain customer, ...).
