@@ -125,6 +125,14 @@ module Dbd
         fact_1 = Factories::Fact.fact_1(provenance_fact_subject)
         fact_1.provenance_fact_subject.should == provenance_fact_subject
       end
+
+      it "fact_2" do
+        Factories::Fact.fact_2
+      end
+
+      it "fact_3" do
+        Factories::Fact.fact_3
+      end
     end
   end
 end

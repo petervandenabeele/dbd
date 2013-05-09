@@ -9,3 +9,12 @@ I can build and store a group of facts with provenance
 
 * make a FactsBySubject model
   * add subject and facts related methods
+
+* make a FactsWithProvenance model
+  * add public build methods on it
+  * add generate_subjects to generate the missing subjects and interlink
+
+* add a store method on Graph
+  * that will store a FactsWithProvenance instance
+  * this will now set the time_stamps, ids,
+    provenance_fact_subjects, and subjects as needed

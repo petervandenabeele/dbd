@@ -16,9 +16,17 @@ module Factories
     def self.fact_2(provenance_fact_subject = nil)
       ::Dbd::Fact.new(
         provenance_fact_subject,
-        subject,
+        nil,
         "http://example.org/test/name",
         "Mandela")
+    end
+
+    def self.fact_3(provenance_fact_subject = nil)
+      ::Dbd::Fact.new(
+        provenance_fact_subject,
+        nil,
+        "http://example.org/test/name",
+        "King")
     end
 
     module Collection
