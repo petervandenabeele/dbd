@@ -31,6 +31,10 @@ module Dbd
           subject.count.should == 1
         end
 
+        it "returns self to allow chaining" do
+          (subject << element_1).should == subject
+        end
+
         it "other functions (e.g. pop) do not work" do
           lambda {subject.pop} . should raise_exception NoMethodError
         end

@@ -10,6 +10,7 @@ module Dbd
 
       def <<(element)
         @internal_collection << element
+        self
       end
 
       def each
