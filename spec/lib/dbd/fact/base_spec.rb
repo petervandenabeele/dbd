@@ -36,14 +36,6 @@ module Dbd
           fact_1.id.should_not == fact_2.id
         end
 
-        it "has a very fine grained time stamp" do
-          fact_1.time_stamp.should be_a(Time)
-        end
-
-        it "the time_stamps of 2 consecutive created facts should be different" do
-          fact_1.time_stamp.should < fact_2.time_stamp
-        end
-
         it "new sets the provenance_fact_subject" do
           fact_1.provenance_fact_subject.should == provenance_fact_subject
         end
@@ -76,10 +68,6 @@ module Dbd
 
         it "there are 6 values" do
           fact_1.values.size.should == 6
-        end
-
-        it "second value is a time_stamp" do
-          fact_1.values[1].should be_a(Time)
         end
       end
 

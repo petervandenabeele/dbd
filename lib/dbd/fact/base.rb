@@ -17,7 +17,6 @@ module Dbd
 
       def initialize(provenance_fact_subject, subject, predicate, object)
         @id = UUIDTools::UUID.random_create
-        @time_stamp = Time.new.utc
         @provenance_fact_subject = provenance_fact_subject
         @subject = subject
         @predicate = predicate

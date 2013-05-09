@@ -86,6 +86,11 @@ module Dbd
       end
 
       describe "validate that only 'newer' elements are added" do
+        before(:each) do
+          fact_1.stub(:time_stamp).and_return(Time.new(2013,05,9,12,0,0))
+          fact_2.stub(:time_stamp).and_return(Time.new(2013,05,9,12,0,1))
+        end
+
         it "adding an element with a newer time_stamp succeeds" do
           subject << fact_1
           subject << fact_2
