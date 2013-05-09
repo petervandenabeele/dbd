@@ -32,6 +32,8 @@ module Dbd
       @subject = subject
       @predicate = predicate
       @object = object
+      raise ArgumentError, "predicate cannot be nil" if predicate.nil?
+      raise ArgumentError, "object cannot be nil" if object.nil?
     end
 
     def values

@@ -57,8 +57,24 @@ module Dbd
         fact_1.subject.should == subject
       end
 
+      it "a nil predicate raises ArgumentError" do
+        lambda do
+          described_class.new(
+            provenance_fact_subject,
+            subject,
+            nil,
+            string_object_1)
+        end . should raise_error ArgumentError
       end
 
+      it "a nil object raises ArgumentError" do
+        lambda do
+          described_class.new(
+            provenance_fact_subject,
+            subject,
+            data_predicate,
+            nil)
+        end . should raise_error ArgumentError
       end
     end
 
