@@ -4,14 +4,14 @@ module Dbd
   module ProvenanceFact
     describe Base do
 
-      let(:provenance_subject) do
+      let(:provenance_fact_subject) do
         UUIDTools::UUID.random_create
       end
 
       let(:provenance_fact_1) do
         described_class.new(
           nil,
-          provenance_subject,
+          provenance_fact_subject,
           "https://data.vandenabeele.com/ontologies/provenance#context",
           "public")
       end
@@ -19,7 +19,7 @@ module Dbd
       let(:provenance_fact_2) do
         described_class.new(
           nil,
-          provenance_subject,
+          provenance_fact_subject,
           "https://data.vandenabeele.com/ontologies/provenance#created_by",
           "peter_v")
       end
@@ -33,12 +33,12 @@ module Dbd
           provenance_fact_1.id.should_not == provenance_fact_2.id
         end
 
-        it "has nil provenance_subject" do
+        it "has nil provenance_fact_subject" do
           provenance_fact_1.provenance_fact_subject.should be_nil
         end
 
         it "has correct subject" do
-          provenance_fact_1.subject.should == provenance_subject
+          provenance_fact_1.subject.should == provenance_fact_subject
         end
 
         it "has correct predicate" do
