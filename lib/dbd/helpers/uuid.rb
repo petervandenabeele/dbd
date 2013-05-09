@@ -1,4 +1,4 @@
-require 'secureRandom'
+require 'securerandom'
 
 module Dbd
   module Helpers
