@@ -1,4 +1,3 @@
-require 'dbd/fact/rdf_base'
 require 'dbd/fact/base'
 require 'dbd/fact/collection'
 require 'dbd/fact/subject'
