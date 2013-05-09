@@ -1,0 +1,10 @@
+010_provenance_fact_predicates_from_provenance_ontology
+
+As a client
+I can read the predicates for a provenance_fact from provenance ontology
+
+* make an ontology in a separate gem
+* import that gem
+* use this ontology to build a validated Provenance instance
+* use this validate Provenance instance to better build the
+  FactsWithProvenance instance

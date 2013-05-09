@@ -1,0 +1,7 @@
+008_testing_different_ruby_versions
+
+As a client
+I can use the library on Ruby 1.9.2 , 1.9.3 , 2.0.0, JRuby
+
+* test once on these versions
+* find a way for automated testing (travis ?)
