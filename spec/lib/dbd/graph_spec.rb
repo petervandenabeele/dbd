@@ -36,11 +36,11 @@ module Dbd
 
       describe "with a single provenance_fact collection" do
         it "has three logical lines (but one with embedded newline)" do
-          subject.to_CSV.lines.size.should == 4
+          subject.to_CSV.lines.count.should == 4
         end
 
         it "ends with a newline" do
-          subject.to_CSV.lines.last[-1].should == "\n"
+          subject.to_CSV.lines.to_a.last[-1].should == "\n"
         end
       end
 
@@ -103,11 +103,11 @@ module Dbd
 
       describe "with a single fact collection" do
         it "has two lines" do
-          subject.to_CSV.lines.size.should == 2
+          subject.to_CSV.lines.count.should == 2
         end
 
         it "ends with a newline" do
-          subject.to_CSV.lines.last[-1].should == "\n"
+          subject.to_CSV.lines.to_a.last[-1].should == "\n"
         end
       end
 
@@ -155,7 +155,7 @@ module Dbd
       end
 
       it "has six lines" do
-        subject.to_CSV.lines.size.should == 6
+        subject.to_CSV.lines.count.should == 6
       end
     end
   end
