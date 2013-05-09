@@ -25,6 +25,22 @@ module Dbd
         oldest_entry && oldest_entry.time_stamp
       end
 
+      ##
+      # This is the central method of Fact::Collection
+      #
+      # @param [Fact] element  the element that is added to the collection
+      #
+      # @return [self] for chaining
+      #
+      # Validates that added fact is newer.
+      #
+      # Validates that subject was never used a provenance_fact_subject [A].
+      #
+      # Adds the element and return the index in the collection.
+      #
+      # Store this index in the hash_by_subject.
+      #
+      # Mark the element in the list of used provenance_fact_subjects (for [A]).
       def <<(element)
         raise OutOfOrderError if (self.newest_time_stamp && element.time_stamp <= self.newest_time_stamp)
         raise OutOfOrderError if (@provenance_fact_subjects[element.subject])
