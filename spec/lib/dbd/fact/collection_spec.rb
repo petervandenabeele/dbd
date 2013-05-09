@@ -4,7 +4,7 @@ module Dbd
   module Fact
     describe Collection do
 
-      let(:subject_1) { ::Dbd::Helpers::UUID.new }
+      let(:subject_1) { Base.new_subject }
 
       let(:provenance_fact_context) { Factories::ProvenanceFact.context(subject_1) }
       let(:provenance_fact_created_by) { Factories::ProvenanceFact.created_by(subject_1) }

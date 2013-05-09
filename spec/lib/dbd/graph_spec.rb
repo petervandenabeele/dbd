@@ -8,6 +8,7 @@ module Dbd
     let(:fact_collection_1_2) { Factories::Fact::Collection.fact_1_2(provenance_fact_1.subject) }
     # temporary hack until Graph#store_fact_set is implemented
     let(:fact_collection) { subject.instance_variable_get(:@fact_collection) }
+    let(:subject_regexp) { Fact::Subject.regexp }
 
     describe "create a graph" do
       it "does not fail" do
@@ -52,7 +53,7 @@ module Dbd
         end
 
         it "has id (a uuid) as first value" do
-          first_line.split(',')[0].should match(/"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"/)
+          first_line.split(',')[0].gsub(/"/, '').should match(Helpers::UUID.regexp)
         end
 
         it "has time_stamp as second value" do
@@ -63,8 +64,8 @@ module Dbd
           first_line.split(',')[2].should == "\"\""
         end
 
-        it "has subject_id as 4th value" do
-          first_line.split(',')[3].should match(/"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"/)
+        it "has subject as 4th value" do
+          first_line.split(',')[3].gsub(/"/, '').should match(subject_regexp)
         end
 
         it "has data_predicate as 5th value" do
@@ -120,7 +121,7 @@ module Dbd
         end
 
         it "has id (a uuid) as first value" do
-          first_line.split(',')[0].should match(/"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"/)
+          first_line.split(',')[0].gsub(/"/, '').should match(Helpers::UUID.regexp)
         end
 
         it "has time_stamp as second value" do
@@ -131,8 +132,8 @@ module Dbd
           first_line.split(',')[2].should == "\"#{provenance_fact_1.subject.to_s}\""
         end
 
-        it "has subject_id as 4th value" do
-          first_line.split(',')[3].should match(/"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"/)
+        it "has subject as 4th value" do
+          first_line.split(',')[3].gsub(/"/, '').should match(subject_regexp)
         end
 
         it "has data_predicate as 5th value" do

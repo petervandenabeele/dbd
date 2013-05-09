@@ -15,6 +15,10 @@ module Dbd
         attr_reader attribute
       end
 
+      def self.new_subject
+        Subject.new
+      end
+
       def random_uuid
         Helpers::UUID.new
       end

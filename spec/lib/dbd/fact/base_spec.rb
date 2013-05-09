@@ -4,7 +4,7 @@ module Dbd
   module Fact
     describe Base do
       let(:provenance_fact_subject) { Factories::ProvenanceFact.context.subject }
-      let(:subject) { Helpers::UUID.new }
+      let(:subject) { described_class.new_subject }
       let(:data_predicate)  { "http://example.org/test/name" }
       let(:string_object_1)  { "Gandhi" }
       let(:string_object_2)  { "Mandela" }
@@ -26,6 +26,18 @@ module Dbd
           subject,
           data_predicate,
           string_object_2)
+      end
+
+      describe ".new_subject" do
+        it "creates a new (random) subject" do
+          described_class.new_subject.should be_a(subject.class)
+        end
+
+        it "creating a second one is different" do
+          subject_1 = described_class.new_subject
+          subject_2 = described_class.new_subject
+          subject_1.should_not == subject_2
+        end
       end
 
       describe "create a fact" do

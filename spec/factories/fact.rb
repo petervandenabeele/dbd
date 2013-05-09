@@ -1,14 +1,14 @@
 module Factories
   module Fact
 
-    def self.uuid_subject
-      ::Dbd::Helpers::UUID.new
+    def self.subject
+      ::Dbd::Fact::Subject.new
     end
 
     def self.fact_1(provenance_fact_subject = nil)
       ::Dbd::Fact::Base.new(
         provenance_fact_subject || Factories::ProvenanceFact.context.subject,
-        uuid_subject,
+        subject,
         "http://example.org/test/name",
         "Gandhi")
     end
@@ -16,7 +16,7 @@ module Factories
     def self.fact_2(provenance_fact_subject = nil)
       ::Dbd::Fact::Base.new(
         provenance_fact_subject || Factories::ProvenanceFact.context.subject,
-        uuid_subject,
+        subject,
         "http://example.org/test/name",
         "Mandela")
     end
