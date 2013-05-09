@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Dbd
   module Helpers
-    describe ArrayCollection do
+    describe OrderedSetCollection do
 
       let(:element_1) {:element_1}
       let(:element_2) {:element_2}

@@ -5,7 +5,7 @@ module Dbd
       class OutOfOrderError < StandardError
       end
 
-      include Helpers::ArrayCollection
+      include Helpers::OrderedSetCollection
 
       def initialize
         super
@@ -26,7 +26,7 @@ module Dbd
       def <<(element)
         raise OutOfOrderError if (self.newest_time_stamp && element.time_stamp <= self.newest_time_stamp)
         raise OutOfOrderError if (@provenance_fact_subjects[element.subject])
-        index = Helpers::ArrayCollection.add_and_return_index(element, @internal_collection)
+        index = Helpers::OrderedSetCollection.add_and_return_index(element, @internal_collection)
         @hash_by_subject[element.subject] << index
         element.update_provenance_fact_subjects(@provenance_fact_subjects)
         self

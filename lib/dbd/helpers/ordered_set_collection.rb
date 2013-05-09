@@ -1,6 +1,6 @@
 module Dbd
   module Helpers
-    module ArrayCollection
+    module OrderedSetCollection
 
       include Enumerable
 

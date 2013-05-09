@@ -3,3 +3,5 @@
 As a client
 I can build and store a group of facts with provenance
 
+* rename ArrayCollection to OrderedSetCollection
+
