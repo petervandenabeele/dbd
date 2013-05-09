@@ -5,6 +5,7 @@ module Dbd
     describe Base do
 
       let(:provenance_fact_subject) { described_class.new_subject }
+      let(:id_class) { described_class.new_id.class }
 
       let(:provenance_fact_1) do
         described_class.new(
@@ -23,8 +24,8 @@ module Dbd
       end
 
       describe "#new" do
-        it "has a unique id (UUID)" do
-          provenance_fact_1.id.should be_a(Helpers::UUID)
+        it "has a unique id (new_id.class)" do
+          provenance_fact_1.id.should be_a(id_class)
         end
 
         it "two provenance_facts have different id" do

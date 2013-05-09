@@ -19,12 +19,12 @@ module Dbd
         Subject.new
       end
 
-      def random_uuid
-        Helpers::UUID.new
+      def self.new_id
+        ID.new
       end
 
       def initialize(provenance_fact_subject, subject, predicate, object)
-        @id = random_uuid
+        @id = self.class.new_id
         @provenance_fact_subject = provenance_fact_subject
         @subject = subject
         @predicate = predicate

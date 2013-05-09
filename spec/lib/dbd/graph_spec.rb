@@ -9,6 +9,7 @@ module Dbd
     # temporary hack until Graph#store_fact_set is implemented
     let(:fact_collection) { subject.instance_variable_get(:@fact_collection) }
     let(:subject_regexp) { Fact::Subject.regexp }
+    let(:id_regexp) { Fact::ID.regexp }
 
     describe "create a graph" do
       it "does not fail" do
@@ -52,8 +53,8 @@ module Dbd
           subject.to_CSV.lines.to_a.first.chomp
         end
 
-        it "has id (a uuid) as first value" do
-          first_line.split(',')[0].gsub(/"/, '').should match(Helpers::UUID.regexp)
+        it "has id (a Fact::ID) as first value" do
+          first_line.split(',')[0].gsub(/"/, '').should match(id_regexp)
         end
 
         it "has time_stamp as second value" do
@@ -120,8 +121,8 @@ module Dbd
           subject.to_CSV.lines.to_a.first.chomp
         end
 
-        it "has id (a uuid) as first value" do
-          first_line.split(',')[0].gsub(/"/, '').should match(Helpers::UUID.regexp)
+        it "has id (a Fact::ID) as first value" do
+          first_line.split(',')[0].gsub(/"/, '').should match(id_regexp)
         end
 
         it "has time_stamp as second value" do
