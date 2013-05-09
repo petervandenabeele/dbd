@@ -3,8 +3,9 @@ require 'spec_helper'
 module Dbd
   describe Graph do
 
-    let(:provenance_fact_1) { Factories::ProvenanceFact.context }
-    let(:provenance_fact_collection_1) { Factories::Fact::Collection.provenance_facts }
+    let(:subject_1) {Fact::Subject.new}
+    let(:provenance_fact_1) { Factories::ProvenanceFact.context(subject_1) }
+    let(:provenance_fact_collection_1) { Factories::Fact::Collection.provenance_facts(subject_1) }
     let(:fact_collection_1_2) { Factories::Fact::Collection.fact_1_2(provenance_fact_1.subject) }
     # temporary hack until Graph#store_fact_set is implemented
     let(:fact_collection) { subject.instance_variable_get(:@fact_collection) }

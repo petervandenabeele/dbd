@@ -6,3 +6,6 @@ I can build and store a group of facts with provenance
 * rename ArrayCollection to OrderedSetCollection
 
 * clean-up the dependency on external UUID gem
+
+* make a FactsBySubject model
+  * add subject and facts related methods

@@ -205,8 +205,9 @@ module Dbd
         end
 
         describe "with subject argument" do
-          it "provenance_facts have different subjects without subject arg" do
-            collection.first.subject.should_not == collection.to_a[1].subject
+          it "provenance_facts have nil subject without subject arg" do
+            collection.first.subject.should be_nil
+            collection.to_a[1].subject.should be_nil
           end
 
           it "provenance_facts have different subjects with explicit subject arg" do

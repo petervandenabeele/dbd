@@ -7,7 +7,7 @@ module Factories
 
     def self.fact_1(provenance_fact_subject = nil)
       ::Dbd::Fact.new(
-        provenance_fact_subject || Factories::ProvenanceFact.context.subject,
+        provenance_fact_subject,
         subject,
         "http://example.org/test/name",
         "Gandhi")
@@ -15,7 +15,7 @@ module Factories
 
     def self.fact_2(provenance_fact_subject = nil)
       ::Dbd::Fact.new(
-        provenance_fact_subject || Factories::ProvenanceFact.context.subject,
+        provenance_fact_subject,
         subject,
         "http://example.org/test/name",
         "Mandela")

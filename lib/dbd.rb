@@ -4,6 +4,7 @@ require 'dbd/version'
 
 require 'dbd/fact'
 require 'dbd/provenance_fact'
+require 'dbd/facts_by_subject'
 require 'dbd/graph'
 
 require 'dbd/rdf'

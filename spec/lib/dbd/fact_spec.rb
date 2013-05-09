@@ -7,7 +7,8 @@ module Dbd
     let(:data_predicate)  { "http://example.org/test/name" }
     let(:string_object_1)  { "Gandhi" }
     let(:string_object_2)  { "Mandela" }
-    let(:id_class) { described_class.new_id.class }
+    let(:id_class) { Fact::ID }
+    let(:subject_class) { Fact::Subject }
 
     # fact_1 is a data_fact
     let(:fact_1) do
@@ -29,7 +30,7 @@ module Dbd
 
     describe ".new_subject" do
       it "creates a new (random) subject" do
-        described_class.new_subject.should be_a(subject.class)
+        described_class.new_subject.should be_a(subject_class)
       end
 
       it "creating a second one is different" do
@@ -40,7 +41,7 @@ module Dbd
     end
 
     describe "create a fact" do
-      it "has a unique id (new_id.class)" do
+      it "has a unique id (id_class)" do
         fact_1.id.should be_a(id_class)
       end
 
@@ -54,6 +55,10 @@ module Dbd
 
       it "new sets the subject" do
         fact_1.subject.should == subject
+      end
+
+      end
+
       end
     end
 
