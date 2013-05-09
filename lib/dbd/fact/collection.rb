@@ -1,7 +1,7 @@
 require 'dbd/helpers/ordered_set_collection'
 
 module Dbd
-  module Fact
+  class Fact
     class Collection
 
       class OutOfOrderError < StandardError

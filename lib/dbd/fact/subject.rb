@@ -1,7 +1,7 @@
 require 'dbd/helpers/uuid'
 
 module Dbd
-  module Fact
+  class Fact
     class Subject
 
       def initialize

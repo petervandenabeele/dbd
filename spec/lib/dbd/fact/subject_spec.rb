@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 module Dbd
-  module Fact
+  class Fact
     describe Subject do
       it ".new creates a Subject" do
         subject.should be_a(described_class)

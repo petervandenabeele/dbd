@@ -1,5 +1,5 @@
 module Dbd
-  module Fact
+  class Fact
     class ID
 
       def initialize

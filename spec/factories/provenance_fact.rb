@@ -6,7 +6,7 @@ module Factories
     end
 
     def self.context(subject = nil)
-      ::Dbd::ProvenanceFact::Base.new(
+      ::Dbd::ProvenanceFact.new(
         nil,
         subject || uuid_subject,
         "https://data.vandenabeele.com/ontologies/provenance#context",
@@ -15,7 +15,7 @@ module Factories
     end
 
     def self.created_by(subject = nil)
-      ::Dbd::ProvenanceFact::Base.new(
+      ::Dbd::ProvenanceFact.new(
         nil,
         subject || uuid_subject,
         "https://data.vandenabeele.com/ontologies/provenance#created_by",
@@ -23,7 +23,7 @@ module Factories
     end
 
     def self.original_source(subject = nil)
-      ::Dbd::ProvenanceFact::Base.new(
+      ::Dbd::ProvenanceFact.new(
         nil,
         subject || uuid_subject,
         "https://data.vandenabeele.com/ontologies/provenance#original_source",

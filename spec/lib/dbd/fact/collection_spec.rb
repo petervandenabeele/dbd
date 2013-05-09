@@ -1,10 +1,10 @@
 require 'spec_helper'
 
 module Dbd
-  module Fact
+  class Fact
     describe Collection do
 
-      let(:subject_1) { Base.new_subject }
+      let(:subject_1) { Fact.new_subject }
 
       let(:provenance_fact_context) { Factories::ProvenanceFact.context(subject_1) }
       let(:provenance_fact_created_by) { Factories::ProvenanceFact.created_by(subject_1) }
@@ -42,9 +42,9 @@ module Dbd
           end
         end
 
-        it "#first should be a Fact::Base" do
+        it "#first should be a Fact" do
           subject << fact_1
-          subject.first.should be_a(Fact::Base)
+          subject.first.should be_a(Fact)
         end
 
         it "other functions (e.g. []) do not work" do

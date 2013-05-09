@@ -1,8 +1,7 @@
 require 'spec_helper'
 
 module Dbd
-  module ProvenanceFact
-    describe Base do
+    describe ProvenanceFact do
 
       let(:provenance_fact_subject) { described_class.new_subject }
       let(:id_class) { described_class.new_id.class }
@@ -71,5 +70,4 @@ module Dbd
         end
       end
     end
-  end
 end
