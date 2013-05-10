@@ -13,7 +13,7 @@ module Dbd
     let(:facts_1) do
       FactsBySubject.new.tap do |fbs|
         fbs << Factories::Fact.fact_1
-        fbs << Factories::Fact.fact_2
+        fbs << Factories::Fact.fact_2_with_subject
       end
     end
 

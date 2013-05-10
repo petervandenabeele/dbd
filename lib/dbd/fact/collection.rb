@@ -4,8 +4,7 @@ module Dbd
   class Fact
     class Collection
 
-      class OutOfOrderError < StandardError
-      end
+      class OutOfOrderError < StandardError ; end
 
       include Helpers::OrderedSetCollection
 

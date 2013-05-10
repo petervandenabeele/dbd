@@ -22,6 +22,7 @@ module Dbd
       before do
         provenance_fact_collection_1.each_with_index do |provenance_fact, index|
           provenance_fact.stub(:time_stamp).and_return(Time.new(2013,5,9,12,0,index).utc)
+          provenance_fact.stub(:subject).and_return(ProvenanceFact.new_subject)
           fact_collection << provenance_fact
         end
       end
@@ -90,6 +91,7 @@ module Dbd
       before do
         fact_collection_1_2.each_with_index do |fact, index|
           fact.stub(:time_stamp).and_return(Time.new(2013,5,9,12,0,index).utc)
+          fact.stub(:subject).and_return(Fact.new_subject)
           fact_collection << fact
          end
       end

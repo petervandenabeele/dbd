@@ -2,21 +2,21 @@ module Factories
   module Fact
 
     def self.subject
-      ::Dbd::Fact::Subject.new
+      ::Dbd::Fact.new_subject
     end
 
     def self.fact_1(provenance_fact_subject = nil)
       ::Dbd::Fact.new(
         provenance_fact_subject,
-        subject,
+        nil,
         "http://example.org/test/name",
         "Gandhi")
     end
 
-    def self.fact_2(provenance_fact_subject = nil)
+    def self.fact_2_with_subject(provenance_fact_subject = nil)
       ::Dbd::Fact.new(
         provenance_fact_subject,
-        nil,
+        subject,
         "http://example.org/test/name",
         "Mandela")
     end
@@ -33,7 +33,7 @@ module Factories
       def self.fact_1_2(provenance_fact_subject = nil)
         ::Dbd::Fact::Collection.new.tap do |facts|
           facts << Fact.fact_1(provenance_fact_subject)
-          facts << Fact.fact_2(provenance_fact_subject)
+          facts << Fact.fact_2_with_subject(provenance_fact_subject)
         end
       end
 

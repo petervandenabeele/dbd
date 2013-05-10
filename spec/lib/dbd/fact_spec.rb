@@ -2,13 +2,14 @@ require 'spec_helper'
 
 module Dbd
   describe Fact do
-    let(:provenance_fact_subject) { Factories::ProvenanceFact.context.subject }
+    let(:provenance_fact_subject) { ProvenanceFact.new_subject }
     let(:subject) { described_class.new_subject }
     let(:data_predicate)  { "http://example.org/test/name" }
     let(:string_object_1)  { "Gandhi" }
     let(:string_object_2)  { "Mandela" }
     let(:id_class) { Fact::ID }
     let(:subject_class) { Fact::Subject }
+    let(:fact_2_with_subject) { Factories::Fact.fact_2_with_subject(provenance_fact_subject) }
 
     # fact_1 is a data_fact
     let(:fact_1) do
@@ -31,6 +32,7 @@ module Dbd
     describe ".new_subject" do
       it "creates a new (random) subject" do
         described_class.new_subject.should be_a(subject_class)
+        fact_2_with_subject.provenance_fact_subject.should be_a(provenance_fact_subject.class)
       end
 
       it "creating a second one is different" do
@@ -113,24 +115,22 @@ module Dbd
     end
 
     describe "factory works" do
+      it "with explicit provenance_fact_subject" do
+        fact_2_with_subject.provenance_fact_subject.should be_a(provenance_fact_subject.class)
+        fact_2_with_subject.subject.should be_a(subject.class)
+        fact_2_with_subject.predicate.should be_a(data_predicate.class)
+        fact_2_with_subject.object.should be_a(string_object_1.class)
+      end
+
       it "without explicit provenance_fact_subject" do
-        fact_1 = Factories::Fact.fact_1
-        fact_1.provenance_fact_subject.should be_a(provenance_fact_subject.class)
-        fact_1.subject.should be_a(subject.class)
-        fact_1.predicate.should be_a(data_predicate.class)
-        fact_1.object.should be_a(string_object_1.class)
+        Factories::Fact.fact_1.provenance_fact_subject.should be_nil
       end
 
-      it "with an explicit provenance_fact_subject" do
-        fact_1 = Factories::Fact.fact_1(provenance_fact_subject)
-        fact_1.provenance_fact_subject.should == provenance_fact_subject
+      it "fact_2_with_subject should not raise_error" do
+        Factories::Fact.fact_2_with_subject
       end
 
-      it "fact_2" do
-        Factories::Fact.fact_2
-      end
-
-      it "fact_3" do
+      it "fact_3 should not raise_error" do
         Factories::Fact.fact_3
       end
     end

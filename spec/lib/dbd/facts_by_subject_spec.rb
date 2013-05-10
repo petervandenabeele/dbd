@@ -27,7 +27,7 @@ module Dbd
     describe "the collection" do
 
       let(:fact_1) { Factories::Fact.fact_1 }
-      let(:fact_2) { Factories::Fact.fact_2 }
+      let(:fact_2_with_subject) { Factories::Fact.fact_2_with_subject }
 
       it "enumerable functions work" do
         subject.to_a.should == []
@@ -40,8 +40,8 @@ module Dbd
 
       it "<< can add two facts" do
         subject << fact_1
-        subject << fact_2
-        subject.to_a.should == [fact_1, fact_2]
+        subject << fact_2_with_subject
+        subject.to_a.should == [fact_1, fact_2_with_subject]
       end
     end
   end
