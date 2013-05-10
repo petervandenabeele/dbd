@@ -6,6 +6,8 @@ module Dbd
 
       class OutOfOrderError < StandardError ; end
 
+      class FactIncompleteError < StandardError ; end
+
       include Helpers::OrderedSetCollection
 
       def initialize
@@ -31,6 +33,8 @@ module Dbd
       #
       # @return [self] for chaining
       #
+      # Validates that added fact is complete.
+      #
       # Validates that added fact is newer.
       #
       # Validates that subject was never used a provenance_fact_subject [A].
@@ -41,6 +45,7 @@ module Dbd
       #
       # Mark the element in the list of used provenance_fact_subjects (for [A]).
       def <<(element)
+        raise FactIncompleteError unless element.complete?
         raise OutOfOrderError if (self.newest_time_stamp && element.time_stamp <= self.newest_time_stamp)
         raise OutOfOrderError if (@provenance_fact_subjects[element.subject])
         index = Helpers::OrderedSetCollection.add_and_return_index(element, @internal_collection)

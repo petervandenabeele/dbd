@@ -45,5 +45,13 @@ module Dbd
       h[provenance_fact_subject] = true
     end
 
+    def complete?
+      # id not validated, is set automatically
+      # predicate not validated, is validated in initialize
+      # object not validated, is validated in initialize
+      provenance_fact_subject &&
+      subject
+    end
+
   end
 end

@@ -3,23 +3,15 @@ require 'spec_helper'
 module Dbd
     describe ProvenanceFact do
 
-      let(:provenance_fact_subject) { described_class.new_subject }
+      let(:subject) { described_class.new_subject }
       let(:id_class) { described_class.new_id.class }
 
       let(:provenance_fact_1) do
-        described_class.new(
-          nil, # no recursion on provenance_fact
-          provenance_fact_subject,
-          "https://data.vandenabeele.com/ontologies/provenance#context",
-          "public")
+        Factories::ProvenanceFact.context(subject)
       end
 
       let(:provenance_fact_2) do
-        described_class.new(
-          nil, # no recursion on provenance_fact
-          provenance_fact_subject,
-          "https://data.vandenabeele.com/ontologies/provenance#created_by",
-          "peter_v")
+        Factories::ProvenanceFact.created_by(subject)
       end
 
       describe "#new" do
@@ -36,7 +28,7 @@ module Dbd
         end
 
         it "has correct subject" do
-          provenance_fact_1.subject.should == provenance_fact_subject
+          provenance_fact_1.subject.should == subject
         end
 
         it "has correct predicate" do
@@ -45,6 +37,22 @@ module Dbd
 
         it "has correct object" do
           provenance_fact_1.object.should == "public"
+        end
+      end
+
+      describe "complete?" do
+        it "the factory is complete?" do
+          provenance_fact_1.should be_complete
+        end
+
+        it "with ! provenance_fact_subject is not complete?" do
+          provenance_fact_1.stub(:provenance_fact_subject).and_return(subject)
+          provenance_fact_1.should_not be_complete
+        end
+
+        it "without subject is not complete?" do
+          provenance_fact_1.stub(:subject).and_return(nil)
+          provenance_fact_1.should_not be_complete
         end
       end
 

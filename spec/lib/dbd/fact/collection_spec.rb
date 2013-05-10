@@ -12,6 +12,7 @@ module Dbd
 
       let(:fact_1) { Factories::Fact.fact_1(provenance_fact_subject_1) }
       let(:fact_2_with_subject) { Factories::Fact.fact_2_with_subject(provenance_fact_subject_1) }
+      let(:fact_3_with_subject) { Factories::Fact.fact_3_with_subject(provenance_fact_subject_1) }
       let(:fact_1_2) { Factories::Fact::Collection.fact_1_2(provenance_fact_subject_1) }
 
       describe ".new : " do
@@ -28,7 +29,7 @@ module Dbd
 
         describe "#<< : " do
           it "adding a fact works" do
-            subject << fact_1
+            subject << fact_2_with_subject
             subject.count.should == 1
           end
 
@@ -43,26 +44,26 @@ module Dbd
         end
 
         it "#first should be a Fact" do
-          subject << fact_1
+          subject << fact_2_with_subject
           subject.first.should be_a(Fact)
         end
 
         it "other functions (e.g. []) do not work" do
-          subject << fact_1
+          subject << fact_2_with_subject
           lambda { subject[0] } . should raise_exception NoMethodError
         end
 
         it "#<< returns self, so chaining is possible" do
-          (subject << fact_1).should == subject
+          (subject << fact_2_with_subject).should == subject
         end
       end
 
       describe "adding a fact with a ref to a provenance_fact" do
 
-        it "fact_1 has a provenance_fact_subject that refers to context and created_by" do
+        it "fact_2_with_subject has a provenance_fact_subject that refers to context and created_by" do
           subject << provenance_fact_context
           subject << provenance_fact_created_by
-          subject << fact_1
+          subject << fact_2_with_subject
           ps = fact_1.provenance_fact_subject
           subject.by_subject(ps).should == [provenance_fact_context, provenance_fact_created_by]
         end
@@ -74,38 +75,37 @@ module Dbd
         end
 
         it "returns a time_stamp" do
-          subject << fact_1
-          subject.newest_time_stamp.should be_a(fact_1.time_stamp.class)
+          subject << fact_2_with_subject
+          subject.newest_time_stamp.should be_a(fact_2_with_subject.time_stamp.class)
         end
 
         it "returns the newest time_stamp" do
-          subject << fact_1
           subject << fact_2_with_subject
-          subject.newest_time_stamp.should == fact_2_with_subject.time_stamp
+          subject << fact_3_with_subject
+          subject.newest_time_stamp.should == fact_3_with_subject.time_stamp
         end
       end
 
       describe "validate that only 'newer' elements are added" do
         before(:each) do
-          fact_1.stub(:time_stamp).and_return(Time.new(2013,05,9,12,0,0))
-          fact_2_with_subject.stub(:time_stamp).and_return(Time.new(2013,05,9,12,0,1))
+          fact_2_with_subject.stub(:time_stamp).and_return(Time.new(2013,05,9,12,0,0))
+          fact_3_with_subject.stub(:time_stamp).and_return(Time.new(2013,05,9,12,0,1))
         end
 
         it "adding an element with a newer time_stamp succeeds" do
-          subject << fact_1
           subject << fact_2_with_subject
+          subject << fact_3_with_subject
         end
 
         it "adding an element with an older time_stamp fails" do
-          fact_1 # will be older then fact_2_with_subject
-          subject << fact_2_with_subject
-          lambda { subject << fact_1 } . should raise_error(Collection::OutOfOrderError)
+          fact_2_with_subject # will be older then fact_3_with_subject
+          subject << fact_3_with_subject
+          lambda { subject << fact_2_with_subject } . should raise_error(Collection::OutOfOrderError)
         end
 
         it "adding an element with an equal time_stamp fails" do
-          fact_1
-          subject << fact_1
-          lambda { subject << fact_1 } . should raise_error(Collection::OutOfOrderError)
+          subject << fact_2_with_subject
+          lambda { subject << fact_2_with_subject } . should raise_error(Collection::OutOfOrderError)
         end
       end
 
@@ -115,21 +115,21 @@ module Dbd
         end
 
         it "returns a time_stamp" do
-          subject << fact_1
-          subject.oldest_time_stamp.should be_a(fact_1.time_stamp.class)
+          subject << fact_2_with_subject
+          subject.oldest_time_stamp.should be_a(fact_2_with_subject.time_stamp.class)
         end
 
         it "returns the oldest time_stamp" do
-          subject << fact_1
           subject << fact_2_with_subject
-          subject.oldest_time_stamp.should == fact_1.time_stamp
+          subject << fact_3_with_subject
+          subject.oldest_time_stamp.should == fact_2_with_subject.time_stamp
         end
       end
 
       describe "provenance_facts must all come before first use by a fact" do
         it "adding a provenance_fact, depending fact, another provenance_fact with same subject fail" do
           subject << provenance_fact_context
-          subject << fact_1
+          subject << fact_2_with_subject
           lambda { subject << provenance_fact_created_by } . should raise_error(Collection::OutOfOrderError)
         end
 
@@ -150,9 +150,20 @@ module Dbd
 
           it "adding a provenance_fact and a depending fact create an entry" do
             subject << provenance_fact_context
-            subject << fact_1
+            subject << fact_2_with_subject
             subject.instance_variable_get(:@provenance_fact_subjects)[provenance_fact_subject_1].should == true
           end
+        end
+      end
+
+      describe "validate that facts are complete? when loading in the Fact::Collection" do
+        it "succeeds with a fact from factory" do
+           subject << fact_2_with_subject # should_not raise_error
+        end
+
+        it "raises FactIncompleteError when fact.complete? is false" do
+           provenance_fact_context.stub(:complete?).and_return(false)
+           lambda { subject << provenance_fact_context } . should raise_error Collection::FactIncompleteError
         end
       end
 
@@ -172,6 +183,9 @@ module Dbd
         it "finds entries for a given subject" do
           subject << provenance_fact_context
           subject << provenance_fact_created_by
+          # FIXME store a FactsWithProvenance object in the collection
+          provenance_fact_original_source = self.provenance_fact_original_source
+          provenance_fact_original_source.stub(:subject).and_return(ProvenanceFact.new_subject)
           subject << provenance_fact_original_source
           provenance_fact_context.subject.should == provenance_fact_subject_1 # assert test set-up
           provenance_fact_created_by.subject.should == provenance_fact_subject_1 # assert test set-up
@@ -184,7 +198,7 @@ module Dbd
 
       describe "Factories::Fact::Collection.provenance_facts" do
 
-        let (:collection) { Factories::Fact::Collection.provenance_facts }
+        let (:collection) { Factories::Fact::Collection.provenance_facts(provenance_fact_subject_1) }
 
         it "has a context" do
           collection.select do |provenance_fact|
@@ -205,13 +219,7 @@ module Dbd
         end
 
         describe "with subject argument" do
-          it "provenance_facts have nil subject without subject arg" do
-            collection.first.subject.should be_nil
-            collection.to_a[1].subject.should be_nil
-          end
-
           it "provenance_facts have the given subjects with explicit subject arg" do
-            collection = Factories::Fact::Collection.provenance_facts(provenance_fact_subject_1)
             collection.first.subject.should == provenance_fact_subject_1
             collection.to_a[1].subject.should == provenance_fact_subject_1
           end

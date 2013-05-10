@@ -80,6 +80,22 @@ module Dbd
       end
     end
 
+    describe "complete?" do
+      it "the factory is complete?" do
+        fact_2_with_subject.should be_complete
+      end
+
+      it "without provenance_fact_subject is not complete?" do
+        fact_2_with_subject.stub(:provenance_fact_subject).and_return(nil)
+        fact_2_with_subject.should_not be_complete
+      end
+
+      it "without subject is not complete?" do
+        fact_2_with_subject.stub(:subject).and_return(nil)
+        fact_2_with_subject.should_not be_complete
+      end
+    end
+
     describe "create a data_fact" do
       describe "with a string object type" do
         it "new sets the predicate" do
@@ -130,8 +146,8 @@ module Dbd
         Factories::Fact.fact_2_with_subject
       end
 
-      it "fact_3 should not raise_error" do
-        Factories::Fact.fact_3
+      it "fact_3_with_subject should not raise_error" do
+        Factories::Fact.fact_3_with_subject
       end
     end
   end
