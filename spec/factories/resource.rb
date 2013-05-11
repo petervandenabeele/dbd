@@ -5,10 +5,11 @@ module Factories
       ::Dbd::Resource
     end
 
-    def self.facts_resource
-      factory_for.new(Fact.new_subject, ProvenanceFact.new_subject).tap do |resource|
-        resource << Factories::Fact.fact_1
-        resource << Factories::Fact.data_fact
+    def self.facts_resource(provenance_subject)
+      subject = Fact.new_subject
+      factory_for.new(subject, provenance_subject).tap do |resource|
+        resource << Factories::Fact.data_fact(provenance_subject, subject)
+        resource << Factories::Fact.data_fact_EU(provenance_subject, subject)
       end
     end
 

@@ -41,7 +41,14 @@ module Factories
         "Aung San Suu Kyi")
     end
 
-    #TODO move this to resource factory
+    def self.data_fact_EU(provenance_fact_subject = nil, subject = nil)
+      factory_for.new(
+        provenance_fact_subject,
+        subject,
+        "http://example.org/test/name",
+        "European Union")
+    end
+
     module Collection
 
       def self.factory_for

@@ -8,8 +8,8 @@ module Factories
     def self.full_factory
       factory_for.new(ProvenanceResource.provenance_resource).
         tap do |resources_with_provenance|
-          resources_with_provenance << Resource.facts_resource
-          resources_with_provenance << Resource.facts_resource
+          resources_with_provenance << Resource.facts_resource(resources_with_provenance.provenance_resource.subject)
+          resources_with_provenance << Resource.facts_resource(resources_with_provenance.provenance_resource.subject)
       end
     end
 

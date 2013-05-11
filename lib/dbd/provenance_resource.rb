@@ -6,6 +6,8 @@ module Dbd
   # The subject is required from the creation of a new resource.
   class ProvenanceResource < Resource
 
+    class InvalidProvenanceError < StandardError ; end
+
     ##
     # Build a new ProvenanceResource.
     #
@@ -17,18 +19,28 @@ module Dbd
       super(subject, nil)
     end
 
+  private
+
     ##
-    # Getter for provenance_subject.
-    #
     # Should not be called in ProvenanceResource subclass.
     def provenance_subject
-      raise RuntimeError, "provenance_subject should not be called here."
+      raise RuntimeError, "provenance_subject should not be called in ProvenanceResource."
     end
 
-  protected
-
+    ##
+    # Do nothing. Do not force provenance_subject validation here.
+    # @override
     def validate_provenance_subject
-      # do nothing. Do not force validation for ProvenanceResource
+    end
+
+    ##
+    # Check provenance, which should be nil here
+    # @override
+    # @param [ProvenanceFact] provenance_fact
+    # @return [ProvenanceFact] with validated nil on provenance_fact_subject
+    def check_or_set_provenance(provenance_fact)
+      raise InvalidProvenanceError if provenance_fact.provenance_fact_subject
+      provenance_fact
     end
 
   end

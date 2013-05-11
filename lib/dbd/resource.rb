@@ -49,7 +49,7 @@ module Dbd
     # * if is has the same subject as the resource, added unchanged.
     # * if it has a different subject, a InvalidSubjectError is raised.
     def <<(element)
-      super(check_or_set_subject(element))
+      super(check_or_set_subject_and_provenance(element))
     end
 
     ##
@@ -60,7 +60,12 @@ module Dbd
       @provenance_subject
     end
 
-  protected
+  private
+
+    def check_or_set_subject_and_provenance(element)
+      with_subject = check_or_set_subject(element)
+      check_or_set_provenance(with_subject)
+    end
 
     def check_or_set_subject(element)
       if element.subject
@@ -72,6 +77,19 @@ module Dbd
         end
       else
         element.dup_with_subject(@subject)
+      end
+    end
+
+    def check_or_set_provenance(element)
+      if element.provenance_fact_subject
+        if element.provenance_fact_subject == @provenance_subject
+          return element
+        else
+          raise InvalidProvenanceError,
+            "self.provenance_subject is #{provenance_subject} and element.provenance_subject is #{element.provenance_fact_subject}"
+        end
+      else
+        element.dup_with_provenance_subject(@provenance_subject)
       end
     end
 
