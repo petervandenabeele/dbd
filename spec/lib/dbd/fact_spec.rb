@@ -9,25 +9,8 @@ module Dbd
     let(:string_object_2)  { "Mandela" }
     let(:id_class) { Fact::ID }
     let(:subject_class) { Fact::Subject }
+    let(:fact_1) { Factories::Fact.fact_1(provenance_fact_subject) }
     let(:fact_2_with_subject) { Factories::Fact.fact_2_with_subject(provenance_fact_subject) }
-
-    # fact_1 is a data_fact
-    let(:fact_1) do
-      described_class.new(
-        provenance_fact_subject,
-        subject,
-        data_predicate,
-        string_object_1)
-    end
-
-    # fact_2 may be an object_fact later
-    let(:fact_2) do
-      described_class.new(
-        provenance_fact_subject,
-        subject,
-        data_predicate,
-        string_object_2)
-    end
 
     describe ".new_subject" do
       it "creates a new (random) subject" do
@@ -48,7 +31,7 @@ module Dbd
       end
 
       it "two facts have different id" do
-        fact_1.id.should_not == fact_2.id
+        fact_1.id.should_not == fact_2_with_subject.id
       end
 
       it "new sets the provenance_fact_subject" do
@@ -56,7 +39,7 @@ module Dbd
       end
 
       it "new sets the subject" do
-        fact_1.subject.should == subject
+        fact_2_with_subject.subject.should be_a(subject_class)
       end
 
       it "a nil predicate raises ArgumentError" do
