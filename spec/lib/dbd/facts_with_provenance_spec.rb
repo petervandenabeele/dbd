@@ -13,12 +13,12 @@ module Dbd
     let(:facts_1) do
       FactsBySubject.new.tap do |fbs|
         fbs << Factories::Fact.fact_1
-        fbs << Factories::Fact.fact_2_with_subject
       end
     end
 
-    let(:facts_2) do
+    let(:facts_2_3_with_subject) do
       FactsBySubject.new.tap do |fbs|
+        fbs << Factories::Fact.fact_2_with_subject
         fbs << Factories::Fact.fact_3_with_subject
       end
     end
@@ -27,15 +27,15 @@ module Dbd
       described_class.new(provenance_facts)
     end
 
-    describe ".new" do
+    describe ".new(provenance_facts)" do
       describe "with a provenance_facts argument" do
         it "does not raise exception" do
-          described_class.new(provenance_facts)
+          facts_with_provenance
         end
       end
     end
 
-    describe "facts_by_subject_collection" do
+    describe "#facts_by_subject_collection" do
       it "does not raise exception" do
         facts_with_provenance.facts_by_subject_collection
       end
@@ -46,7 +46,7 @@ module Dbd
 
       it "two facts_by_subject set can be added" do
         facts_with_provenance.facts_by_subject_collection << facts_1
-        facts_with_provenance.facts_by_subject_collection << facts_2
+        facts_with_provenance.facts_by_subject_collection << facts_2_3_with_subject
       end
     end
 
