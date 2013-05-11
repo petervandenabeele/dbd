@@ -1,6 +1,8 @@
 module Dbd
   module Repo
     module Neo4jRepo
+      ##
+      # To allow some tests on the Neo4j Neography gem.
       class Base
 
         def initialize

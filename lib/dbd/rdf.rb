@@ -2,6 +2,8 @@
 require 'rdf'
 
 module Dbd
+  ##
+  # To allow some tests of the *rdf* gem.
   module RdfBase
   end
 end

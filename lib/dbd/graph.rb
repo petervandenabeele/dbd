@@ -1,6 +1,10 @@
 require 'csv'
 
 module Dbd
+
+  ##
+  # The Graph stores the Facts and ProvenanceFacts in an in-memory
+  # collection structure. This is the main entry point for the API.
   class Graph
 
     def initialize
