@@ -30,6 +30,13 @@ module Dbd
       described_class.new(provenance_resource)
     end
 
+    let(:resources_with_provenance_and_resources) do
+      described_class.new(provenance_resource).tap do |rwp|
+        rwp << resource_1
+        rwp << resource_data_facts_with_subject
+      end
+    end
+
     describe ".new(provenance_facts)" do
       describe "with a provenance_facts argument" do
         it "does not raise exception" do
@@ -44,20 +51,15 @@ module Dbd
       end
     end
 
-    describe "#resource_collection" do
-      it "a resource set can be added" do
-        resources_with_provenance.resource_collection << resource_1
-      end
-
+    describe "the collection" do
       it "two resources can be added" do
-        resources_with_provenance.resource_collection << resource_1
-        resources_with_provenance.resource_collection << resource_data_facts_with_subject
+        resources_with_provenance_and_resources # should not raise_exception
       end
     end
 
     it "Factories work" do
       full_factory = Factories::ResourcesWithProvenance.full_factory
-      full_factory.resource_collection.count.should == 2
+      full_factory.size.should == 2
     end
   end
 end

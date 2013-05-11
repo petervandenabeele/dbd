@@ -24,6 +24,7 @@ module Dbd
       # Creates @internal_collection in the mixing class.
       def initialize
         @internal_collection = []
+        super
       end
 
       ##
