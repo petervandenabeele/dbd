@@ -11,7 +11,7 @@ module Dbd
   #
   # During build-up of the resource, the subject can be nil.
   # This will then be set later by a generate_subjects function
-  # (a subject in Dbd is a random uuid's (like a oid), not a
+  # (a subject in Dbd is a random uuid (like a oid), not a
   # meaningful URI).
   class Resource
 

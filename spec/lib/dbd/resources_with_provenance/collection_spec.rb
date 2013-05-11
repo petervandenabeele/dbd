@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 module Dbd
-  class FactsWithProvenance
+  class ResourcesWithProvenance
     describe Collection do
 
       let(:resource_1) { Resource.new }

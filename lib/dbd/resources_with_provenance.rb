@@ -1,9 +1,9 @@
-require 'dbd/facts_with_provenance/collection'
+require 'dbd/resources_with_provenance/collection'
 
 module Dbd
 
   ##
-  # FactsWithProvenance is a set of resources that are all
+  # ResourcesWithProvenance is a set of resources that are all
   # associated with one provenance_resource.
   #
   # The steps are:
@@ -11,17 +11,17 @@ module Dbd
   #   facts to that
   # * make 1 or more resources for regular facts (Resource.new)
   #   and add facts to that, grouped per resource
-  # * make FactsWithProvenance.new(provenance_resource) and
+  # * make ResourcesWithProvenance.new(provenance_resource) and
   #   add the resources to that
-  # * call facts_with_provenance.generate_subjects to
+  # * call resources_with_provenance.generate_subjects to
   #   generate the missing subjects and interlink
-  # * call the Graph#store method with facts_with_provenance
-  class FactsWithProvenance
+  # * call the Graph#store method with resources_with_provenance
+  class ResourcesWithProvenance
 
     attr_reader :resource_collection
 
     ##
-    # Initialize the FactsWithProvenance with a provenance resource.
+    # Initialize the ResourcesWithProvenance with a provenance resource.
     #
     # @param [Resource] provenance_resource the provenance resource for the facts
     def initialize(provenance_resource)

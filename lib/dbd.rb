@@ -5,7 +5,7 @@ require 'dbd/version'
 require 'dbd/fact'
 require 'dbd/provenance_fact'
 require 'dbd/resource'
-require 'dbd/facts_with_provenance'
+require 'dbd/resources_with_provenance'
 require 'dbd/graph'
 
 require 'dbd/rdf'

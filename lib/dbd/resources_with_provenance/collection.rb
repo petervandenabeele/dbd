@@ -1,7 +1,7 @@
 require 'dbd/helpers/ordered_set_collection'
 
 module Dbd
-  class FactsWithProvenance
+  class ResourcesWithProvenance
     class Collection
 
       include Helpers::OrderedSetCollection

@@ -1,7 +1,7 @@
-009_build_and_store_facts_with_provenance
+009_build_and_store_resources_with_provenance
 
 As a client
-I can build and store a group of facts with provenance
+I can build and store a group of resources with provenance
 
 * rename ArrayCollection to OrderedSetCollection
 
@@ -17,10 +17,11 @@ I can build and store a group of facts with provenance
 
 * rename FactsBySubject to Resource
 
-* on FactsWithProvenance model
+* rename FactsWithProvenance to ResourcesWithProvenance
+
+* on ResourcesWithProvenance model
   * add generate_subjects to generate the missing subjects and interlink
 
 * add a store method on Graph
-  * that will store a FactsWithProvenance instance
-  * this will now set the time_stamps, ids,
-    provenance_fact_subjects, and subjects as needed
+  * that will store a ResourcesWithProvenance instance
+  * this will now set the time_stamps (enforcing the strictly monotic order)
