@@ -1,13 +1,17 @@
 module Factories
   module ResourcesWithProvenance
 
+    def self.factory_for
+      ::Dbd::ResourcesWithProvenance
+    end
+
     def self.full_factory
-      ::Dbd::ResourcesWithProvenance.new(Resource.provenance_resource).
+      factory_for.new(Resource.provenance_resource).
         tap do |resources_with_provenance|
           resources_with_provenance.resource_collection <<
-            Resource.resource_1
+            Resource.facts_resource
           resources_with_provenance.resource_collection <<
-            Resource.resource_2_3
+            Resource.facts_resource
       end
     end
 

@@ -18,6 +18,7 @@ module Dbd
   # * call the Graph#store method with resources_with_provenance
   class ResourcesWithProvenance
 
+    attr_reader :provenance_resource
     attr_reader :resource_collection
 
     ##

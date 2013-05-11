@@ -92,13 +92,13 @@ module Dbd
     # @param [#to_s] predicate The predicate for this Fact (required)
     # @param [#to_s] object The object for this Fact (required)
     def initialize(provenance_fact_subject, subject, predicate, object)
+      raise ArgumentError, "predicate cannot be nil" if predicate.nil?
+      raise ArgumentError, "object cannot be nil" if object.nil?
       @id = self.class.new_id
       @provenance_fact_subject = provenance_fact_subject
       @subject = subject
       @predicate = predicate
       @object = object
-      raise ArgumentError, "predicate cannot be nil" if predicate.nil?
-      raise ArgumentError, "object cannot be nil" if object.nil?
     end
 
     ##

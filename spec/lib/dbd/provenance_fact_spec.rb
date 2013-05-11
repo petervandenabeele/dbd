@@ -91,6 +91,10 @@ module Dbd
         it "Factories::ProvenanceFact.original_source is OK" do
           Factories::ProvenanceFact.original_source.should_not be_nil
         end
+
+        it "Factories::ProvenanceFact.new_subject is OK" do
+          Factories::ProvenanceFact.new_subject.should be_a(ProvenanceFact.new_subject.class)
+        end
       end
     end
 end

@@ -3,23 +3,26 @@ require 'spec_helper'
 module Dbd
   describe ResourcesWithProvenance do
 
+    let(:provenance_subject) { Factories::ProvenanceFact.new_subject }
+    let(:fact_subject) { Factories::Fact.new_subject }
+
     let(:provenance_resource) do
-      Resource.new.tap do |resource|
+      Resource.new(provenance_subject).tap do |resource|
         resource << Factories::ProvenanceFact.context
         resource << Factories::ProvenanceFact.created_by
       end
     end
 
     let(:resource_1) do
-      Resource.new.tap do |resource|
+      Resource.new(fact_subject).tap do |resource|
         resource << Factories::Fact.fact_1
       end
     end
 
-    let(:resource_2_3_with_subject) do
-      Resource.new.tap do |resource|
-        resource << Factories::Fact.fact_2_with_subject
-        resource << Factories::Fact.fact_3_with_subject
+    let(:resource_data_facts_with_subject) do
+      Resource.new(fact_subject).tap do |resource|
+        resource << Factories::Fact.data_fact(nil, fact_subject)
+        resource << Factories::Fact.data_fact(nil, fact_subject)
       end
     end
 
@@ -35,18 +38,20 @@ module Dbd
       end
     end
 
-    describe "#resource_collection" do
-      it "does not raise exception" do
-        resources_with_provenance.resource_collection
+    describe "#provenance_resource" do
+      it "attr_reader for the provenance_resource" do
+        resources_with_provenance.provenance_resource.should == provenance_resource
       end
+    end
 
+    describe "#resource_collection" do
       it "a resource set can be added" do
         resources_with_provenance.resource_collection << resource_1
       end
 
       it "two resources can be added" do
         resources_with_provenance.resource_collection << resource_1
-        resources_with_provenance.resource_collection << resource_2_3_with_subject
+        resources_with_provenance.resource_collection << resource_data_facts_with_subject
       end
     end
 

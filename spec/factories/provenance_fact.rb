@@ -1,8 +1,16 @@
 module Factories
   module ProvenanceFact
 
+    def self.factory_for
+      ::Dbd::ProvenanceFact
+    end
+
+    def self.new_subject
+      factory_for.new_subject
+    end
+
     def self.context(subject = nil)
-      ::Dbd::ProvenanceFact.new(
+      factory_for.new(
         nil,
         subject,
         "https://data.vandenabeele.com/ontologies/provenance#context",
@@ -11,7 +19,7 @@ module Factories
     end
 
     def self.created_by(subject = nil)
-      ::Dbd::ProvenanceFact.new(
+      factory_for.new(
         nil,
         subject,
         "https://data.vandenabeele.com/ontologies/provenance#created_by",
@@ -19,7 +27,7 @@ module Factories
     end
 
     def self.original_source(subject = nil)
-      ::Dbd::ProvenanceFact.new(
+      factory_for.new(
         nil,
         subject,
         "https://data.vandenabeele.com/ontologies/provenance#original_source",

@@ -4,8 +4,8 @@ module Dbd
   class ResourcesWithProvenance
     describe Collection do
 
-      let(:resource_1) { Resource.new }
-      let(:resource_2) { Resource.new }
+      let(:resource_1) { Factories::Resource.facts_resource }
+      let(:resource_2) { Factories::Resource.facts_resource }
 
       describe ".new : " do
         it "the collection is not an array" do
