@@ -19,8 +19,13 @@ I can build and store a group of resources with provenance
 
 * rename FactsWithProvenance to ResourcesWithProvenance
 
-* on ResourcesWithProvenance model
-  * add generate_subjects to generate the missing subjects and interlink
+* on Resource, enforce the presence of a subject and set it on the facts
+
+* on Resource, enforce the presence of a provenance_subject and set it on the facts
+
+* on ProvenanceResource, enforce the presence of a subject and set it on the facts
+
+* rename provenance_fact_subject to provenance_subject
 
 * add a store method on Graph
   * that will store a ResourcesWithProvenance instance
