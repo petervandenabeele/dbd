@@ -79,7 +79,7 @@ module Dbd
       end
     end
 
-    describe "create a data_fact" do
+    describe "create fact_1" do
       describe "with a string object type" do
         it "new sets the predicate" do
           fact_1.predicate.should == data_predicate
@@ -134,16 +134,37 @@ module Dbd
       end
 
       describe "data_fact" do
-        it "without arguments should not raise error" do
-          Factories::Fact.data_fact
+        describe "without arguments" do
+          it "has empty provenance_fact_subject" do
+            Factories::Fact.data_fact.provenance_fact_subject.should be_nil
+          end
+
+          it "has empty subject" do
+            Factories::Fact.data_fact.subject.should be_nil
+          end
         end
 
-        it "with provenance_fact_subject should not raise error" do
-          Factories::Fact.data_fact(provenance_fact_subject)
+        describe "with provenance_fact_subject" do
+          it "has provenance_fact_subject" do
+            Factories::Fact.data_fact(provenance_fact_subject).
+              provenance_fact_subject.should == provenance_fact_subject
+          end
+
+          it "has empty subject" do
+            Factories::Fact.data_fact(provenance_fact_subject).subject.should be_nil
+          end
         end
 
-        it "with provenance_fact_subject and subject should not raise error" do
-          Factories::Fact.data_fact(provenance_fact_subject, subject)
+        describe "with provenance_fact_subject and subject" do
+          it "has provenance_fact_subject" do
+            Factories::Fact.data_fact(provenance_fact_subject, subject).
+              provenance_fact_subject.should == provenance_fact_subject
+          end
+
+          it "has subject" do
+            Factories::Fact.data_fact(provenance_fact_subject, subject).
+              subject.should == subject
+          end
         end
       end
     end
