@@ -3,9 +3,9 @@ module Dbd
   ##
   # ProvenanceFact
   #
-  # Each basic Fact has a set of ProvenanceFacts (logically a Provenance Resource).
-  # A ProvenanceFact itself has a nil provenance_fact_subject (ProvenanceFact is
-  # not recursive on this level).
+  # Each basic Fact points to a provenance Resource (a set of ProvenanceFacts
+  # with the same provenance_subject). A ProvenanceFact itself has a nil
+  # provenance_fact_subject (ProvenanceFact is not recursive on this level).
   #
   # The predicates in a ProvenanceFact would typically come from a defined
   # "provenance ontology". An experimental example of a provenance ontology

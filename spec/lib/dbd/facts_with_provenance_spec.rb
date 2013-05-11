@@ -3,28 +3,28 @@ require 'spec_helper'
 module Dbd
   describe FactsWithProvenance do
 
-    let(:provenance_facts) do
-      FactsBySubject.new.tap do |fbs|
-        fbs << Factories::ProvenanceFact.context
-        fbs << Factories::ProvenanceFact.created_by
+    let(:provenance_resource) do
+      Resource.new.tap do |resource|
+        resource << Factories::ProvenanceFact.context
+        resource << Factories::ProvenanceFact.created_by
       end
     end
 
-    let(:facts_1) do
-      FactsBySubject.new.tap do |fbs|
-        fbs << Factories::Fact.fact_1
+    let(:resource_1) do
+      Resource.new.tap do |resource|
+        resource << Factories::Fact.fact_1
       end
     end
 
-    let(:facts_2_3_with_subject) do
-      FactsBySubject.new.tap do |fbs|
-        fbs << Factories::Fact.fact_2_with_subject
-        fbs << Factories::Fact.fact_3_with_subject
+    let(:resource_2_3_with_subject) do
+      Resource.new.tap do |resource|
+        resource << Factories::Fact.fact_2_with_subject
+        resource << Factories::Fact.fact_3_with_subject
       end
     end
 
     let(:facts_with_provenance) do
-      described_class.new(provenance_facts)
+      described_class.new(provenance_resource)
     end
 
     describe ".new(provenance_facts)" do
@@ -35,24 +35,24 @@ module Dbd
       end
     end
 
-    describe "#facts_by_subject_collection" do
+    describe "#resource_collection" do
       it "does not raise exception" do
-        facts_with_provenance.facts_by_subject_collection
+        facts_with_provenance.resource_collection
       end
 
-      it "a facts_by_subject set can be added" do
-        facts_with_provenance.facts_by_subject_collection << facts_1
+      it "a resource set can be added" do
+        facts_with_provenance.resource_collection << resource_1
       end
 
-      it "two facts_by_subject set can be added" do
-        facts_with_provenance.facts_by_subject_collection << facts_1
-        facts_with_provenance.facts_by_subject_collection << facts_2_3_with_subject
+      it "two resources can be added" do
+        facts_with_provenance.resource_collection << resource_1
+        facts_with_provenance.resource_collection << resource_2_3_with_subject
       end
     end
 
     it "Factories work" do
       full_factory = Factories::FactsWithProvenance.full_factory
-      full_factory.facts_by_subject_collection.count.should == 2
+      full_factory.resource_collection.count.should == 2
     end
   end
 end

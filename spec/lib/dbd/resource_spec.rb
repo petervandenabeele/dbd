@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 module Dbd
-  describe FactsBySubject do
+  describe Resource do
     describe ".new" do
       describe "without arguments" do
-        it "creates a new object" do
-          subject.should be_a FactsBySubject
+        it "does_not raise_error" do
+          subject
         end
 
         it "has a nil subject" do
@@ -16,10 +16,10 @@ module Dbd
       describe "with a subject argument" do
 
         let(:fact_subject) { Fact.new_subject }
-        let(:facts_by_subject) { described_class.new(fact_subject) }
+        let(:resource_with_subject) { described_class.new(fact_subject) }
 
         it "has the fact_subject" do
-          facts_by_subject.subject.should == fact_subject
+          resource_with_subject.subject.should == fact_subject
         end
       end
     end
@@ -28,6 +28,7 @@ module Dbd
 
       let(:fact_1) { Factories::Fact.fact_1 }
       let(:fact_2_with_subject) { Factories::Fact.fact_2_with_subject }
+      let(:fact_3_with_subject) { Factories::Fact.fact_3_with_subject }
 
       it "enumerable functions work" do
         subject.to_a.should == []
@@ -39,9 +40,9 @@ module Dbd
       end
 
       it "<< can add two facts" do
-        subject << fact_1
         subject << fact_2_with_subject
-        subject.to_a.should == [fact_1, fact_2_with_subject]
+        subject << fact_3_with_subject
+        subject.to_a.should == [fact_2_with_subject, fact_3_with_subject]
       end
     end
   end

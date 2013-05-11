@@ -2,12 +2,12 @@ module Factories
   module FactsWithProvenance
 
     def self.full_factory
-      ::Dbd::FactsWithProvenance.new(FactsBySubject.provenance_facts).
+      ::Dbd::FactsWithProvenance.new(Resource.provenance_resource).
         tap do |facts_with_provenance|
-          facts_with_provenance.facts_by_subject_collection <<
-            Fact.fact_1
-          facts_with_provenance.facts_by_subject_collection <<
-            Fact.fact_2_with_subject
+          facts_with_provenance.resource_collection <<
+            Resource.resource_1
+          facts_with_provenance.resource_collection <<
+            Resource.resource_2_3
       end
     end
 

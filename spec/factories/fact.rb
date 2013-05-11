@@ -29,6 +29,7 @@ module Factories
         "King")
     end
 
+    #TODO move this to resource factory
     module Collection
       def self.fact_2_3(provenance_fact_subject)
         ::Dbd::Fact::Collection.new.tap do |fact_collection|
