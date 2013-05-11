@@ -23,13 +23,9 @@ module Dbd
         @internal_collection.last
       end
 
-      # no instance method so it is not in the API of mixin classes
+      # no instance method to avoid it in the API of mixin classes
       def self.add_and_return_index(element, collection)
         collection << element
-        # FIXME this is "probably" thread safe, not sure about performance ...
-        # FIXME I did not find a proper atomic, thread safe
-        # FIXME "insert and return index of inserted element" in the
-        # FIXME standard Array documentation.
         collection.rindex(element)
       end
 

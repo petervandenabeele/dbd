@@ -3,10 +3,10 @@ require 'spec_helper'
 module Dbd
   describe Graph do
 
-    let(:subject_1) {Fact::Subject.new}
-    let(:provenance_fact_1) { Factories::ProvenanceFact.context(subject_1) }
-    let(:provenance_fact_collection_1) { Factories::Fact::Collection.provenance_facts(subject_1) }
-    let(:fact_collection_1_2) { Factories::Fact::Collection.fact_1_2(provenance_fact_1.subject) }
+    let(:subject_1) { Fact::Subject.new }
+    let(:provenance_facts) { Factories::Fact::Collection.provenance_facts(subject_1) }
+    let(:provenance_fact_1) { provenance_facts.first }
+    let(:fact_2_3) { Factories::Fact::Collection.fact_2_3(provenance_fact_1.subject) }
     # temporary hack until Graph#store_fact_set is implemented
     let(:fact_collection) { subject.instance_variable_get(:@fact_collection) }
     let(:subject_regexp) { Fact::Subject.regexp }
@@ -20,7 +20,7 @@ module Dbd
 
     describe "#to_CSV with only provenance_facts" do
       before do
-        provenance_fact_collection_1.each_with_index do |provenance_fact, index|
+        provenance_facts.each_with_index do |provenance_fact, index|
           provenance_fact.stub(:time_stamp).and_return(Time.new(2013,5,9,12,0,index).utc)
           provenance_fact.stub(:subject).and_return(ProvenanceFact.new_subject)
           fact_collection << provenance_fact
@@ -89,7 +89,7 @@ module Dbd
 
     describe "#to_CSV with only facts" do
       before do
-        fact_collection_1_2.each_with_index do |fact, index|
+        fact_2_3.each_with_index do |fact, index|
           fact.stub(:time_stamp).and_return(Time.new(2013,5,9,12,0,index).utc)
           fact.stub(:subject).and_return(Fact.new_subject)
           fact_collection << fact
@@ -145,7 +145,7 @@ module Dbd
         end
 
         it "has object as 6th value" do
-          first_line.split(',')[5].should == '"Gandhi"'
+          first_line.split(',')[5].should == '"Mandela"'
         end
       end
     end
@@ -153,10 +153,10 @@ module Dbd
     describe "#to_CSV with provenance_facts and facts" do
 
       before do
-        provenance_fact_collection_1.each do |provenance_fact|
+        provenance_facts.each do |provenance_fact|
           fact_collection << provenance_fact
         end
-        fact_collection_1_2.each do |fact|
+        fact_2_3.each do |fact|
           fact_collection << fact
          end
       end

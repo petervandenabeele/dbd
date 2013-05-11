@@ -5,15 +5,19 @@ module Dbd
     describe Collection do
 
       let(:provenance_fact_subject_1) { ProvenanceFact.new_subject }
+      let(:provenance_fact_subject_2) { ProvenanceFact.new_subject }
 
       let(:provenance_fact_context) { Factories::ProvenanceFact.context(provenance_fact_subject_1) }
       let(:provenance_fact_created_by) { Factories::ProvenanceFact.created_by(provenance_fact_subject_1) }
-      let(:provenance_fact_original_source) { Factories::ProvenanceFact.original_source }
+      let(:provenance_fact_original_source) { Factories::ProvenanceFact.original_source(provenance_fact_subject_2) }
 
       let(:fact_1) { Factories::Fact.fact_1(provenance_fact_subject_1) }
       let(:fact_2_with_subject) { Factories::Fact.fact_2_with_subject(provenance_fact_subject_1) }
       let(:fact_3_with_subject) { Factories::Fact.fact_3_with_subject(provenance_fact_subject_1) }
-      let(:fact_1_2) { Factories::Fact::Collection.fact_1_2(provenance_fact_subject_1) }
+
+      let(:fact_2_3) { Factories::Fact::Collection.fact_2_3(provenance_fact_subject_1) }
+      let(:provenance_facts) { Factories::Fact::Collection.provenance_facts(provenance_fact_subject_1) }
+
 
       describe ".new : " do
         it "the collection is not an array" do
@@ -167,61 +171,52 @@ module Dbd
         end
       end
 
-      describe "Factories::Fact::Collection" do
-        it ".fact_1_2 factory does not fail" do
-          fact_1_2 # should not raise_error
-        end
-
-        it "uses provenance_fact_subject if supplied" do
-          fact_1_2.each do |fact|
-            fact.provenance_fact_subject.should == provenance_fact_subject_1
-          end
-        end
-      end
-
       describe "by_subject : " do
         it "finds entries for a given subject" do
           subject << provenance_fact_context
           subject << provenance_fact_created_by
-          # FIXME store a FactsWithProvenance object in the collection
-          provenance_fact_original_source = self.provenance_fact_original_source
-          provenance_fact_original_source.stub(:subject).and_return(ProvenanceFact.new_subject)
           subject << provenance_fact_original_source
           provenance_fact_context.subject.should == provenance_fact_subject_1 # assert test set-up
           provenance_fact_created_by.subject.should == provenance_fact_subject_1 # assert test set-up
-          provenance_fact_subject_2 = provenance_fact_original_source.subject
+          provenance_fact_original_source.subject.should == provenance_fact_subject_2 # assert test set-up
           subject.by_subject(provenance_fact_subject_1).first.should == provenance_fact_context
           subject.by_subject(provenance_fact_subject_1).last.should == provenance_fact_created_by
           subject.by_subject(provenance_fact_subject_2).single.should == provenance_fact_original_source
         end
       end
 
-      describe "Factories::Fact::Collection.provenance_facts" do
-
-        let (:collection) { Factories::Fact::Collection.provenance_facts(provenance_fact_subject_1) }
-
-        it "has a context" do
-          collection.select do |provenance_fact|
-            provenance_fact.predicate == "https://data.vandenabeele.com/ontologies/provenance#context"
-          end.size.should == 1
+      describe "Factories::Fact::Collection" do
+        describe ".fact_2_3" do
+          it "has the given provenance_fact_subject with explicit subject arg" do
+            fact_2_3.each do |fact|
+              fact.provenance_fact_subject.should == provenance_fact_subject_1
+            end
+          end
         end
 
-        it "has a created_by" do
-          collection.select do |provenance_fact|
-            provenance_fact.predicate == "https://data.vandenabeele.com/ontologies/provenance#created_by"
-          end.size.should == 1
-        end
+        describe ".provenance_facts" do
+          it "has a context" do
+            provenance_facts.select do |provenance_fact|
+              provenance_fact.predicate == "https://data.vandenabeele.com/ontologies/provenance#context"
+            end.size.should == 1
+          end
 
-        it "has an original_source" do
-          collection.select do |provenance_fact|
-            provenance_fact.predicate == "https://data.vandenabeele.com/ontologies/provenance#original_source"
-          end.size.should == 1
-        end
+          it "has a created_by" do
+            provenance_facts.select do |provenance_fact|
+              provenance_fact.predicate == "https://data.vandenabeele.com/ontologies/provenance#created_by"
+            end.size.should == 1
+          end
 
-        describe "with subject argument" do
-          it "provenance_facts have the given subjects with explicit subject arg" do
-            collection.first.subject.should == provenance_fact_subject_1
-            collection.to_a[1].subject.should == provenance_fact_subject_1
+          it "has an original_source" do
+            provenance_facts.select do |provenance_fact|
+              provenance_fact.predicate == "https://data.vandenabeele.com/ontologies/provenance#original_source"
+            end.size.should == 1
+          end
+
+          it "has the given subjects with explicit subject arg" do
+            provenance_facts.each do |provenance_fact|
+              provenance_fact.subject.should == provenance_fact_subject_1
+            end
           end
         end
       end
