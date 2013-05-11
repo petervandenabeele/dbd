@@ -9,36 +9,50 @@ module Dbd
   #
   # The database is built as an ordered sequence of facts, the "fact stream".
   #
-  # This is somewhat similar to the RDF (Resource Description Framework) concept,
-  # but with extended functionality.
+  # This is somewhat similar to a "triple" in the RDF (Resource Description
+  # Framework) concept, but with different and extended functionality.
   #
   # Each basic fact has:
-  # * a unique and invariant *id* (a uuid)  
-  #   To allow referencing back to it (e.g. invalidate it later in the fact stream).
+  # * a unique and invariant *id* (a uuid)
   #
-  # * a *time_stamp*  (time with nanosecond granularity)  
-  #   To allow verifying that the order in the fact stream is correct.  
+  #   To allow referencing back to it (e.g. to invalidate it later in the fact stream).
+  #
+  # * a *time_stamp*  (time with nanosecond granularity)
+  #
+  #   To allow verifying that the order in the fact stream is correct.
+  #
   #   A time_stamp does not need to represent the exact time of the
   #   creation of the fact, but it has to increase in strictly monotic
   #   order in the fact stream.
   #
-  # * a *provenance_fact_subject* (a uuid)  
-  #   The subject of the provenance_fact about this fact.
+  # * a *provenance_fact_subject* (a uuid)
   #
-  # * a *subject* (a uuid)  
-  #   "About which Resource is this fact?".  
+  #   The subject of the provenance resource (group of provenance facts with
+  #   the same subject) about this fact. Each Fact (except ProvenanceFacts),
+  #   points *back* to a provenance resource (the provenance resource must
+  #   have been fully defined, earlier in the fact stream).
+  #
+  # * a *subject* (a uuid)
+  #
+  #   "About which Resource is this fact?".
+  #
   #   Similar to the subject of an  RDF triple, except that this subject is not
-  #   a URI, but an abstract uuid (that is world-wide unique and invariant).  
+  #   a URI, but an abstract uuid (that is world-wide unique and invariant).
+  #
   #   Links to "real-world" URI's and URL's can be added later as separate facts
   #   (this also allows linking multiple "real-world" URI's to a single Resource).
   #
-  # * a *predicate* (a string)  
-  #   "Which property of the resource are we describing?".  
+  # * a *predicate* (a string)
+  #
+  #   "Which property of the resource are we describing?".
+  #
   #   Currently this is a string, but I suggest modeling this similar to predicate
   #   in RDF. Probably more detailed modeling using RDF predicate will follow.
   #
-  # * an *object* (a string)  
-  #   "What is the value of the property of the resource we are describing?".  
+  # * an *object* (a string)
+  #
+  #   "What is the value of the property of the resource we are describing?".
+  #
   #   Currently this is a string, but I suggest modeling this similar to object
   #   in RDF. Probably more detailed modeling using RDF object will follow.
   class Fact
@@ -108,6 +122,9 @@ module Dbd
 
     ##
     # Checks if a fact is valid for storing in the graph.
+    #
+    # provenance_fact_subject must be present (this is how the
+    # difference is encoded between Facts and ProvenanceFacts).
     # @return [#true?] not nil if valid
     def valid?
       # id not validated, is set automatically

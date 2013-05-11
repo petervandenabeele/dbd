@@ -26,7 +26,8 @@ module Dbd
     ##
     # Checks if a ProvenanceFact is valid for storing in the graph.
     #
-    # In a ProvenanceFact, provenance_fact_subject needs to be nil.
+    # In a ProvenanceFact, provenance_fact_subject needs to be nil (this
+    # is how the difference is encoded between Facts and ProvenanceFacts).
     # @return [#true?] not nil if valid
     def valid?
       # not calling super as conditions are conflicting
