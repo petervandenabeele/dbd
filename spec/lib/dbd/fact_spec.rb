@@ -105,6 +105,32 @@ module Dbd
       end
     end
 
+    describe "#dup_with_subject" do
+
+      let (:new_fact) do
+        fact_1.dup_with_subject(subject)
+      end
+
+      it "is a different instance" do
+        new_fact.should_not be_equal(fact_1)
+      end
+
+      it "is from the same class" do
+        new_fact.should be_a(fact_1.class)
+      end
+
+      it "has copied over the other attributes except :id, :time_stamp" do
+        (fact_1.class.attributes - [:id, :time_stamp, :subject]).each do |attr|
+           new_fact.send(attr).should == fact_1.send(attr)
+         end
+      end
+
+      it "has set the subject to the Resource subject" do
+        fact_1.subject.should_not == new_fact.subject # double check
+        new_fact.subject.should == subject
+      end
+    end
+
     describe "update_provenance_fact_subjects" do
       it "sets the value for provenance_fact_subject to true for a fact" do
         h = {}

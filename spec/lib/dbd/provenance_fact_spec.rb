@@ -56,6 +56,21 @@ module Dbd
         end
       end
 
+      describe "#dup_with_subject" do
+
+        let (:new_fact) do
+          provenance_fact_1.dup_with_subject(subject)
+        end
+
+        it "is a different instance" do
+          new_fact.should_not be_equal(provenance_fact_1)
+        end
+
+        it "is from the same class" do
+          new_fact.should be_a(provenance_fact_1.class)
+        end
+      end
+
       describe "update_provenance_fact_subjects" do
         it "does nothing for a provenance_fact" do
           h = {}

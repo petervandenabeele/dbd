@@ -134,5 +134,18 @@ module Dbd
       subject
     end
 
+    ##
+    # Builds duplicate with the subject set.
+    #
+    # @param [Subject] subject
+    # @return [Fact] the duplicate fact
+    def dup_with_subject(subject_arg)
+      self.class.new(
+       provenance_fact_subject,
+       subject_arg, # from arg
+       predicate,
+       object)
+    end
+
   end
 end
