@@ -34,12 +34,12 @@ module Dbd
         describe "#<< : " do
           it "adding a fact works" do
             subject << fact_2_with_subject
-            subject.count.should == 1
+            subject.size.should == 1
           end
 
           it "adding a provenance_fact works" do
             subject << provenance_fact_context
-            subject.count.should == 1
+            subject.size.should == 1
           end
 
           it "returns self to allow chaining" do

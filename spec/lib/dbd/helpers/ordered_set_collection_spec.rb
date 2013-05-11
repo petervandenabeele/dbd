@@ -68,6 +68,14 @@ module Dbd
             subject.last.should == element_2
           end
         end
+
+        describe "size" do
+          it "returns the last element" do
+            subject << element_1
+            subject << element_2
+            subject.size.should == 2
+          end
+        end
       end
 
       describe "on empty collection" do

@@ -47,9 +47,19 @@ module Dbd
       ##
       # This is required as an efficient way to find the last
       # element without stepping through the entire collection.
+      # This implementation is probably not thread safe.
       # @return [Object] the last element
       def last
         @internal_collection.last
+      end
+
+      ##
+      # This is required as an efficient way to find the size
+      # without stepping through the entire collection.
+      # This implementation is probably not thread safe.
+      # @return [Object] the last element
+      def size
+        @internal_collection.size
       end
 
       ##
