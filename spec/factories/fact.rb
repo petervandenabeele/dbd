@@ -1,7 +1,7 @@
 module Factories
   module Fact
 
-    def self.subject
+    def self.new_subject
       ::Dbd::Fact.new_subject
     end
 
@@ -16,7 +16,7 @@ module Factories
     def self.fact_2_with_subject(provenance_fact_subject = nil)
       ::Dbd::Fact.new(
         provenance_fact_subject,
-        subject,
+        new_subject,
         "http://example.org/test/name",
         "Mandela")
     end
@@ -24,9 +24,17 @@ module Factories
     def self.fact_3_with_subject(provenance_fact_subject = nil)
       ::Dbd::Fact.new(
         provenance_fact_subject,
-        subject,
+        new_subject,
         "http://example.org/test/name",
         "King")
+    end
+
+    def self.data_fact(provenance_fact_subject = nil, subject = nil)
+      ::Dbd::Fact.new(
+        provenance_fact_subject,
+        subject,
+        "http://example.org/test/name",
+        "Aung San Suu Kyi")
     end
 
     #TODO move this to resource factory

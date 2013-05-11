@@ -132,6 +132,20 @@ module Dbd
       it "fact_3_with_subject should not raise_error" do
         Factories::Fact.fact_3_with_subject
       end
+
+      describe "data_fact" do
+        it "without arguments should not raise error" do
+          Factories::Fact.data_fact
+        end
+
+        it "with provenance_fact_subject should not raise error" do
+          Factories::Fact.data_fact(provenance_fact_subject)
+        end
+
+        it "with provenance_fact_subject and subject should not raise error" do
+          Factories::Fact.data_fact(provenance_fact_subject, subject)
+        end
+      end
     end
   end
 end
