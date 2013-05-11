@@ -160,14 +160,14 @@ module Dbd
         end
       end
 
-      describe "validate that facts are complete? when loading in the Fact::Collection" do
+      describe "validate that facts are valid? when loading in the Fact::Collection" do
         it "succeeds with a fact from factory" do
            subject << fact_2_with_subject # should_not raise_error
         end
 
-        it "raises FactIncompleteError when fact.complete? is false" do
-           provenance_fact_context.stub(:complete?).and_return(false)
-           lambda { subject << provenance_fact_context } . should raise_error Collection::FactIncompleteError
+        it "raises FactInvalidError when fact.valid? is false" do
+           provenance_fact_context.stub(:valid?).and_return(false)
+           lambda { subject << provenance_fact_context } . should raise_error Collection::FactInvalidError
         end
       end
 

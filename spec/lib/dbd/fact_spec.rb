@@ -80,19 +80,19 @@ module Dbd
       end
     end
 
-    describe "complete?" do
-      it "the factory is complete?" do
-        fact_2_with_subject.should be_complete
+    describe "valid?" do
+      it "the factory isi valid?" do
+        fact_2_with_subject.should be_valid
       end
 
-      it "without provenance_fact_subject is not complete?" do
+      it "without provenance_fact_subject is not valid?" do
         fact_2_with_subject.stub(:provenance_fact_subject).and_return(nil)
-        fact_2_with_subject.should_not be_complete
+        fact_2_with_subject.should_not be_valid
       end
 
-      it "without subject is not complete?" do
+      it "without subject is not valid?" do
         fact_2_with_subject.stub(:subject).and_return(nil)
-        fact_2_with_subject.should_not be_complete
+        fact_2_with_subject.should_not be_valid
       end
     end
 

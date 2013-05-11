@@ -6,10 +6,10 @@ module Dbd
       # only refering to it in a Fact#provenance_fact_subject does
     end
 
-    def complete?
+    def valid?
       # not calling super as conditions are conflicting
       # other attributes need not be checked, see super_class
-      !provenance_fact_subject &&
+      provenance_fact_subject.nil? &&
       subject
     end
 

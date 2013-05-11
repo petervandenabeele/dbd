@@ -9,11 +9,11 @@ module Dbd
       end
 
       def initialize
-        @value = SecureRandom.uuid
+        @uuid = SecureRandom.uuid
       end
 
       def to_s
-        @value.to_s
+        @uuid.to_s
       end
 
     end
