@@ -4,18 +4,29 @@ module Dbd
   describe Resource do
 
     let(:resource_subject) { Fact.new_subject }
-    let(:resource) { described_class.new(resource_subject) }
+    let(:provenance_subject) { ProvenanceFact.new_subject }
+    let(:resource) { described_class.new(resource_subject, provenance_subject) }
 
     describe ".new" do
-      describe "with a subject argument" do
+      describe "with a subject and provenance_subject argument" do
         it "has stored the resource_subject" do
           resource.subject.should == resource_subject
+        end
+
+        it "has stored the provenance_subject" do
+          resource.provenance_subject.should == provenance_subject
         end
       end
 
       describe "with a nil subject argument" do
         it "raises InvalidSubjectError" do
-          lambda { described_class.new(nil) } . should raise_error described_class::InvalidSubjectError
+          lambda { described_class.new(nil, provenance_subject) } . should raise_error described_class::InvalidSubjectError
+        end
+      end
+
+      describe "with a nil provenance_subject argument" do
+        it "raises InvalidProvenanceError" do
+          lambda { described_class.new(resource_subject, nil) } . should raise_error described_class::InvalidProvenanceError
         end
       end
     end
@@ -93,7 +104,7 @@ module Dbd
 
     describe "Factories::Resource" do
       it ".provenance_resource works" do
-        Factories::Resource.provenance_resource
+        Factories::ProvenanceResource.provenance_resource
       end
 
       it ".facts_resource works" do

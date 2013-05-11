@@ -17,6 +17,7 @@ module Dbd
   class Resource
 
     class InvalidSubjectError < StandardError ; end
+    class InvalidProvenanceError < StandardError ; end
 
     include Helpers::OrderedSetCollection
 
@@ -27,10 +28,18 @@ module Dbd
     #
     # The subject argument is required (because later
     # additions of elements take over this subject).
-    def initialize(subject)
-      raise InvalidSubjectError if subject.nil?
+    #
+    # The provenance_subject argument is required
+    # because additions of elements take over this
+    # subject)
+    # @param [Subject] subject the subject for the resource
+    # @param [Subject] provenance_subject the subject of the provenance resource for this resource
+    def initialize(subject, provenance_subject)
       super()
       @subject = subject
+      @provenance_subject = provenance_subject
+      raise InvalidSubjectError if subject.nil?
+      validate_provenance_subject
     end
 
     ##
@@ -43,7 +52,15 @@ module Dbd
       super(check_or_set_subject(element))
     end
 
-  private
+    ##
+    # Getter for provenance_subject.
+    #
+    # Will be overridden in the ProvenanceResource subclass.
+    def provenance_subject
+      @provenance_subject
+    end
+
+  protected
 
     def check_or_set_subject(element)
       if element.subject
@@ -56,6 +73,10 @@ module Dbd
       else
         element.dup_with_subject(@subject)
       end
+    end
+
+    def validate_provenance_subject
+      raise InvalidProvenanceError if @provenance_subject.nil?
     end
 
   end
