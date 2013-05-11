@@ -11,7 +11,6 @@ module Factories
 
     def self.context(subject = nil)
       factory_for.new(
-        nil,
         subject,
         "https://data.vandenabeele.com/ontologies/provenance#context",
         "public")
@@ -20,7 +19,6 @@ module Factories
 
     def self.created_by(subject = nil)
       factory_for.new(
-        nil,
         subject,
         "https://data.vandenabeele.com/ontologies/provenance#created_by",
         "peter_v")
@@ -28,7 +26,6 @@ module Factories
 
     def self.original_source(subject = nil)
       factory_for.new(
-        nil,
         subject,
         "https://data.vandenabeele.com/ontologies/provenance#original_source",
         "this has a comma , a newline \n and a double quote \"")

@@ -54,11 +54,6 @@ module Dbd
           resource.size.should == 2
         end
 
-        it "can add a provenance_fact (no subject set)" do
-          resource << provenance_fact_context
-          resource.size.should == 1
-        end
-
         describe "checks and sets subject :" do
           describe "adding a fact with subject :" do
             describe "when the subject of the fact is equal to the resource_subject" do

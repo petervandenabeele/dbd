@@ -13,6 +13,16 @@ module Dbd
   class ProvenanceFact < Fact
 
     ##
+    # Builds a new ProvenanceFact.
+    #
+    # @param [Subject] subject The subject for this ProvenanceFact
+    # @param [#to_s] predicate The predicate for this ProvenanceFact (required)
+    # @param [#to_s] object The object for this ProvenanceFact (required)
+    def initialize(subject, predicate, object)
+      super(nil, subject, predicate, object)
+    end
+
+    ##
     # Executes the required update in provenance_fact_subjects.
     #
     # For a ProvenanceFact, there is no provenance_fact_subject, so
@@ -34,6 +44,18 @@ module Dbd
       # other attributes need not be checked, see super_class
       provenance_fact_subject.nil? &&
       subject
+    end
+
+    ##
+    # Builds duplicate with the subject set.
+    #
+    # @param [Subject] subject_arg
+    # @return [ProvenanceFact] the duplicate fact
+    def dup_with_subject(subject_arg)
+      self.class.new(
+       subject_arg, # from arg
+       predicate,
+       object)
     end
 
   end
