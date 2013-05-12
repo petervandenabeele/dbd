@@ -9,11 +9,18 @@ module Dbd
   # bicycle, ...). More generally this can also be used to describe
   # classes and other concepts in the software system.
   #
-  # The subject is required from the creation of a new resource.
+  # A new (random) subject is generated for a resource. In Dbd,
+  # a subject is a random uuid (like a oid), not a meaningful URI
+  # as it is in RDF.
   #
-  # During build-up of a Fact, the subject can be nil. This will then
-  # be set in a local duplicate when the Fact is added to a resource
-  # (a subject in Dbd is a random uuid (like a oid), not a meaningful URI).
+  # A provenance_subject is a required field in the options hash.
+  # Practically, first a ProvenanceResource will be created and the
+  # subject of that will be used as provenance_subject for the
+  # Resources that are associated with it.
+  #
+  # During build-up of a Fact, the subject and the provenance_subject
+  # can be nil. These will then be set in a local duplicate when the
+  # Fact is added (with '<<') to a resource.
   class Resource
 
     class InvalidSubjectError < StandardError ; end
@@ -24,22 +31,29 @@ module Dbd
     attr_reader :subject
 
     ##
+    # @return [Fact::Subject] a new (random) Resource subject
+    def self.new_subject
+      Fact.new_subject
+    end
+
+    ##
     # Build a new resource.
     #
-    # The subject argument is required (because later
-    # additions of elements take over this subject).
+    # By default, a new (random) subject is generated for a resource.
+    # Optionally, an explicit subject can be given in the options parameter
+    # (this is best created with the new_subject class method for forward
+    # compatibility).
     #
-    # The provenance_subject argument is required
-    # because additions of elements take over this
-    # subject)
-    # @param [Subject] subject the subject for the resource
-    # @param [Subject] provenance_subject the subject of the provenance resource for this resource
-    def initialize(subject, provenance_subject)
-      super()
-      @subject = subject
-      @provenance_subject = provenance_subject
-      raise InvalidSubjectError if subject.nil?
+    # The provenance_subject argument is required. This will typically be
+    # taken from an earlier created ProvenanceResource.
+    # @param [Hash{Symbol => Object}] options
+    # @option options [Fact::Subject] :provenance_subject (required) the subject of the provenance resource for this resource
+    # @option options [Fact::Subject] :subject (new_subject) Optional: the subject for the resource
+    def initialize(options)
+      @subject = options[:subject] || self.class.new_subject
+      @provenance_subject = options[:provenance_subject]
       validate_provenance_subject
+      super()
     end
 
     ##
@@ -48,6 +62,9 @@ module Dbd
     # * if it has no subject, the subject is set in a duplicate element
     # * if is has the same subject as the resource, added unchanged.
     # * if it has a different subject, a InvalidSubjectError is raised.
+    # * if it has no provenance_subject, the provenance_subject is set in a duplicate element
+    # * if is has the same provenance_subject as the resource, added unchanged.
+    # * if it has a different provenance_subject, a InvalidProvenanceError is raised.
     def <<(element)
       super(check_or_set_subject_and_provenance(element))
     end
@@ -80,6 +97,7 @@ module Dbd
       end
     end
 
+    # this will be overriden in the ProvenanceResource sub_class
     def check_or_set_provenance(element)
       if element.provenance_subject
         if element.provenance_subject == @provenance_subject

@@ -2,8 +2,6 @@ module Dbd
   ##
   # A ProvenanceResource is derived from a Resource, specifically
   # for a Provenance (does not have and does need a provenance_subject)
-  #
-  # The subject is required for the creation of a new resource.
   class ProvenanceResource < Resource
 
     class InvalidProvenanceError < StandardError ; end
@@ -11,12 +9,23 @@ module Dbd
     ##
     # Build a new ProvenanceResource.
     #
-    # The subject argument is required (because later
-    # additions of elements take over this subject).
+    # The subject can be either given as an argument or a new (random)
+    # subject is automatically set (see Resource for details).
     #
-    # @param [Subject] subject the subject for the ProvenanceResource
-    def initialize(subject)
-      super(subject, nil)
+    # A provenance_subject may not be given here.
+    # @option options [Fact::Subject] :subject (new_subject) Optional: the subject for the resource
+    def initialize(options = {})
+      super
+    end
+
+    ##
+    # Add an element.
+    #
+    # * if it has no subject, the subject is set in a duplicate element
+    # * if is has the same subject as the resource, added unchanged.
+    # * if it has a different subject, a InvalidSubjectError is raised.
+    def <<(element)
+      super
     end
 
   private
@@ -28,9 +37,10 @@ module Dbd
     end
 
     ##
-    # Do nothing. Do not force provenance_subject validation here.
+    # Validate that provenance_subject is not set here.
     # @override
     def validate_provenance_subject
+      raise InvalidProvenanceError if @provenance_subject
     end
 
     ##

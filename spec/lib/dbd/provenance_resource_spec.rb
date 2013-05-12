@@ -3,19 +3,26 @@ require 'spec_helper'
 module Dbd
   describe ProvenanceResource do
 
-    let(:provenance_resource_subject) { ProvenanceFact.new_subject }
-    let(:provenance_resource) { described_class.new(provenance_resource_subject) }
+    let(:provenance_resource) { described_class.new }
+    let(:provenance_resource_subject) { provenance_resource.subject }
 
     describe ".new" do
-      describe "with a subject argument" do
-        it "has stored the resource_subject" do
-          provenance_resource.subject.should == provenance_resource_subject
+      describe "without a subject argument" do
+        it "has created a new subject" do
+          provenance_resource.subject.should be_a(described_class.new_subject.class)
         end
       end
 
-      describe "with a nil subject argument" do
-        it "raises InvalidSubjectError" do
-          lambda { described_class.new(nil) } . should raise_error described_class::InvalidSubjectError
+      describe "with a subject argument" do
+        it "has stored the resource_subject" do
+          described_class.new(subject: provenance_resource_subject).subject.should == provenance_resource_subject
+        end
+      end
+
+      describe "with a provenance_subject argument" do
+        it "raises an InvalidProvenanceError" do
+          lambda { described_class.new(provenance_subject: provenance_resource_subject) } .
+            should raise_error described_class::InvalidProvenanceError
         end
       end
     end

@@ -3,17 +3,24 @@ require 'spec_helper'
 module Dbd
   describe Resource do
 
-    let(:resource_subject) { Fact.new_subject }
-    let(:provenance_subject) { ProvenanceFact.new_subject }
+    let(:provenance_subject) { Factories::ProvenanceResource.provenance_resource.subject }
 
     let(:resource) do
-      described_class.new(resource_subject, provenance_subject)
+      described_class.new(provenance_subject: provenance_subject)
+    end
+
+    let(:resource_subject) { resource.subject }
+
+    describe ".new_subject" do
+      it "returns a Fact#new_subject" do
+        described_class.new_subject.should be_a(Fact.new_subject.class)
+      end
     end
 
     describe ".new" do
-      describe "with a subject and provenance_subject argument" do
-        it "has stored the resource_subject" do
-          resource.subject.should == resource_subject
+      describe "with a provenance_subject argument" do
+        it "has created a subject" do
+          resource.subject.should be_a(described_class.new_subject.class)
         end
 
         it "has stored the provenance_subject" do
@@ -21,15 +28,19 @@ module Dbd
         end
       end
 
-      describe "with a nil subject argument" do
-        it "raises InvalidSubjectError" do
-          lambda { described_class.new(nil, provenance_subject) } . should raise_error described_class::InvalidSubjectError
+      describe "with an explicit subject argument" do
+        it "has stored the given subject" do
+          explicit_subject = described_class.new_subject
+          described_class.new(
+            subject: explicit_subject,
+            provenance_subject: provenance_subject).subject.should == explicit_subject
         end
       end
 
       describe "with a nil provenance_subject argument" do
         it "raises InvalidProvenanceError" do
-          lambda { described_class.new(resource_subject, nil) } . should raise_error described_class::InvalidProvenanceError
+          lambda { described_class.new(provenance_subject: nil) } .
+            should raise_error described_class::InvalidProvenanceError
         end
       end
     end
