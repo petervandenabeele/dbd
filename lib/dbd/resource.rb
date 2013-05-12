@@ -54,16 +54,17 @@ module Dbd
     end
 
     ##
-    # Add an element.
+    # Add a fact.
     #
-    # * if it has no subject, the subject is set in a duplicate element
+    # * if it has no subject, the subject is set in a duplicate fact
     # * if is has the same subject as the resource, added unchanged.
     # * if it has a different subject, a SubjectError is raised.
-    # * if it has no provenance_subject, the provenance_subject is set in a duplicate element
+    # * if it has no provenance_subject, the provenance_subject is set in a duplicate fact
     # * if is has the same provenance_subject as the resource, added unchanged.
     # * if it has a different provenance_subject, a ProvenanceError is raised.
-    def <<(element)
-      super(check_or_set_subject_and_provenance(element))
+    def <<(fact)
+      # TODO: check the type of the fact (Fact)
+      super(check_or_set_subject_and_provenance(fact))
     end
 
     ##

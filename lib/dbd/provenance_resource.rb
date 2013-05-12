@@ -17,12 +17,13 @@ module Dbd
     end
 
     ##
-    # Add an element.
+    # Add a ProvenanceFact.
     #
-    # * if it has no subject, the subject is set in a duplicate element
+    # * if it has no subject, the subject is set in a duplicate provenance_fact
     # * if is has the same subject as the resource, added unchanged.
     # * if it has a different subject, a SubjectError is raised.
-    def <<(element)
+    def <<(provenance_fact)
+      # TODO: check the type of the provenance_fact (ProvenanceFact)
       super
     end
 
