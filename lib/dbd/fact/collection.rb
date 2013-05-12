@@ -25,7 +25,7 @@ module Dbd
       ##
       # This is the central method of Fact::Collection
       #
-      # @param [Fact] element the element that is added to the collection
+      # @param [Fact] Fact the fact that is added to the collection
       #
       # @return [self] for chaining
       #
@@ -35,18 +35,18 @@ module Dbd
       #
       # Validates that subject was never used as provenance_subject [A].
       #
-      # Adds the element and return the index in the collection.
+      # Adds the fact and return the index in the collection.
       #
       # Store this index in the hash_by_subject.
       #
-      # Mark the element in the list of used provenance_subjects (for [A]).
-      def <<(element)
-        raise FactError unless element.valid?
-        raise OutOfOrderError if (self.newest_time_stamp && element.time_stamp <= self.newest_time_stamp)
-        raise OutOfOrderError if (@used_provenance_subjects[element.subject])
-        index = Helpers::OrderedSetCollection.add_and_return_index(element, @internal_collection)
-        @hash_by_subject[element.subject] << index
-        element.update_used_provenance_subjects(@used_provenance_subjects)
+      # Mark the fact in the list of used provenance_subjects (for [A]).
+      def <<(fact)
+        raise FactError unless fact.valid?
+        raise OutOfOrderError if (self.newest_time_stamp && fact.time_stamp <= self.newest_time_stamp)
+        raise OutOfOrderError if (@used_provenance_subjects[fact.subject])
+        index = Helpers::OrderedSetCollection.add_and_return_index(fact, @internal_collection)
+        @hash_by_subject[fact.subject] << index
+        fact.update_used_provenance_subjects(@used_provenance_subjects)
         self
       end
 
