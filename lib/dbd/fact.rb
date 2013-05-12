@@ -87,18 +87,19 @@ module Dbd
     ##
     # Builds a new Fact.
     #
-    # @param [Subject] provenance_subject The subject of the provenance fact
-    # @param [Subject] subject The subject for this Fact
-    # @param [#to_s] predicate The predicate for this Fact (required)
-    # @param [#to_s] object The object for this Fact (required)
-    def initialize(provenance_subject, subject, predicate, object)
+    # @param [Hash{Symbol => Object}] options
+    # @option options [#to_s] :predicate Required : the predicate for this Fact
+    # @option options [#to_s] :object Required :  the object for this Fact (required)
+    # @option options [Subject] :provenance_subject (nil) Optional: the subject of the provenance(resource|fact)
+    # @option options [Subject] :subject (nil) Optional: the subject for this Fact
+    def initialize(options)
+      @id = self.class.new_id
+      @provenance_subject = options[:provenance_subject]
+      @subject = options[:subject]
+      @predicate = options[:predicate]
+      @object = options[:object]
       raise ArgumentError, "predicate cannot be nil" if predicate.nil?
       raise ArgumentError, "object cannot be nil" if object.nil?
-      @id = self.class.new_id
-      @provenance_subject = provenance_subject
-      @subject = subject
-      @predicate = predicate
-      @object = object
     end
 
     ##
@@ -124,15 +125,26 @@ module Dbd
     ##
     # Checks if a fact is valid for storing in the graph.
     #
-    # provenance_subject must be present (this is how the
-    # difference is encoded between Facts and ProvenanceFacts).
     # @return [#true?] not nil if valid
     def valid?
       # id not validated, is set automatically
       # predicate not validated, is validated in initialize
       # object not validated, is validated in initialize
-      provenance_subject &&
+      provenance_subject_valid?(provenance_subject) &&
       subject
+    end
+
+    ##
+    # Validates the presence or absence of provenance_subject.
+    #
+    # Here, in (base) Fact, provenance_subject must be present
+    # In the derived ProvenanceFact it must not be present.
+    # This is how the difference is encoded between Fact and
+    # ProvenanceFact in the fact stream.
+    # @param [#nil?] provenance_subject
+    # Return [Boolean]
+    def provenance_subject_valid?(provenance_subject)
+      provenance_subject
     end
 
     ##
@@ -142,23 +154,23 @@ module Dbd
     # @return [Fact] the duplicate fact
     def dup_with_subject(subject_arg)
       self.class.new(
-       provenance_subject,
-       subject_arg, # from arg
-       predicate,
-       object)
+       provenance_subject: provenance_subject,
+       subject: subject_arg, # from arg
+       predicate: predicate,
+       object: object)
     end
 
     ##
-    # Builds duplicate with the provenance subject set.
+    # Builds duplicate with the provenance_subject set.
     #
     # @param [Subject] provenance_subject_arg
     # @return [Fact] the duplicate fact
     def dup_with_provenance_subject(provenance_subject_arg)
       self.class.new(
-       provenance_subject_arg, # from arg
-       subject,
-       predicate,
-       object)
+       provenance_subject: provenance_subject_arg, # from arg
+       subject: subject,
+       predicate: predicate,
+       object: object)
     end
 
   end

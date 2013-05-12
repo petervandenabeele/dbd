@@ -9,44 +9,43 @@ module Factories
       factory_for.new_subject
     end
 
-    def self.fact_1(provenance_fact_subject = nil)
+    def self.fact_1(provenance_subject = nil)
       factory_for.new(
-        provenance_fact_subject,
-        nil,
-        "http://example.org/test/name",
-        "Gandhi")
+        provenance_subject: provenance_subject,
+        predicate: "http://example.org/test/name",
+        object: "Gandhi")
     end
 
-    def self.fact_2_with_subject(provenance_fact_subject = nil)
+    def self.fact_2_with_subject(provenance_subject = nil)
       factory_for.new(
-        provenance_fact_subject,
-        new_subject,
-        "http://example.org/test/name",
-        "Mandela")
+        provenance_subject: provenance_subject,
+        subject: new_subject,
+        predicate: "http://example.org/test/name",
+        object: "Mandela")
     end
 
-    def self.fact_3_with_subject(provenance_fact_subject = nil)
+    def self.fact_3_with_subject(provenance_subject = nil)
       factory_for.new(
-        provenance_fact_subject,
-        new_subject,
-        "http://example.org/test/name",
-        "King")
+        provenance_subject: provenance_subject,
+        subject: new_subject,
+        predicate: "http://example.org/test/name",
+        object: "King")
     end
 
-    def self.data_fact(provenance_fact_subject = nil, subject = nil)
+    def self.data_fact(provenance_subject = nil, subject = nil)
       factory_for.new(
-        provenance_fact_subject,
-        subject,
-        "http://example.org/test/name",
-        "Aung San Suu Kyi")
+        provenance_subject: provenance_subject,
+        subject: subject,
+        predicate: "http://example.org/test/name",
+        object: "Aung San Suu Kyi")
     end
 
-    def self.data_fact_EU(provenance_fact_subject = nil, subject = nil)
+    def self.data_fact_EU(provenance_subject = nil, subject = nil)
       factory_for.new(
-        provenance_fact_subject,
-        subject,
-        "http://example.org/test/name",
-        "European Union")
+        provenance_subject: provenance_subject,
+        subject: subject,
+        predicate: "http://example.org/test/name",
+        object: "European Union")
     end
 
     module Collection
@@ -55,10 +54,10 @@ module Factories
         ::Dbd::Fact::Collection
       end
 
-      def self.fact_2_3(provenance_fact_subject)
+      def self.fact_2_3(provenance_subject)
         factory_for.new.tap do |fact_collection|
-          fact_collection << Fact.fact_2_with_subject(provenance_fact_subject)
-          fact_collection << Fact.fact_3_with_subject(provenance_fact_subject)
+          fact_collection << Fact.fact_2_with_subject(provenance_subject)
+          fact_collection << Fact.fact_3_with_subject(provenance_subject)
         end
       end
 

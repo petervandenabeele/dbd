@@ -3,14 +3,14 @@ module Dbd
   ##
   # ProvenanceFact
   #
-  # ProvenanceFact is derived from Fact and behaves very similar, except
-  # that it's provenance_subject is empty.
+  # ProvenanceFact is derived from Fact and behaves very similar.
   #
-  # The provenance_subject of a Fact is used to point it to a set of
-  # ProvenanceFacts (a ProvenanceResource). Because the provenance_subject
-  # pointer of a ProvenanceFact itself is empty, the usage of
-  # provenance_subject is thus not recursive on this level (this allows
-  # efficient sequential loading in an underlying databased).
+  # The ProvenanceFacts with same subject form a ProvenanceResource and
+  # this is used as the target for the provenance_subject of a Fact.
+  #
+  # The provenance_subject of a ProvenanceFact itself is empty, so the
+  # usage of provenance_subject is not recursive on this level (this
+  # allows efficient single pass loading in an underlying database).
   #
   # In the serialisation of the fact stream, the presence or absence of a
   # provenance_subject marks the difference between a (base) Fact and a
@@ -21,38 +21,37 @@ module Dbd
   # is built-up on https://data.vandenabeele.com/ontologies/provenance.
   class ProvenanceFact < Fact
 
+    class InvalidProvenanceError < StandardError ; end
+
     ##
     # Builds a new ProvenanceFact.
     #
-    # @param [Subject] subject The subject for this ProvenanceFact
-    # @param [#to_s] predicate The predicate for this ProvenanceFact (required)
-    # @param [#to_s] object The object for this ProvenanceFact (required)
-    def initialize(subject, predicate, object)
-      super(nil, subject, predicate, object)
+    # @param [Hash{Symbol => Object}] options
+    # @option options [Fact::Subject] :subject (new_subject) Optional: the subject for the ProvenanceFact
+    # @option options [String] :predicate Required: the subject for the ProvenanceFact
+    # @option options [String] :object Required: the object for the ProvenanceFact
+    def initialize(options)
+      validate_provenance_subject(options)
+      super
     end
 
     ##
     # Executes the required update in used_provenance_subjects.
     #
     # For a ProvenanceFact, there is no provenance_subject, so
-    # pointless to mark it in used_provenance_subjects hash. Also,
-    # it is only when a Fact uses a Provenance Resource that the
-    # definition of that provenance resource needs to be closed.
+    # pointless to mark it in used_provenance_subjects hash.
     def update_used_provenance_subjects(h)
       # Do nothing (override the behaviour from super).
     end
 
     ##
-    # Checks if a ProvenanceFact is valid for storing in the graph.
+    # Validates the presence or absence of provenance_subject.
     #
-    # In a ProvenanceFact, provenance_subject needs to be nil (this
-    # is how the difference is encoded between Facts and ProvenanceFacts).
-    # @return [#true?] not nil if valid
-    def valid?
-      # not calling super as conditions are conflicting
-      # other attributes need not be checked, see super_class
-      provenance_subject.nil? &&
-      subject
+    # Here, in the derived ProvenanceFact, it must not be present.
+    # @param [#nil?] provenance_subject
+    # Return [Boolean]
+    def provenance_subject_valid?(provenance_subject)
+      provenance_subject.nil?
     end
 
     ##
@@ -62,9 +61,17 @@ module Dbd
     # @return [ProvenanceFact] the duplicate fact
     def dup_with_subject(subject_arg)
       self.class.new(
-       subject_arg, # from arg
-       predicate,
-       object)
+       subject: subject_arg, # from arg
+       predicate: predicate,
+       object: object)
+    end
+
+  private
+
+    ##
+    # Validate that provenance_subject is not set here.
+    def validate_provenance_subject(options)
+      raise InvalidProvenanceError if options[:provenance_subject]
     end
 
   end

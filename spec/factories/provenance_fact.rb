@@ -11,24 +11,23 @@ module Factories
 
     def self.context(subject = nil)
       factory_for.new(
-        subject,
-        "https://data.vandenabeele.com/ontologies/provenance#context",
-        "public")
-
+        subject: subject,
+        predicate: "https://data.vandenabeele.com/ontologies/provenance#context",
+        object: "public")
     end
 
     def self.created_by(subject = nil)
       factory_for.new(
-        subject,
-        "https://data.vandenabeele.com/ontologies/provenance#created_by",
-        "peter_v")
+        subject: subject,
+        predicate: "https://data.vandenabeele.com/ontologies/provenance#created_by",
+        object:"peter_v")
     end
 
     def self.original_source(subject = nil)
       factory_for.new(
-        subject,
-        "https://data.vandenabeele.com/ontologies/provenance#original_source",
-        "this has a comma , a newline \n and a double quote \"")
+        subject: subject,
+        predicate: "https://data.vandenabeele.com/ontologies/provenance#original_source",
+        object: "this has a comma , a newline \n and a double quote \"")
     end
 
   end

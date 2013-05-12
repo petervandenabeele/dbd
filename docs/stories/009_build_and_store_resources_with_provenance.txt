@@ -27,6 +27,12 @@ I can build and store a group of resources with provenance
 
 * rename provenance_fact_subject to provenance_subject
 
+* change arguments for (Provenance)Resource to an options hash
+
+* remove the ResourcesWithProvenance
+
+* change arguments for (Provenance)Fact to an options hash
+
 * add a store method on Graph
   * that will store a ResourcesWithProvenance instance
   * this will now set the time_stamps (enforcing the strictly monotic order)

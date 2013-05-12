@@ -38,14 +38,12 @@ module Dbd
 
     ##
     # Validate that provenance_subject is not set here.
-    # @override
     def validate_provenance_subject
       raise InvalidProvenanceError if @provenance_subject
     end
 
     ##
     # Check provenance_subject, which should be nil here
-    # @override
     # @param [ProvenanceFact] provenance_fact
     # @return [ProvenanceFact] with validated nil on provenance_subject
     def check_or_set_provenance(provenance_fact)

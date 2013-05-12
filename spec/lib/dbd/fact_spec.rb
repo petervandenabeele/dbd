@@ -15,7 +15,6 @@ module Dbd
     describe ".new_subject" do
       it "creates a new (random) subject" do
         described_class.new_subject.should be_a(subject_class)
-        fact_2_with_subject.provenance_subject.should be_a(provenance_subject.class)
       end
 
       it "creating a second one is different" do
@@ -45,20 +44,16 @@ module Dbd
       it "a nil predicate raises ArgumentError" do
         lambda do
           described_class.new(
-            provenance_subject,
-            subject,
-            nil,
-            string_object_1)
+            predicate: nil,
+            object: string_object_1)
         end . should raise_error ArgumentError
       end
 
       it "a nil object raises ArgumentError" do
         lambda do
           described_class.new(
-            provenance_subject,
-            subject,
-            data_predicate,
-            nil)
+            predicate: data_predicate,
+            object: nil)
         end . should raise_error ArgumentError
       end
     end
