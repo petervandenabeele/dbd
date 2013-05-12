@@ -98,8 +98,8 @@ module Dbd
       @subject = options[:subject]
       @predicate = options[:predicate]
       @object = options[:object]
-      raise ArgumentError, "predicate cannot be nil" if predicate.nil?
-      raise ArgumentError, "object cannot be nil" if object.nil?
+      raise PredicateError, "predicate cannot be nil" if predicate.nil?
+      raise ObjectError, "object cannot be nil" if object.nil?
     end
 
     ##

@@ -4,8 +4,6 @@ module Dbd
   # for a Provenance (does not have and does need a provenance_subject)
   class ProvenanceResource < Resource
 
-    class InvalidProvenanceError < StandardError ; end
-
     ##
     # Build a new ProvenanceResource.
     #
@@ -23,7 +21,7 @@ module Dbd
     #
     # * if it has no subject, the subject is set in a duplicate element
     # * if is has the same subject as the resource, added unchanged.
-    # * if it has a different subject, a InvalidSubjectError is raised.
+    # * if it has a different subject, a SubjectError is raised.
     def <<(element)
       super
     end
@@ -39,7 +37,7 @@ module Dbd
     ##
     # Validate that provenance_subject is not set here.
     def validate_provenance_subject
-      raise InvalidProvenanceError if @provenance_subject
+      raise ProvenanceError if @provenance_subject
     end
 
     ##
@@ -47,7 +45,7 @@ module Dbd
     # @param [ProvenanceFact] provenance_fact
     # @return [ProvenanceFact] with validated nil on provenance_subject
     def check_or_set_provenance(provenance_fact)
-      raise InvalidProvenanceError if provenance_fact.provenance_subject
+      raise ProvenanceError if provenance_fact.provenance_subject
       provenance_fact
     end
 

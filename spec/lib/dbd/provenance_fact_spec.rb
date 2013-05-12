@@ -39,12 +39,12 @@ module Dbd
           provenance_fact_1.object.should == "public"
         end
 
-        it "raises an InvalidProvenanceError when provenance_subject is present in options hash" do
+        it "raises an ProvenanceError when provenance_subject is present in options hash" do
           lambda { described_class.new(
             provenance_subject: described_class.new_subject,
             predicate: "test",
             object: "test") } .
-              should raise_error described_class::InvalidProvenanceError
+              should raise_error ProvenanceError
         end
       end
 

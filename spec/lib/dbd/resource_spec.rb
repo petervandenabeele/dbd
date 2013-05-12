@@ -38,9 +38,9 @@ module Dbd
       end
 
       describe "with a nil provenance_subject argument" do
-        it "raises InvalidProvenanceError" do
+        it "raises a ProvenanceError" do
           lambda { described_class.new(provenance_subject: nil) } .
-            should raise_error described_class::InvalidProvenanceError
+            should raise_error ProvenanceError
         end
       end
     end
@@ -78,8 +78,8 @@ module Dbd
             end
 
             describe "when the subject of the fact is not equal to the resource_subject" do
-              it "raises an InvalidSubjectError" do
-                lambda {resource << fact_2_with_subject } . should raise_error described_class::InvalidSubjectError
+              it "raises a SubjectError" do
+                lambda {resource << fact_2_with_subject } . should raise_error SubjectError
               end
             end
           end
@@ -121,8 +121,8 @@ module Dbd
             end
 
             describe "when the provenance_subject of the fact is not equal to the resource" do
-              it "raises an InvalidProvenanceError" do
-                lambda {resource << fact_with_incorrect_provenance } . should raise_error described_class::InvalidProvenanceError
+              it "raises a ProvenanceError" do
+                lambda {resource << fact_with_incorrect_provenance } . should raise_error ProvenanceError
               end
             end
           end

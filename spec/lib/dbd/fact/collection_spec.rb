@@ -104,12 +104,12 @@ module Dbd
         it "adding an element with an older time_stamp fails" do
           fact_2_with_subject # will be older then fact_3_with_subject
           subject << fact_3_with_subject
-          lambda { subject << fact_2_with_subject } . should raise_error described_class::OutOfOrderError
+          lambda { subject << fact_2_with_subject } . should raise_error OutOfOrderError
         end
 
         it "adding an element with an equal time_stamp fails" do
           subject << fact_2_with_subject
-          lambda { subject << fact_2_with_subject } . should raise_error described_class::OutOfOrderError
+          lambda { subject << fact_2_with_subject } . should raise_error OutOfOrderError
         end
       end
 
@@ -134,7 +134,7 @@ module Dbd
         it "adding a provenance_fact, depending fact, another provenance_fact with same subject fail" do
           subject << provenance_fact_context
           subject << fact_2_with_subject
-          lambda { subject << provenance_fact_created_by } . should raise_error described_class::OutOfOrderError
+          lambda { subject << provenance_fact_created_by } . should raise_error OutOfOrderError
         end
 
         # testing private functionality (kept temporarily as documentation)
@@ -170,9 +170,9 @@ module Dbd
            subject << fact_2_with_subject # should_not raise_error
         end
 
-        it "raises FactInvalidError when fact.valid? is false" do
+        it "raises FactError when fact.valid? is false" do
            provenance_fact_context.stub(:valid?).and_return(false)
-           lambda { subject << provenance_fact_context } . should raise_error described_class::FactInvalidError
+           lambda { subject << provenance_fact_context } . should raise_error FactError
         end
       end
 

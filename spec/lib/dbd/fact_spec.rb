@@ -41,20 +41,20 @@ module Dbd
         fact_2_with_subject.subject.should be_a(subject_class)
       end
 
-      it "a nil predicate raises ArgumentError" do
+      it "a nil predicate raises PredicateError" do
         lambda do
           described_class.new(
             predicate: nil,
             object: string_object_1)
-        end . should raise_error ArgumentError
+        end . should raise_error PredicateError
       end
 
-      it "a nil object raises ArgumentError" do
+      it "a nil object raises ObjectError" do
         lambda do
           described_class.new(
             predicate: data_predicate,
             object: nil)
-        end . should raise_error ArgumentError
+        end . should raise_error ObjectError
       end
     end
 

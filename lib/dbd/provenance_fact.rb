@@ -21,8 +21,6 @@ module Dbd
   # is built-up on https://data.vandenabeele.com/ontologies/provenance.
   class ProvenanceFact < Fact
 
-    class InvalidProvenanceError < StandardError ; end
-
     ##
     # Builds a new ProvenanceFact.
     #
@@ -71,7 +69,7 @@ module Dbd
     ##
     # Validate that provenance_subject is not set here.
     def validate_provenance_subject(options)
-      raise InvalidProvenanceError if options[:provenance_subject]
+      raise ProvenanceError if options[:provenance_subject]
     end
 
   end

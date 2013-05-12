@@ -4,10 +4,6 @@ module Dbd
   class Fact
     class Collection
 
-      class OutOfOrderError < StandardError ; end
-
-      class FactInvalidError < StandardError ; end
-
       include Helpers::OrderedSetCollection
 
       def initialize
@@ -45,7 +41,7 @@ module Dbd
       #
       # Mark the element in the list of used provenance_subjects (for [A]).
       def <<(element)
-        raise FactInvalidError unless element.valid?
+        raise FactError unless element.valid?
         raise OutOfOrderError if (self.newest_time_stamp && element.time_stamp <= self.newest_time_stamp)
         raise OutOfOrderError if (@used_provenance_subjects[element.subject])
         index = Helpers::OrderedSetCollection.add_and_return_index(element, @internal_collection)

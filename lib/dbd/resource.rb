@@ -23,9 +23,6 @@ module Dbd
   # Fact is added (with '<<') to a resource.
   class Resource
 
-    class InvalidSubjectError < StandardError ; end
-    class InvalidProvenanceError < StandardError ; end
-
     include Helpers::OrderedSetCollection
 
     attr_reader :subject
@@ -61,10 +58,10 @@ module Dbd
     #
     # * if it has no subject, the subject is set in a duplicate element
     # * if is has the same subject as the resource, added unchanged.
-    # * if it has a different subject, a InvalidSubjectError is raised.
+    # * if it has a different subject, a SubjectError is raised.
     # * if it has no provenance_subject, the provenance_subject is set in a duplicate element
     # * if is has the same provenance_subject as the resource, added unchanged.
-    # * if it has a different provenance_subject, a InvalidProvenanceError is raised.
+    # * if it has a different provenance_subject, a ProvenanceError is raised.
     def <<(element)
       super(check_or_set_subject_and_provenance(element))
     end
@@ -89,7 +86,7 @@ module Dbd
         if element.subject == @subject
           return element
         else
-          raise InvalidSubjectError,
+          raise SubjectError,
             "self.subject is #{subject} and element.subject is #{element.subject}"
         end
       else
@@ -103,7 +100,7 @@ module Dbd
         if element.provenance_subject == @provenance_subject
           return element
         else
-          raise InvalidProvenanceError,
+          raise ProvenanceError,
             "self.provenance_subject is #{provenance_subject} and element.provenance_subject is #{element.provenance_subject}"
         end
       else
@@ -112,7 +109,7 @@ module Dbd
     end
 
     def validate_provenance_subject
-      raise InvalidProvenanceError if @provenance_subject.nil?
+      raise ProvenanceError if @provenance_subject.nil?
     end
 
   end

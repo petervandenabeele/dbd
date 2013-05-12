@@ -20,15 +20,15 @@ module Dbd
       end
 
       describe "with a provenance_subject argument" do
-        it "raises an InvalidProvenanceError" do
+        it "raises an ProvenanceError" do
           lambda { described_class.new(provenance_subject: provenance_resource_subject) } .
-            should raise_error described_class::InvalidProvenanceError
+            should raise_error ProvenanceError
         end
       end
     end
 
     describe "provenance_subject" do
-      it "raises RuntimeError when called" do
+      it "raises NoMethodError when called" do
         lambda { provenance_resource.provenance_subject } . should raise_error NoMethodError
       end
     end
@@ -52,9 +52,9 @@ module Dbd
           provenance_resource.first.subject.should == provenance_resource_subject
         end
 
-        it "with incorrect subject" do
+        it "with incorrect subject it raise SubjectError" do
           lambda { provenance_resource << provenance_fact_context_with_incorrect_subject } .
-            should raise_error described_class::InvalidSubjectError
+            should raise_error SubjectError
         end
 
         it "with nil subject" do
@@ -67,9 +67,9 @@ module Dbd
           provenance_resource.first.provenance_subject.should be_nil
         end
 
-        it "with incorrect provenance_subject" do
+        it "with incorrect provenance_subjecti ProvenanceError" do
           lambda { provenance_resource << fact_1 } .
-            should raise_error described_class::InvalidProvenanceError
+            should raise_error ProvenanceError
         end
       end
     end
