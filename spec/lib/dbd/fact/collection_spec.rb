@@ -138,24 +138,29 @@ module Dbd
         end
 
         # testing private functionality (kept temporarily as documentation)
-        # A hash with all the provenance_fact subjects that are used by at least one fact.
-        # Needed for the validation that no provenance_fact may be added about a fact that
-        # is already in the fact stream.
-        describe "provenance_subject" do
+        # A hash with all the provenance_subjects that are used by at least one fact.
+        # Needed for the validation that no provenance_fact may be added that is
+        # referred from a fact that is already in the fact stream.
+        describe "used_provenance_subjects" do
           # testing an internal variable ...
+
+          let(:used_provenance_subjects) do
+            subject.instance_variable_get(:@used_provenance_subjects)
+          end
+
           it "is empty initially" do
-            subject.instance_variable_get(:@provenance_subjects).should be_empty
+            used_provenance_subjects.should be_empty
           end
 
           it "adding a provenance_fact alone does not create an entry" do
             subject << provenance_fact_context
-            subject.instance_variable_get(:@provenance_subjects).should be_empty
+            used_provenance_subjects.should be_empty
           end
 
           it "adding a provenance_fact and a depending fact create an entry" do
             subject << provenance_fact_context
             subject << fact_2_with_subject
-            subject.instance_variable_get(:@provenance_subjects)[provenance_subject_1].should == true
+            used_provenance_subjects[provenance_subject_1].should == true
           end
         end
       end

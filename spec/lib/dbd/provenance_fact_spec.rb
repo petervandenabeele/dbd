@@ -71,10 +71,10 @@ module Dbd
         end
       end
 
-      describe "update_provenance_subjects" do
+      describe "update_used_provenance_subjects" do
         it "does nothing for a provenance_fact" do
           h = {}
-          provenance_fact_1.update_provenance_subjects(h)
+          provenance_fact_1.update_used_provenance_subjects(h)
           h.should be_empty
         end
       end

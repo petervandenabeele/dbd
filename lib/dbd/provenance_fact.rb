@@ -32,13 +32,13 @@ module Dbd
     end
 
     ##
-    # Executes the required update in provenance_subjects.
+    # Executes the required update in used_provenance_subjects.
     #
     # For a ProvenanceFact, there is no provenance_subject, so
-    # pointless to mark it in provenance_subjects hash. Also,
+    # pointless to mark it in used_provenance_subjects hash. Also,
     # it is only when a Fact uses a Provenance Resource that the
     # definition of that provenance resource needs to be closed.
-    def update_provenance_subjects(h)
+    def update_used_provenance_subjects(h)
       # Do nothing (override the behaviour from super).
     end
 

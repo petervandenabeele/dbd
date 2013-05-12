@@ -131,10 +131,10 @@ module Dbd
       end
     end
 
-    describe "update_provenance_subjects" do
+    describe "update_used_provenance_subjects" do
       it "sets the value for provenance_subject to true for a fact" do
         h = {}
-        fact_1.update_provenance_subjects(h)
+        fact_1.update_used_provenance_subjects(h)
         h[fact_1.provenance_subject].should == true
       end
     end

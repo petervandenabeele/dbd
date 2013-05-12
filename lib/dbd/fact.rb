@@ -108,15 +108,15 @@ module Dbd
     end
 
     ##
-    # Executes the required update in provenance_subjects.
+    # Executes the required update in used_provenance_subjects.
     #
     # For a Fact, pointing to a ProvenanceResource in it's provenance_subject,
-    # marks this provenance_subject in the "provenance_subjects" hash that is
-    # passed in as an argument (DCI). This will avoid further changes to the
+    # marks this provenance_subject in the "used_provenance_subjects" hash that
+    # is passed in as an argument (DCI). This will avoid further changes to the
     # ProvenanceResource with this provenance_subject.
     #
     # This is overridden in the ProvenanceFact, since only relevant for a Fact.
-    def update_provenance_subjects(h)
+    def update_used_provenance_subjects(h)
       # using a provenance_subject sets the key
       h[provenance_subject] = true
     end

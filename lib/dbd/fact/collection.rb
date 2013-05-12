@@ -13,7 +13,7 @@ module Dbd
       def initialize
         super
         @hash_by_subject = Hash.new { |h, k| h[k] = [] }
-        @provenance_subjects = {}
+        @used_provenance_subjects = {}
       end
 
       def newest_time_stamp
@@ -47,10 +47,10 @@ module Dbd
       def <<(element)
         raise FactInvalidError unless element.valid?
         raise OutOfOrderError if (self.newest_time_stamp && element.time_stamp <= self.newest_time_stamp)
-        raise OutOfOrderError if (@provenance_subjects[element.subject])
+        raise OutOfOrderError if (@used_provenance_subjects[element.subject])
         index = Helpers::OrderedSetCollection.add_and_return_index(element, @internal_collection)
         @hash_by_subject[element.subject] << index
-        element.update_provenance_subjects(@provenance_subjects)
+        element.update_used_provenance_subjects(@used_provenance_subjects)
         self
       end
 
