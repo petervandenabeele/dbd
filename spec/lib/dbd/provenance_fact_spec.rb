@@ -23,8 +23,8 @@ module Dbd
           provenance_fact_1.id.should_not == provenance_fact_2.id
         end
 
-        it "has nil provenance_fact_subject" do
-          provenance_fact_1.provenance_fact_subject.should be_nil
+        it "has nil provenance_subject" do
+          provenance_fact_1.provenance_subject.should be_nil
         end
 
         it "has correct subject" do
@@ -45,8 +45,8 @@ module Dbd
           provenance_fact_1.should be_valid
         end
 
-        it "with ! provenance_fact_subject is not valid?" do
-          provenance_fact_1.stub(:provenance_fact_subject).and_return(subject)
+        it "with ! provenance_subject is not valid?" do
+          provenance_fact_1.stub(:provenance_subject).and_return(subject)
           provenance_fact_1.should_not be_valid
         end
 
@@ -71,10 +71,10 @@ module Dbd
         end
       end
 
-      describe "update_provenance_fact_subjects" do
+      describe "update_provenance_subjects" do
         it "does nothing for a provenance_fact" do
           h = {}
-          provenance_fact_1.update_provenance_fact_subjects(h)
+          provenance_fact_1.update_provenance_subjects(h)
           h.should be_empty
         end
       end

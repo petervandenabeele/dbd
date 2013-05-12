@@ -13,7 +13,7 @@ module Dbd
       def initialize
         super
         @hash_by_subject = Hash.new { |h, k| h[k] = [] }
-        @provenance_fact_subjects = {}
+        @provenance_subjects = {}
       end
 
       def newest_time_stamp
@@ -29,7 +29,7 @@ module Dbd
       ##
       # This is the central method of Fact::Collection
       #
-      # @param [Fact] element  the element that is added to the collection
+      # @param [Fact] element the element that is added to the collection
       #
       # @return [self] for chaining
       #
@@ -37,20 +37,20 @@ module Dbd
       #
       # Validates that added fact is newer.
       #
-      # Validates that subject was never used a provenance_fact_subject [A].
+      # Validates that subject was never used as provenance_subject [A].
       #
       # Adds the element and return the index in the collection.
       #
       # Store this index in the hash_by_subject.
       #
-      # Mark the element in the list of used provenance_fact_subjects (for [A]).
+      # Mark the element in the list of used provenance_subjects (for [A]).
       def <<(element)
         raise FactInvalidError unless element.valid?
         raise OutOfOrderError if (self.newest_time_stamp && element.time_stamp <= self.newest_time_stamp)
-        raise OutOfOrderError if (@provenance_fact_subjects[element.subject])
+        raise OutOfOrderError if (@provenance_subjects[element.subject])
         index = Helpers::OrderedSetCollection.add_and_return_index(element, @internal_collection)
         @hash_by_subject[element.subject] << index
-        element.update_provenance_fact_subjects(@provenance_fact_subjects)
+        element.update_provenance_subjects(@provenance_subjects)
         self
       end
 

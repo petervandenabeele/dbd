@@ -32,7 +32,7 @@ module Dbd
     it "the provenance is correct on the facts in the added resources" do
       resources_with_provenance_and_resources.each do |resource|
         resource.each do |fact|
-          fact.provenance_fact_subject.should == resources_with_provenance_and_resources.provenance_resource.subject
+          fact.provenance_subject.should == resources_with_provenance_and_resources.provenance_resource.subject
         end
       end
     end

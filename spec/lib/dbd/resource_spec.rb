@@ -5,7 +5,10 @@ module Dbd
 
     let(:resource_subject) { Fact.new_subject }
     let(:provenance_subject) { ProvenanceFact.new_subject }
-    let(:resource) { described_class.new(resource_subject, provenance_subject) }
+
+    let(:resource) do
+      described_class.new(resource_subject, provenance_subject)
+    end
 
     describe ".new" do
       describe "with a subject and provenance_subject argument" do
@@ -31,7 +34,7 @@ module Dbd
       end
     end
 
-    describe "the collection" do
+    describe "the fact collection" do
 
       let(:fact_2_with_subject) { Factories::Fact.fact_2_with_subject }
       let(:fact_3_with_subject) { Factories::Fact.fact_3_with_subject }
@@ -129,13 +132,13 @@ module Dbd
             end
 
             it "has copied over the other attributes except :id" do
-              (new_fact.class.attributes - [:id,:provenance_fact_subject]).each do |attr|
+              (new_fact.class.attributes - [:id,:provenance_subject]).each do |attr|
                 new_fact.send(attr).should == fact_with_resource_subject.send(attr)
               end
             end
 
             it "has set the subject to the Resource subject" do
-              new_fact.provenance_fact_subject.should == provenance_subject
+              new_fact.provenance_subject.should == provenance_subject
             end
           end
         end

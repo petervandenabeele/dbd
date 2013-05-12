@@ -81,12 +81,12 @@ module Dbd
     end
 
     def check_or_set_provenance(element)
-      if element.provenance_fact_subject
-        if element.provenance_fact_subject == @provenance_subject
+      if element.provenance_subject
+        if element.provenance_subject == @provenance_subject
           return element
         else
           raise InvalidProvenanceError,
-            "self.provenance_subject is #{provenance_subject} and element.provenance_subject is #{element.provenance_fact_subject}"
+            "self.provenance_subject is #{provenance_subject} and element.provenance_subject is #{element.provenance_subject}"
         end
       else
         element.dup_with_provenance_subject(@provenance_subject)

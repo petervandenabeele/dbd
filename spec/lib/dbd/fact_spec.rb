@@ -2,20 +2,20 @@ require 'spec_helper'
 
 module Dbd
   describe Fact do
-    let(:provenance_fact_subject) { ProvenanceFact.new_subject }
+    let(:provenance_subject) { ProvenanceFact.new_subject }
     let(:subject) { described_class.new_subject }
     let(:data_predicate)  { "http://example.org/test/name" }
     let(:string_object_1)  { "Gandhi" }
     let(:string_object_2)  { "Mandela" }
     let(:id_class) { Fact::ID }
     let(:subject_class) { Fact::Subject }
-    let(:fact_1) { Factories::Fact.fact_1(provenance_fact_subject) }
-    let(:fact_2_with_subject) { Factories::Fact.fact_2_with_subject(provenance_fact_subject) }
+    let(:fact_1) { Factories::Fact.fact_1(provenance_subject) }
+    let(:fact_2_with_subject) { Factories::Fact.fact_2_with_subject(provenance_subject) }
 
     describe ".new_subject" do
       it "creates a new (random) subject" do
         described_class.new_subject.should be_a(subject_class)
-        fact_2_with_subject.provenance_fact_subject.should be_a(provenance_fact_subject.class)
+        fact_2_with_subject.provenance_subject.should be_a(provenance_subject.class)
       end
 
       it "creating a second one is different" do
@@ -34,8 +34,8 @@ module Dbd
         fact_1.id.should_not == fact_2_with_subject.id
       end
 
-      it "new sets the provenance_fact_subject" do
-        fact_1.provenance_fact_subject.should == provenance_fact_subject
+      it "new sets the provenance_subject" do
+        fact_1.provenance_subject.should == provenance_subject
       end
 
       it "new sets the subject" do
@@ -45,7 +45,7 @@ module Dbd
       it "a nil predicate raises ArgumentError" do
         lambda do
           described_class.new(
-            provenance_fact_subject,
+            provenance_subject,
             subject,
             nil,
             string_object_1)
@@ -55,7 +55,7 @@ module Dbd
       it "a nil object raises ArgumentError" do
         lambda do
           described_class.new(
-            provenance_fact_subject,
+            provenance_subject,
             subject,
             data_predicate,
             nil)
@@ -68,8 +68,8 @@ module Dbd
         fact_2_with_subject.should be_valid
       end
 
-      it "without provenance_fact_subject is not valid?" do
-        fact_2_with_subject.stub(:provenance_fact_subject).and_return(nil)
+      it "without provenance_subject is not valid?" do
+        fact_2_with_subject.stub(:provenance_subject).and_return(nil)
         fact_2_with_subject.should_not be_valid
       end
 
@@ -131,24 +131,24 @@ module Dbd
       end
     end
 
-    describe "update_provenance_fact_subjects" do
-      it "sets the value for provenance_fact_subject to true for a fact" do
+    describe "update_provenance_subjects" do
+      it "sets the value for provenance_subject to true for a fact" do
         h = {}
-        fact_1.update_provenance_fact_subjects(h)
-        h[fact_1.provenance_fact_subject].should == true
+        fact_1.update_provenance_subjects(h)
+        h[fact_1.provenance_subject].should == true
       end
     end
 
     describe "factory works" do
-      it "with explicit provenance_fact_subject" do
-        fact_2_with_subject.provenance_fact_subject.should be_a(provenance_fact_subject.class)
+      it "with explicit provenance_subject" do
+        fact_2_with_subject.provenance_subject.should be_a(provenance_subject.class)
         fact_2_with_subject.subject.should be_a(subject.class)
         fact_2_with_subject.predicate.should be_a(data_predicate.class)
         fact_2_with_subject.object.should be_a(string_object_1.class)
       end
 
-      it "without explicit provenance_fact_subject" do
-        Factories::Fact.fact_1.provenance_fact_subject.should be_nil
+      it "without explicit provenance_subject" do
+        Factories::Fact.fact_1.provenance_subject.should be_nil
       end
 
       it "fact_2_with_subject should not raise_error" do
@@ -161,8 +161,8 @@ module Dbd
 
       describe "data_fact" do
         describe "without arguments" do
-          it "has empty provenance_fact_subject" do
-            Factories::Fact.data_fact.provenance_fact_subject.should be_nil
+          it "has empty provenance_subject" do
+            Factories::Fact.data_fact.provenance_subject.should be_nil
           end
 
           it "has empty subject" do
@@ -170,25 +170,25 @@ module Dbd
           end
         end
 
-        describe "with provenance_fact_subject" do
-          it "has provenance_fact_subject" do
-            Factories::Fact.data_fact(provenance_fact_subject).
-              provenance_fact_subject.should == provenance_fact_subject
+        describe "with provenance_subject" do
+          it "has provenance_subject" do
+            Factories::Fact.data_fact(provenance_subject).
+              provenance_subject.should == provenance_subject
           end
 
           it "has empty subject" do
-            Factories::Fact.data_fact(provenance_fact_subject).subject.should be_nil
+            Factories::Fact.data_fact(provenance_subject).subject.should be_nil
           end
         end
 
-        describe "with provenance_fact_subject and subject" do
-          it "has provenance_fact_subject" do
-            Factories::Fact.data_fact(provenance_fact_subject, subject).
-              provenance_fact_subject.should == provenance_fact_subject
+        describe "with provenance_subject and subject" do
+          it "has provenance_subject" do
+            Factories::Fact.data_fact(provenance_subject, subject).
+              provenance_subject.should == provenance_subject
           end
 
           it "has subject" do
-            Factories::Fact.data_fact(provenance_fact_subject, subject).
+            Factories::Fact.data_fact(provenance_subject, subject).
               subject.should == subject
           end
         end

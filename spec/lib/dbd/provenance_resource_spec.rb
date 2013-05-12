@@ -35,7 +35,7 @@ module Dbd
     describe "the collection" do
 
       let(:provenance_fact_context) { Factories::ProvenanceFact.context }
-      let(:provenance_fact_context_with_subject) { Factories::ProvenanceFact.context(Factories::ProvenanceFact.new_subject) }
+      let(:provenance_fact_context_with_incorrect_subject) { Factories::ProvenanceFact.context(Factories::ProvenanceFact.new_subject) }
       let(:provenance_fact_context_with_correct_subject) { Factories::ProvenanceFact.context(provenance_resource_subject) }
       let(:fact_1) { Factories::Fact.fact_1(provenance_resource_subject) }
 
@@ -46,7 +46,7 @@ module Dbd
         end
 
         it "with incorrect subject" do
-          lambda { provenance_resource << provenance_fact_context_with_subject } .
+          lambda { provenance_resource << provenance_fact_context_with_incorrect_subject } .
             should raise_error described_class::InvalidSubjectError
         end
 
@@ -57,7 +57,7 @@ module Dbd
 
         it "with nil (=correct) provenance_subject" do
           provenance_resource << provenance_fact_context
-          provenance_resource.first.provenance_fact_subject.should be_nil
+          provenance_resource.first.provenance_subject.should be_nil
         end
 
         it "with incorrect provenance_subject" do

@@ -25,12 +25,12 @@ module Dbd
   #   creation of the fact, but it has to increase in strictly monotic
   #   order in the fact stream.
   #
-  # * a *provenance_fact_subject* (a uuid)
+  # * a *provenance_subject* (a uuid)
   #
-  #   The subject of the provenance resource (group of provenance facts with
-  #   the same subject) about this fact. Each Fact (except ProvenanceFacts),
-  #   points *back* to a provenance resource (the provenance resource must
-  #   have been fully defined, earlier in the fact stream).
+  #   The subject of the ProvenanceResource (a set of ProvenanceFacts with
+  #   the same subject) about this fact. Each Fact, points *back* to a
+  #   ProvenanceResource (the ProvenanceResource must have been fully
+  #   defined, earlier in the fact stream).
   #
   # * a *subject* (a uuid)
   #
@@ -62,7 +62,7 @@ module Dbd
     def self.attributes
       [:id,
        :time_stamp,
-       :provenance_fact_subject,
+       :provenance_subject,
        :subject,
        :predicate,
        :object]
@@ -87,15 +87,15 @@ module Dbd
     ##
     # Builds a new Fact.
     #
-    # @param [Subject] provenance_fact_subject The subject of the provenance fact
+    # @param [Subject] provenance_subject The subject of the provenance fact
     # @param [Subject] subject The subject for this Fact
     # @param [#to_s] predicate The predicate for this Fact (required)
     # @param [#to_s] object The object for this Fact (required)
-    def initialize(provenance_fact_subject, subject, predicate, object)
+    def initialize(provenance_subject, subject, predicate, object)
       raise ArgumentError, "predicate cannot be nil" if predicate.nil?
       raise ArgumentError, "object cannot be nil" if object.nil?
       @id = self.class.new_id
-      @provenance_fact_subject = provenance_fact_subject
+      @provenance_subject = provenance_subject
       @subject = subject
       @predicate = predicate
       @object = object
@@ -108,29 +108,30 @@ module Dbd
     end
 
     ##
-    # Executes the required update in provenance_fact_subjects.
+    # Executes the required update in provenance_subjects.
     #
-    # For a Fact, using the provenance_fact, marks the provenance_fact_subject
-    # in the argument hash. This will avoid further changes to the
-    # provenance resource with the provenance_fact_subject.
+    # For a Fact, pointing to a ProvenanceResource in it's provenance_subject,
+    # marks this provenance_subject in the "provenance_subjects" hash that is
+    # passed in as an argument (DCI). This will avoid further changes to the
+    # ProvenanceResource with this provenance_subject.
     #
     # This is overridden in the ProvenanceFact, since only relevant for a Fact.
-    def update_provenance_fact_subjects(h)
-      # using a provenance_fact_subject sets the key
-      h[provenance_fact_subject] = true
+    def update_provenance_subjects(h)
+      # using a provenance_subject sets the key
+      h[provenance_subject] = true
     end
 
     ##
     # Checks if a fact is valid for storing in the graph.
     #
-    # provenance_fact_subject must be present (this is how the
+    # provenance_subject must be present (this is how the
     # difference is encoded between Facts and ProvenanceFacts).
     # @return [#true?] not nil if valid
     def valid?
       # id not validated, is set automatically
       # predicate not validated, is validated in initialize
       # object not validated, is validated in initialize
-      provenance_fact_subject &&
+      provenance_subject &&
       subject
     end
 
@@ -141,7 +142,7 @@ module Dbd
     # @return [Fact] the duplicate fact
     def dup_with_subject(subject_arg)
       self.class.new(
-       provenance_fact_subject,
+       provenance_subject,
        subject_arg, # from arg
        predicate,
        object)

@@ -4,19 +4,19 @@ module Dbd
   class Fact
     describe Collection do
 
-      let(:provenance_fact_subject_1) { ProvenanceFact.new_subject }
-      let(:provenance_fact_subject_2) { ProvenanceFact.new_subject }
+      let(:provenance_subject_1) { ProvenanceFact.new_subject }
+      let(:provenance_subject_2) { ProvenanceFact.new_subject }
 
-      let(:provenance_fact_context) { Factories::ProvenanceFact.context(provenance_fact_subject_1) }
-      let(:provenance_fact_created_by) { Factories::ProvenanceFact.created_by(provenance_fact_subject_1) }
-      let(:provenance_fact_original_source) { Factories::ProvenanceFact.original_source(provenance_fact_subject_2) }
+      let(:provenance_fact_context) { Factories::ProvenanceFact.context(provenance_subject_1) }
+      let(:provenance_fact_created_by) { Factories::ProvenanceFact.created_by(provenance_subject_1) }
+      let(:provenance_fact_original_source) { Factories::ProvenanceFact.original_source(provenance_subject_2) }
 
-      let(:fact_1) { Factories::Fact.fact_1(provenance_fact_subject_1) }
-      let(:fact_2_with_subject) { Factories::Fact.fact_2_with_subject(provenance_fact_subject_1) }
-      let(:fact_3_with_subject) { Factories::Fact.fact_3_with_subject(provenance_fact_subject_1) }
+      let(:fact_1) { Factories::Fact.fact_1(provenance_subject_1) }
+      let(:fact_2_with_subject) { Factories::Fact.fact_2_with_subject(provenance_subject_1) }
+      let(:fact_3_with_subject) { Factories::Fact.fact_3_with_subject(provenance_subject_1) }
 
-      let(:fact_2_3) { Factories::Fact::Collection.fact_2_3(provenance_fact_subject_1) }
-      let(:provenance_facts) { Factories::Fact::Collection.provenance_facts(provenance_fact_subject_1) }
+      let(:fact_2_3) { Factories::Fact::Collection.fact_2_3(provenance_subject_1) }
+      let(:provenance_facts) { Factories::Fact::Collection.provenance_facts(provenance_subject_1) }
 
 
       describe ".new : " do
@@ -64,11 +64,11 @@ module Dbd
 
       describe "adding a fact with a ref to a provenance_fact" do
 
-        it "fact_2_with_subject has a provenance_fact_subject that refers to context and created_by" do
+        it "fact_2_with_subject has a provenance_subject that refers to context and created_by" do
           subject << provenance_fact_context
           subject << provenance_fact_created_by
           subject << fact_2_with_subject
-          ps = fact_1.provenance_fact_subject
+          ps = fact_1.provenance_subject
           subject.by_subject(ps).should == [provenance_fact_context, provenance_fact_created_by]
         end
       end
@@ -141,21 +141,21 @@ module Dbd
         # A hash with all the provenance_fact subjects that are used by at least one fact.
         # Needed for the validation that no provenance_fact may be added about a fact that
         # is already in the fact stream.
-        describe "provenance_fact_subject" do
+        describe "provenance_subject" do
           # testing an internal variable ...
           it "is empty initially" do
-            subject.instance_variable_get(:@provenance_fact_subjects).should be_empty
+            subject.instance_variable_get(:@provenance_subjects).should be_empty
           end
 
           it "adding a provenance_fact alone does not create an entry" do
             subject << provenance_fact_context
-            subject.instance_variable_get(:@provenance_fact_subjects).should be_empty
+            subject.instance_variable_get(:@provenance_subjects).should be_empty
           end
 
           it "adding a provenance_fact and a depending fact create an entry" do
             subject << provenance_fact_context
             subject << fact_2_with_subject
-            subject.instance_variable_get(:@provenance_fact_subjects)[provenance_fact_subject_1].should == true
+            subject.instance_variable_get(:@provenance_subjects)[provenance_subject_1].should == true
           end
         end
       end
@@ -176,20 +176,20 @@ module Dbd
           subject << provenance_fact_context
           subject << provenance_fact_created_by
           subject << provenance_fact_original_source
-          provenance_fact_context.subject.should == provenance_fact_subject_1 # assert test set-up
-          provenance_fact_created_by.subject.should == provenance_fact_subject_1 # assert test set-up
-          provenance_fact_original_source.subject.should == provenance_fact_subject_2 # assert test set-up
-          subject.by_subject(provenance_fact_subject_1).first.should == provenance_fact_context
-          subject.by_subject(provenance_fact_subject_1).last.should == provenance_fact_created_by
-          subject.by_subject(provenance_fact_subject_2).single.should == provenance_fact_original_source
+          provenance_fact_context.subject.should == provenance_subject_1 # assert test set-up
+          provenance_fact_created_by.subject.should == provenance_subject_1 # assert test set-up
+          provenance_fact_original_source.subject.should == provenance_subject_2 # assert test set-up
+          subject.by_subject(provenance_subject_1).first.should == provenance_fact_context
+          subject.by_subject(provenance_subject_1).last.should == provenance_fact_created_by
+          subject.by_subject(provenance_subject_2).single.should == provenance_fact_original_source
         end
       end
 
       describe "Factories::Fact::Collection" do
         describe ".fact_2_3" do
-          it "has the given provenance_fact_subject with explicit subject arg" do
+          it "has the given provenance_subject with explicit subject arg" do
             fact_2_3.each do |fact|
-              fact.provenance_fact_subject.should == provenance_fact_subject_1
+              fact.provenance_subject.should == provenance_subject_1
             end
           end
         end
@@ -215,7 +215,7 @@ module Dbd
 
           it "has the given subjects with explicit subject arg" do
             provenance_facts.each do |provenance_fact|
-              provenance_fact.subject.should == provenance_fact_subject_1
+              provenance_fact.subject.should == provenance_subject_1
             end
           end
         end
