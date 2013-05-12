@@ -18,6 +18,12 @@ module Dbd
       let(:fact_2_3) { Factories::Fact::Collection.fact_2_3(provenance_subject_1) }
       let(:provenance_facts) { Factories::Fact::Collection.provenance_facts(provenance_subject_1) }
 
+      let(:subject) do
+        Object.new.tap do |object_with_Fact_Collection|
+          object_with_Fact_Collection.extend(described_class)
+          object_with_Fact_Collection.send(:initialize)
+        end
+      end
 
       describe ".new : " do
         it "the collection is not an array" do

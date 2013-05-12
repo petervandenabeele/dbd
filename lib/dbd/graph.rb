@@ -8,7 +8,9 @@ module Dbd
   class Graph
 
     def initialize
-      @fact_collection = Fact::Collection.new
+      @fact_collection = Object.new
+      @fact_collection.extend(Fact::Collection)
+      @fact_collection.send(:initialize)
     end
 
     ##

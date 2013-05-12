@@ -50,19 +50,22 @@ module Factories
 
     module Collection
 
-      def self.factory_for
-        ::Dbd::Fact::Collection
+      def self.factory_for_instance
+        o = Object.new
+        o.extend(::Dbd::Fact::Collection)
+        o.send(:initialize)
+        o
       end
 
       def self.fact_2_3(provenance_subject)
-        factory_for.new.tap do |fact_collection|
+        factory_for_instance.tap do |fact_collection|
           fact_collection << Fact.fact_2_with_subject(provenance_subject)
           fact_collection << Fact.fact_3_with_subject(provenance_subject)
         end
       end
 
       def self.provenance_facts(subject)
-        factory_for.new.tap do |provenance_facts|
+        factory_for_instance.tap do |provenance_facts|
           provenance_facts << ProvenanceFact.context(subject)
           provenance_facts << ProvenanceFact.created_by(subject)
           provenance_facts << ProvenanceFact.original_source(subject)

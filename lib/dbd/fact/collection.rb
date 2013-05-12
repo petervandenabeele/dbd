@@ -2,7 +2,7 @@ require 'dbd/helpers/ordered_set_collection'
 
 module Dbd
   class Fact
-    class Collection
+    module Collection
 
       include Helpers::OrderedSetCollection
 
@@ -23,7 +23,7 @@ module Dbd
       end
 
       ##
-      # This is the central method of Fact::Collection
+      # This is the central method of Fact::Collection module
       #
       # @param [Fact] Fact the fact that is added to the collection
       #
