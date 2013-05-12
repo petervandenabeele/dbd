@@ -72,6 +72,11 @@ module Dbd
       attr_reader attribute
     end
 
+    def time_stamp=(time_stamp)
+      raise RuntimeError if @time_stamp
+      @time_stamp = time_stamp
+    end
+
     ##
     # @return [Subject] A new random subject.
     def self.new_subject

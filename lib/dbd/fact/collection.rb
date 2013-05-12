@@ -41,6 +41,7 @@ module Dbd
       #
       # Mark the fact in the list of used provenance_subjects (for [A]).
       def <<(fact)
+        # TODO Add a more descriptive Exception message
         raise FactError unless fact.valid?
         raise OutOfOrderError if (self.newest_time_stamp && fact.time_stamp <= self.newest_time_stamp)
         raise OutOfOrderError if (@used_provenance_subjects[fact.subject])

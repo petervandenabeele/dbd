@@ -58,8 +58,32 @@ module Dbd
       end
     end
 
+    describe "time_stamp" do
+      it "can be set after creation" do
+        fact_1.time_stamp = Time.now
+      end
+
+      it "can be read back" do
+        time_now = Time.now
+        fact_1.time_stamp = time_now
+        fact_1.time_stamp.should == time_now
+      end
+
+      it "sees a difference of 2 nanoseconds" do
+        time_now = Time.now
+        fact_1.time_stamp = time_now + 0.000_000_002
+        fact_1.time_stamp.should > time_now
+      end
+
+      it "raise a RuntimeError if trying to write it 2 times" do
+        time_now = Time.now
+        fact_1.time_stamp = time_now
+        lambda { fact_1.time_stamp = time_now } . should raise_error RuntimeError
+      end
+    end
+
     describe "valid?" do
-      it "the factory isi valid?" do
+      it "the factory is valid?" do
         fact_2_with_subject.should be_valid
       end
 

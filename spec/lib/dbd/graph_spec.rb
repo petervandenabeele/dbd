@@ -3,12 +3,18 @@ require 'spec_helper'
 module Dbd
   describe Graph do
 
-    let(:subject_1) { Fact::Subject.new }
-    let(:provenance_facts) { Factories::Fact::Collection.provenance_facts(subject_1) }
+    def new_subject
+      Fact.new_subject
+    end
+
+    let(:data_fact) { Factories::Fact.data_fact(new_subject, new_subject) }
+    let(:fact_no_subject) { Factories::Fact.data_fact(new_subject, nil) }
+    let(:fact_no_provenance) { Factories::Fact.data_fact(nil, new_subject) }
+
+    let(:provenance_facts) { Factories::Fact::Collection.provenance_facts(new_subject) }
     let(:provenance_fact_1) { provenance_facts.first }
     let(:fact_2_3) { Factories::Fact::Collection.fact_2_3(provenance_fact_1.subject) }
-    # temporary hack until Graph#store_fact_set is implemented
-    let(:fact_collection) { subject.instance_variable_get(:@fact_collection) }
+
     let(:subject_regexp) { Fact::Subject.regexp }
     let(:id_regexp) { Fact::ID.regexp }
 
@@ -18,12 +24,53 @@ module Dbd
       end
     end
 
+    describe "<< " do
+      describe "a Fact" do
+        it "a data_fact does not fail" do
+          subject << data_fact
+        end
+
+        it "a provenance_fact does not fail" do
+          subject << provenance_fact_1
+        end
+
+        it "two facts does not fail" do
+          subject << provenance_fact_1
+          subject << data_fact
+        end
+
+        it "fact with missing subject raises FactError" do
+          lambda { subject << fact_no_subject } . should raise_error FactError
+        end
+
+        it "fact with missing provenance raises FactError" do
+          lambda { subject << fact_no_provenance } . should raise_error FactError
+        end
+      end
+
+      describe "sets the time_stamp and adds 2 nanoseconds if needed" do
+        it "sets the time_stamp" do
+          data_fact.time_stamp.should be_nil # assert pre condition
+          subject << data_fact
+          subject.first.time_stamp.should be_a(Time)
+        end
+
+        it "sets a slightly higher time_stamp if smaller or equal then newest_time_stamp" do
+          subject
+          subject.newest_time_stamp
+          far_future = Time.new(2200,1,1,12,0,0).utc
+          subject.stub(:newest_time_stamp).and_return(far_future)
+          subject << data_fact
+          subject.first.time_stamp.should > far_future
+          subject.first.time_stamp.should < far_future + 0.000_000_005
+        end
+      end
+    end
+
     describe "#to_CSV with only provenance_facts" do
       before do
         provenance_facts.each_with_index do |provenance_fact, index|
-          provenance_fact.stub(:time_stamp).and_return(Time.new(2013,5,9,12,0,index).utc)
-          provenance_fact.stub(:subject).and_return(ProvenanceFact.new_subject)
-          fact_collection << provenance_fact
+          subject << provenance_fact
         end
       end
 
@@ -90,9 +137,7 @@ module Dbd
     describe "#to_CSV with only facts" do
       before do
         fact_2_3.each_with_index do |fact, index|
-          fact.stub(:time_stamp).and_return(Time.new(2013,5,9,12,0,index).utc)
-          fact.stub(:subject).and_return(Fact.new_subject)
-          fact_collection << fact
+          subject << fact
          end
       end
 
@@ -154,10 +199,10 @@ module Dbd
 
       before do
         provenance_facts.each do |provenance_fact|
-          fact_collection << provenance_fact
+          subject << provenance_fact
         end
         fact_2_3.each do |fact|
-          fact_collection << fact
+          subject << fact
          end
       end
 
