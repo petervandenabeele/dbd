@@ -25,7 +25,7 @@ module Dbd
       ##
       # This is the central method of Fact::Collection module
       #
-      # @param [Fact] Fact the fact that is added to the collection
+      # @param [Fact] fact the fact that is added to the collection
       #
       # @return [self] for chaining
       #
