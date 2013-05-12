@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Dbd::VERSION
   spec.authors       = ["Peter Vandenabeele"]
   spec.email         = ["peter@vandenabeele.com"]
-  spec.description   = %q{acquiring, storing and querying facts, data and meaning}
-  spec.summary       = %q{acquiring, storing and querying facts, data and meaning}
+  spec.description   = %q{A data store that (almost) never forgets}
+  spec.summary       = %q{A data store that (almost) never forgets}
   spec.homepage      = ""
   spec.license       = "MIT"
 
@@ -25,5 +25,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'terminal-notifier-guard'
   spec.add_development_dependency 'yard'
   spec.add_runtime_dependency 'neography'
+  spec.add_runtime_dependency 'rdf', '~> 1.0.6'
   spec.add_runtime_dependency 'ruby_peter_v'
 end
