@@ -66,7 +66,7 @@ module Dbd
         fact_1.time_stamp.should > time_now
       end
 
-      describe "set once" do
+      describe "set_once" do
         it "can be set when nil" do
           fact_1.time_stamp.should be_nil # assert pre-condition
           time_now = Time.now

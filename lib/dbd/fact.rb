@@ -7,7 +7,7 @@ module Dbd
   ##
   # Basic Fact of knowledge.
   #
-  # The database is built as an ordered sequence of facts, the "fact stream".
+  # The database is built as an ordered sequence of facts, a "fact stream".
   #
   # This is somewhat similar to a "triple" in the RDF (Resource Description
   # Framework) concept, but with different and extended functionality.
@@ -15,22 +15,22 @@ module Dbd
   # Each basic fact has:
   # * a unique and invariant *id* (a uuid)
   #
-  #   To allow referencing back to it (e.g. to invalidate it later in the fact stream).
+  #   To allow referencing back to it (e.g. to invalidate it later in a fact stream).
   #
   # * a *time_stamp*  (time with nanosecond granularity)
   #
-  #   To allow verifying that the order in the fact stream is correct.
+  #   To allow verifying that the order in a fact stream is correct.
   #
   #   A time_stamp does not need to represent the exact time of the
   #   creation of the fact, but it has to increase in strictly monotic
-  #   order in the fact stream.
+  #   order in a fact stream.
   #
   # * a *provenance_subject* (a uuid)
   #
   #   The subject of the ProvenanceResource (a set of ProvenanceFacts with
   #   the same subject) about this fact. Each Fact, points *back* to a
   #   ProvenanceResource (the ProvenanceResource must have been fully
-  #   defined, earlier in the fact stream).
+  #   defined, earlier in a fact stream).
   #
   # * a *subject* (a uuid)
   #

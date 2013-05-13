@@ -12,7 +12,7 @@ module Dbd
   # usage of provenance_subject is not recursive on this level (this
   # allows efficient single pass loading in an underlying database).
   #
-  # In the serialisation of the fact stream, the presence or absence of a
+  # In the serialisation of a fact stream, the presence or absence of a
   # provenance_subject marks the difference between a (base) Fact and a
   # ProvenanceFact.
   #
