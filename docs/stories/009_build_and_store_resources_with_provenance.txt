@@ -36,3 +36,10 @@ I can build and store a group of resources with provenance
 * add a store method on Graph
   * that will store a (Provenance)Resource instance
   * this will now set the time_stamps (enforcing the strictly monotic order)
+
+* change the methods << that change values to add!()
+
+* allow setting the subject and provenance_subject of a fact with set_once
+  (a soft form of immutable behavior that does not require the creation of
+   new objects (garbage collection cost) and may clean up the way too complex
+   check_or_set_subject_and_provenance behavior in Resource)
