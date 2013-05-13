@@ -72,8 +72,14 @@ module Dbd
       attr_reader attribute
     end
 
+    ##
+    # A set_once setter.
+    #
+    # This implements a "form" of immutable behavior. The value can
+    # be set once (possibly after creation the object), but can
+    # never be changed after that.
     def time_stamp=(time_stamp)
-      raise RuntimeError if @time_stamp
+      raise SetOnceError if (@time_stamp && time_stamp != @time_stamp)
       @time_stamp = time_stamp
     end
 

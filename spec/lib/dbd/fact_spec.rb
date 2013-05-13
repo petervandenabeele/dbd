@@ -59,15 +59,6 @@ module Dbd
     end
 
     describe "time_stamp" do
-      it "can be set after creation" do
-        fact_1.time_stamp = Time.now
-      end
-
-      it "can be read back" do
-        time_now = Time.now
-        fact_1.time_stamp = time_now
-        fact_1.time_stamp.should == time_now
-      end
 
       it "sees a difference of 2 nanoseconds" do
         time_now = Time.now
@@ -75,10 +66,28 @@ module Dbd
         fact_1.time_stamp.should > time_now
       end
 
-      it "raise a RuntimeError if trying to write it 2 times" do
-        time_now = Time.now
-        fact_1.time_stamp = time_now
-        lambda { fact_1.time_stamp = time_now } . should raise_error RuntimeError
+      describe "set once" do
+        it "can be set when nil" do
+          fact_1.time_stamp.should be_nil # assert pre-condition
+          time_now = Time.now
+          fact_1.time_stamp = time_now
+          fact_1.time_stamp.should == time_now
+        end
+
+        describe "setting it two times" do
+          it "with the same value just works" do
+            time_now = Time.now
+            fact_1.time_stamp = time_now
+            fact_1.time_stamp = time_now
+            fact_1.time_stamp.should == time_now
+          end
+
+          it "with a different value raises a SetOnceError" do
+            time_now = Time.now
+            fact_1.time_stamp = time_now
+            lambda { fact_1.time_stamp = (time_now+1) } . should raise_error SetOnceError
+          end
+        end
       end
     end
 
