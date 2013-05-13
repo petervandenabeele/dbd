@@ -49,20 +49,42 @@ module Dbd
       end
 
       describe "sets the time_stamp and adds 2 nanoseconds if needed" do
-        it "sets the time_stamp" do
-          data_fact.time_stamp.should be_nil # assert pre condition
+
+        it "don't touch the time_stamp if already set" do
+          far_future = Time.new(2500,1,1,12,0,0).utc
+          data_fact.time_stamp = far_future
           subject << data_fact
-          subject.first.time_stamp.should be_a(Time)
+          subject.first.time_stamp.should == far_future
         end
 
-        it "sets a slightly higher time_stamp if smaller or equal then newest_time_stamp" do
-          subject
-          subject.newest_time_stamp
-          far_future = Time.new(2200,1,1,12,0,0).utc
-          subject.stub(:newest_time_stamp).and_return(far_future)
-          subject << data_fact
-          subject.first.time_stamp.should > far_future
-          subject.first.time_stamp.should < far_future + 0.000_000_005
+        describe "sets the time_stamp if not yet set" do
+
+          let(:fake_time) { Time.now.utc }
+          before(:each) do
+            fake_time # get this before setting the stub
+            Time.stub(:now).and_return(double(utc: fake_time))
+          end
+
+          it "sets it (to Time.now.utc)" do
+            data_fact.time_stamp.should be_nil # assert pre-condition
+            subject << data_fact
+            subject.first.time_stamp.should == fake_time
+          end
+
+          it "raise OutOfOrderError if new_time is smaller than newest_time_stamp" do
+            subject.stub(:newest_time_stamp).and_return Time.new(2500,1,1,12,0,0).utc
+            # this "should_receive" is needed to test that the exception is called in
+            # enforce_strictly_monotonic_time (and not later in Fact::Collection)
+            data_fact.should_receive(:time_stamp=).exactly(0).times
+            lambda { subject << data_fact } . should raise_error OutOfOrderError
+          end
+
+          it "sets a slightly higher time_stamp if new_time equal to newest_time_stamp" do
+            subject.stub(:newest_time_stamp).and_return(fake_time)
+            subject << data_fact
+            subject.first.time_stamp.should > fake_time
+            subject.first.time_stamp.should < fake_time + BigDecimal.new("0.000_000_004")
+          end
         end
       end
     end

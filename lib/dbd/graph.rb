@@ -35,10 +35,12 @@ module Dbd
     # a resolution of only 1 ms so sometimes, the exact same value for
     # Time.now was reported.
     def enforce_strictly_monotonic_time(fact)
+      return if fact.time_stamp
       new_time = Time.now.utc
       newest_time_stamp = newest_time_stamp()
-      if newest_time_stamp && new_time <= newest_time_stamp
-        new_time = newest_time_stamp + 0.000_000_002 # Add approx. 2 nanoseconds
+      raise OutOfOrderError if (newest_time_stamp && new_time < newest_time_stamp)
+      if newest_time_stamp && new_time == newest_time_stamp
+        new_time = newest_time_stamp + BigDecimal.new("0.000_000_002") # 2 ns
       end
       fact.time_stamp = new_time
     end
