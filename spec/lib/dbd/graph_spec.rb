@@ -83,7 +83,7 @@ module Dbd
             subject.stub(:newest_time_stamp).and_return(fake_time)
             subject << data_fact
             subject.first.time_stamp.should > fake_time
-            subject.first.time_stamp.should < fake_time + BigDecimal.new("0.000_000_004")
+            subject.first.time_stamp.should < fake_time + Rational('4/1000_000_000')
           end
         end
       end

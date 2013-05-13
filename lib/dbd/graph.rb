@@ -29,18 +29,33 @@ module Dbd
   private
 
     ##
-    # The system mmust enforce that the time_stamps are strictly monotonic.
+    # Allow max 1 ms offset of time_stamps precursing actual time
+    # reported by Wall clock (because of 1 ms granularity of JRuby,
+    # that should be enough). The problem is that the newest_time_stamp
+    # starts to precurse a few ns, compared to reported Wall clock
+    # on JRuby, and this falsely triggers the OutOfOrderError below.
+    MAX_OFFSET = Rational('1/1000') # 1 ms
+
+    ##
+    # Offset given to reported Wall clock to enforce the
+    # monotonic increasing order.
+    TIME_OFFSET = Rational('2/1000_000_000') # 2 ns
+
+    ##
+    # Setting a strictly monotonically increasing time_stamp (if not yet set).
     #
-    # This has been detected because on Java (JRuby) the the Wall time has
-    # a resolution of only 1 ms so sometimes, the exact same value for
-    # Time.now was reported.
+    # Sometimes an offset needs to be given, since on Java (JRuby) the Wall
+    # time has a resolution of only 1 ms so sometimes, the exact same value
+    # for Time.now (with ms granularity) is reported when passing here.
     def enforce_strictly_monotonic_time(fact)
       return if fact.time_stamp
       new_time = Time.now.utc
       newest_time_stamp = newest_time_stamp()
-      raise OutOfOrderError if (newest_time_stamp && new_time < newest_time_stamp)
-      if newest_time_stamp && new_time == newest_time_stamp
-        new_time = newest_time_stamp + BigDecimal.new("0.000_000_002") # 2 ns
+      if newest_time_stamp && new_time < (newest_time_stamp - MAX_OFFSET)
+        raise OutOfOrderError, "newest_time_stamp.nsec = #{newest_time_stamp.nsec} :: new_time.nsec = #{new_time.nsec}"
+      end
+      if newest_time_stamp && new_time <= newest_time_stamp
+        new_time = newest_time_stamp + TIME_OFFSET
       end
       fact.time_stamp = new_time
     end

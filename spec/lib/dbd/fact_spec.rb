@@ -62,7 +62,7 @@ module Dbd
 
       it "sees a difference of 2 nanoseconds" do
         time_now = Time.now
-        fact_1.time_stamp = time_now + 0.000_000_002
+        fact_1.time_stamp = time_now + Rational('2/1000_000_000')
         fact_1.time_stamp.should > time_now
       end
 
