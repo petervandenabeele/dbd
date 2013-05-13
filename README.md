@@ -17,7 +17,7 @@ This is facts based data store, inspired by [RDF] concepts, but adding a log bas
   * 1 data source has _all_ my data : never more loose stuff :-)
   * facts can be invalidated (and replaced) later on
 * Privacy
-  * a "hard delete" is possible: all downstream readers of the fact stream
+  * a "hard delete" is possible: all downstream readers of the fact stream  
     must remove this fact and replace the back-up
   * since one single back-up file suffices, replacing the *single* back-up  
     file will actually remove the hard deleted fact(s) for good
