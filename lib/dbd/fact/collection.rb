@@ -29,7 +29,7 @@ module Dbd
       #
       # @return [self] for chaining
       #
-      # Validates that added fact is valid.
+      # Validates that added fact is valid (has no errors).
       #
       # Validates that added fact is newer.
       #
@@ -41,8 +41,7 @@ module Dbd
       #
       # Mark the fact in the list of used provenance_subjects (for [A]).
       def <<(fact)
-        # TODO Add a more descriptive Exception message
-        raise FactError unless fact.valid?
+        raise FactError, "#{fact.errors.join(', ')}." unless fact.errors.empty?
         raise OutOfOrderError if (self.newest_time_stamp && fact.time_stamp <= self.newest_time_stamp)
         raise OutOfOrderError if (@used_provenance_subjects[fact.subject])
         index = Helpers::OrderedSetCollection.add_and_return_index(fact, @internal_collection)

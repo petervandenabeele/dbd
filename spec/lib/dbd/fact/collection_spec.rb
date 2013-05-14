@@ -171,14 +171,16 @@ module Dbd
         end
       end
 
-      describe "validate that facts are valid? when loading in the Fact::Collection" do
+      describe "validate that facts do not have errors when loading in the Fact::Collection" do
         it "succeeds with a fact from factory" do
            subject << fact_2_with_subject # should_not raise_error
         end
 
-        it "raises FactError when fact.valid? is false" do
-           provenance_fact_context.stub(:valid?).and_return(false)
-           lambda { subject << provenance_fact_context } . should raise_error FactError
+        it "raises FactError with message when fact.errors has errors" do
+           provenance_fact_context.stub(:errors).and_return(["Error 1", "Error 2"])
+           lambda { subject << provenance_fact_context } . should raise_error(
+             FactError,
+             "Error 1, Error 2.")
         end
       end
 

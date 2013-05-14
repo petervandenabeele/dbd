@@ -91,19 +91,31 @@ module Dbd
       end
     end
 
-    describe "valid?" do
-      it "the factory is valid?" do
-        fact_2_with_subject.should be_valid
+    describe "errors" do
+      it "the factory has no errors" do
+        fact_2_with_subject.errors.should be_empty
       end
 
-      it "without provenance_subject is not valid?" do
-        fact_2_with_subject.stub(:provenance_subject).and_return(nil)
-        fact_2_with_subject.should_not be_valid
+      describe "without provenance_subject" do
+
+        before(:each) do
+          fact_2_with_subject.stub(:provenance_subject).and_return(nil)
+        end
+
+        it "errors returns an array with 1 error message" do
+          fact_2_with_subject.errors.single.should match(/Provenance subject is missing/)
+        end
       end
 
-      it "without subject is not valid?" do
-        fact_2_with_subject.stub(:subject).and_return(nil)
-        fact_2_with_subject.should_not be_valid
+      describe "without subject" do
+
+        before(:each) do
+          fact_2_with_subject.stub(:subject).and_return(nil)
+        end
+
+        it "errors returns an array with an errorm message" do
+          fact_2_with_subject.errors.single.should match(/Subject is missing/)
+        end
       end
     end
 

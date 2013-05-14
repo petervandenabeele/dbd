@@ -134,15 +134,17 @@ module Dbd
     end
 
     ##
-    # Checks if a fact is valid for storing in the graph.
+    # Checks if a fact has errors for storing in the graph.
     #
-    # @return [#true?] not nil if valid
-    def valid?
-      # id not validated, is set automatically
+    # @return [Array] an Array of error messages
+    def errors
+      # id not validated, is set automatically later
       # predicate not validated, is validated in initialize
       # object not validated, is validated in initialize
-      provenance_subject_valid?(provenance_subject) &&
-      subject
+      [].tap do |a|
+        a << provenance_subject_error(provenance_subject)
+        a << "Subject is missing" unless subject
+      end.compact
     end
 
     ##
@@ -153,9 +155,9 @@ module Dbd
     # This is how the difference is encoded between Fact and
     # ProvenanceFact in the fact stream.
     # @param [#nil?] provenance_subject
-    # Return [Boolean]
-    def provenance_subject_valid?(provenance_subject)
-      provenance_subject
+    # Return [nil, String] nil or an error message
+    def provenance_subject_error(provenance_subject)
+      "Provenance subject is missing" unless provenance_subject
     end
 
     ##

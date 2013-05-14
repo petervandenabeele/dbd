@@ -3,6 +3,9 @@
 As a client
 I can add facts to a fact stream and the time_stamp is set
 
+* change valid? to errors
+  * returns array of error messages (errors.empty? indicates valid?)
+
 * add a performance bench mark to the test set (this will also
   act as a collision test for the randomization approaches).
 

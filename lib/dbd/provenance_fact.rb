@@ -47,9 +47,9 @@ module Dbd
     #
     # Here, in the derived ProvenanceFact, it must not be present.
     # @param [#nil?] provenance_subject
-    # Return [Boolean]
-    def provenance_subject_valid?(provenance_subject)
-      provenance_subject.nil?
+    # Return [nil, String] nil if valid, an error message if not
+    def provenance_subject_error(provenance_subject)
+      "Provenance subject should not be present in Provenance Fact" if provenance_subject
     end
 
     ##
