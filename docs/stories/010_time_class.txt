@@ -9,6 +9,8 @@ I can add facts to a fact stream and the time_stamp is set
 * add a performance bench mark to the test set (this will also
   act as a collision test for the randomization approaches).
 
+* upgrade ruby 1.9.3 and 2.0.0
+
 * use a TimeStamp class
 
 * the to_s of this class shows the time_stamp to ns precision
