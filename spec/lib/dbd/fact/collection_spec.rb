@@ -98,8 +98,8 @@ module Dbd
 
       describe "validate that only 'newer' elements are added" do
         before(:each) do
-          fact_2_with_subject.stub(:time_stamp).and_return(Time.new(2013,05,9,12,0,0))
-          fact_3_with_subject.stub(:time_stamp).and_return(Time.new(2013,05,9,12,0,1))
+          fact_2_with_subject.stub(:time_stamp).and_return(TimeStamp.new(time: Time.new(2013,05,9,12,0,0)))
+          fact_3_with_subject.stub(:time_stamp).and_return(TimeStamp.new(time: Time.new(2013,05,9,12,0,1)))
         end
 
         it "adding an element with a newer time_stamp succeeds" do

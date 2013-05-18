@@ -35,16 +35,57 @@ module Dbd
   # in a fact stream.
   class TimeStamp
 
-    def initialize
-      @time = Time.now.utc
+    attr_reader :time
+
+    ##
+    # Builds a new TimeStamp.
+    #
+    # @param [Hash{Symbol => Object}] options
+    # @option options [Time] :time (Time.now) force the time to this value
+    def initialize(options={})
+      @time = options[:time] || Time.now.utc
     end
 
+    ##
+    # regexp for the nanosecond granularity and in UTC
+    #
+    # Can be used to validate input strings or in tests.
     def self.to_s_regexp
       /\d{4}-\d\d-\d\d \d\d:\d\d:\d\d\.\d{9} UTC/
     end
 
+    ##
+    # to a nanosecond granularity and in UTC
     def to_s
       @time.strftime('%F %T.%N %Z')
+    end
+
+    def ==(other)
+      @time == other.time
+    end
+
+    def hash
+      @time.hash
+    end
+
+    def >(other)
+      @time > other.time
+    end
+
+    def <(other)
+      @time < other.time
+    end
+
+    def <=(other)
+      @time <= other.time
+    end
+
+    def +(seconds)
+      TimeStamp.new(time: (@time + seconds))
+    end
+
+    def -(other)
+      @time - other.time
     end
 
   end

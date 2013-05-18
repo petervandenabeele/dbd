@@ -29,7 +29,7 @@ module Dbd
   private
 
     ##
-    # Allow max 1 ms offset of time_stamps precursing actual time
+    # Allow max 2 ms offset of time_stamps precursing actual time
     # reported by Wall clock (because of 1 ms granularity of JRuby,
     # that should be enough). The problem is that the newest_time_stamp
     # starts to precurse a few ns, compared to reported Wall clock
@@ -49,15 +49,15 @@ module Dbd
     # for Time.now (with ms granularity) is reported when passing here.
     def enforce_strictly_monotonic_time(fact)
       return if fact.time_stamp
-      new_time = Time.now.utc
+      new_time_stamp = TimeStamp.new
       newest_time_stamp = newest_time_stamp()
-      if newest_time_stamp && newest_time_stamp > (new_time + MAX_OFFSET)
-        raise OutOfOrderError, "newest_time_stamp.nsec = #{newest_time_stamp.nsec} :: new_time.nsec = #{new_time.nsec}"
+      if newest_time_stamp && (newest_time_stamp - new_time_stamp) > MAX_OFFSET
+        raise OutOfOrderError, "newest_time_stamp.nsec = #{newest_time_stamp.time.nsec} :: new_time_stamp.nsec = #{new_time_stamp.time.nsec}"
       end
-      if newest_time_stamp && new_time <= newest_time_stamp
-        new_time = newest_time_stamp + TIME_OFFSET
+      if newest_time_stamp && new_time_stamp <= newest_time_stamp
+        new_time_stamp = newest_time_stamp + TIME_OFFSET
       end
-      fact.time_stamp = new_time
+      fact.time_stamp = new_time_stamp
     end
 
   end

@@ -50,8 +50,9 @@ module Dbd
 
       describe "sets the time_stamp and adds 2 nanoseconds if needed" do
 
+        let(:far_future) { TimeStamp.new(time: Time.new(2500,1,1,12,0,0).utc) }
+
         it "don't touch the time_stamp if already set" do
-          far_future = Time.new(2500,1,1,12,0,0).utc
           data_fact.time_stamp = far_future
           subject << data_fact
           subject.first.time_stamp.should == far_future
@@ -59,31 +60,38 @@ module Dbd
 
         describe "sets the time_stamp if not yet set" do
 
-          let(:fake_time) { Time.now.utc }
+          let(:fake_time_stamp) { TimeStamp.new }
+          let(:shifted_fake_time_stamp) { fake_time_stamp + Rational('2/1_000_000_000')}
+
           before(:each) do
-            fake_time # get this before setting the stub
-            Time.stub(:now).and_return(double(utc: fake_time))
+            # get this before setting the stub
+            far_future # get this before setting the stub
+            fake_time_stamp # get this before setting the stub
+            shifted_fake_time_stamp # get this before setting the stub
           end
 
-          it "sets it (to Time.now.utc)" do
+          it "sets it (to TimeStamp.new)" do
+            TimeStamp.stub(:new).and_return(fake_time_stamp)
             data_fact.time_stamp.should be_nil # assert pre-condition
             subject << data_fact
-            subject.first.time_stamp.should == fake_time
+            subject.first.time_stamp.should == fake_time_stamp
           end
 
-          it "raise OutOfOrderError if new_time is smaller than newest_time_stamp" do
-            subject.stub(:newest_time_stamp).and_return Time.new(2500,1,1,12,0,0).utc
+          it "raise OutOfOrderError if new_time_stamp is smaller than newest_time_stamp" do
+            subject.stub(:newest_time_stamp).and_return(far_future)
             # this "should_receive" is needed to test that the exception is called in
             # enforce_strictly_monotonic_time (and not later in Fact::Collection)
             data_fact.should_receive(:time_stamp=).exactly(0).times
             lambda { subject << data_fact } . should raise_error OutOfOrderError
           end
 
-          it "sets a slightly higher time_stamp if new_time equal to newest_time_stamp" do
-            subject.stub(:newest_time_stamp).and_return(fake_time)
+          it "sets a slightly higher time_stamp if new_time_stamp equal to newest_time_stamp" do
+            subject.stub(:newest_time_stamp).and_return(fake_time_stamp)
+            TimeStamp.stub(:new).and_return(fake_time_stamp)
+            TimeStamp.any_instance.should_receive(:+).with(Rational('2/1_000_000_000')).
+              and_return(shifted_fake_time_stamp)
             subject << data_fact
-            subject.first.time_stamp.should > fake_time
-            subject.first.time_stamp.should < fake_time + Rational('4/1000_000_000')
+            subject.first.time_stamp.should == shifted_fake_time_stamp
           end
         end
       end
@@ -129,7 +137,7 @@ module Dbd
         end
 
         it "has time_stamp as second value" do
-          first_line.split(',')[1].should match(/"\d{4}-\d\d-\d\d \d\d:\d\d:\d\d UTC"/)
+          first_line.split(',')[1].should match(TimeStamp.to_s_regexp)
         end
 
         it "has an empty third value (signature of a provenance_fact)" do
@@ -196,7 +204,7 @@ module Dbd
         end
 
         it "has time_stamp as second value" do
-          first_line.split(',')[1].should match(/"\d{4}-\d\d-\d\d \d\d:\d\d:\d\d UTC"/)
+          first_line.split(',')[1].should match(TimeStamp.to_s_regexp)
         end
 
         it "has provenance_fact_1.subject as third value" do

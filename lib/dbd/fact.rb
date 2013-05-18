@@ -79,6 +79,7 @@ module Dbd
     # be set once (possibly after creation the object), but can
     # never be changed after that.
     def time_stamp=(time_stamp)
+      raise ArgumentError unless time_stamp.is_a?(TimeStamp)
       raise SetOnceError if (@time_stamp && time_stamp != @time_stamp)
       @time_stamp = time_stamp
     end
