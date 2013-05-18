@@ -6,6 +6,7 @@ module Dbd
       it "creates a new (random) time_stamp" do
         subject # should_not raise_error
       end
+    end
 
     describe ".time_format_regexp" do
       it "matches an example string" do
@@ -18,8 +19,6 @@ module Dbd
       it "returns a Time format string" do
         subject.to_s.should match(described_class.to_s_regexp)
       end
-    end
-
     end
   end
 end

@@ -35,12 +35,16 @@ module Dbd
   # in a fact stream.
   class TimeStamp
 
+    def initialize
+      @time = Time.new.utc
+    end
+
     def self.to_s_regexp
       /\d{4}-\d\d-\d\d \d\d:\d\d:\d\d\.\d{9} UTC/
     end
 
     def to_s
-      "2013-05-16 23:52:38.123456789 UTC"
+      @time.strftime('%F %T.%N %Z')
     end
 
   end
