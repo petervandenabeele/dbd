@@ -36,7 +36,7 @@ module Dbd
   class TimeStamp
 
     def initialize
-      @time = Time.new.utc
+      @time = Time.now.utc
     end
 
     def self.to_s_regexp
