@@ -50,7 +50,9 @@ module Dbd
 
       describe "sets the time_stamp and adds 2 nanoseconds if needed" do
 
-        let(:far_future) { TimeStamp.new(time: Time.new(2500,1,1,12,0,0).utc) }
+        # NOTE: reduced the far_future from 2500 to 2250 as work around for
+        #       http://jira.codehaus.org/browse/JRUBY-7095
+        let(:far_future) { TimeStamp.new(time: Time.new(2250,1,1,12,0,0).utc) }
 
         it "don't touch the time_stamp if already set" do
           data_fact.time_stamp = far_future
