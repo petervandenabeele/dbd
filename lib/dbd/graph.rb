@@ -34,7 +34,7 @@ module Dbd
     # that should be enough). The problem is that the newest_time_stamp
     # starts to precurse a few ns, compared to reported Wall clock
     # on JRuby, and this falsely triggers the OutOfOrderError below.
-    MAX_OFFSET = Rational('1/1000') # 1 ms
+    MAX_OFFSET = Rational('2/1000') # 2 ms
 
     ##
     # Offset given to reported Wall clock to enforce the
@@ -51,7 +51,7 @@ module Dbd
       return if fact.time_stamp
       new_time = Time.now.utc
       newest_time_stamp = newest_time_stamp()
-      if newest_time_stamp && new_time < (newest_time_stamp - MAX_OFFSET)
+      if newest_time_stamp && newest_time_stamp > (new_time + MAX_OFFSET)
         raise OutOfOrderError, "newest_time_stamp.nsec = #{newest_time_stamp.nsec} :: new_time.nsec = #{new_time.nsec}"
       end
       if newest_time_stamp && new_time <= newest_time_stamp
