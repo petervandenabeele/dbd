@@ -74,8 +74,8 @@ Open Source [MIT]
 
     graph = Dbd::Graph.new
 
-    provenance.each {|provenance_fact| graph << provenance_fact}
-    nobel_peace_2012.each {|fact| graph << fact}
+    provenance.each { |provenance_fact| graph << provenance_fact }
+    nobel_peace_2012.each { |fact| graph << fact }
 
     puts graph.to_CSV
 
