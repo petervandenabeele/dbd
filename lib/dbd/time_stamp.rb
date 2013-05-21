@@ -58,12 +58,7 @@ module Dbd
   private
 
     def new_time(larger_than)
-      time = Time.now.utc
-      if (larger_than && time <= larger_than.time)
-        larger_than.time
-      else
-        time
-      end + random_offset
+      max_with_nil(Time.now.utc, (larger_than && larger_than.time)) + random_offset
     end
 
     def random_offset
