@@ -42,8 +42,9 @@ module Dbd
     #
     # @param [Hash{Symbol => Object}] options
     # @option options [Time] :time (Time.now) force the time to this value
+    # @option options [TimeStamp] :larger_than (void) time_stamp must be larger than this
     def initialize(options={})
-      @time = options[:time] || Time.now.utc
+      @time = options[:time] || new_time(options[:larger_than])
     end
 
     ##
@@ -53,6 +54,23 @@ module Dbd
     def self.to_s_regexp
       /\d{4}-\d\d-\d\d \d\d:\d\d:\d\d\.\d{9} UTC/
     end
+
+  private
+
+    def new_time(larger_than)
+      time = Time.now.utc
+      if (larger_than && time <= larger_than.time)
+        larger_than.time
+      else
+        time
+      end + random_offset
+    end
+
+    def random_offset
+      Rational("#{1+rand(999)}/1_000_000_000")
+    end
+
+  public
 
     ##
     # to a nanosecond granularity and in UTC

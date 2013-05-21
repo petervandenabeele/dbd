@@ -15,8 +15,12 @@ I can add facts to a fact stream and the time_stamp is set
 
 * the to_s of this class shows the time_stamp to ns precision
 
+* the TimeStamp.new accepts a larger_than: option that
+  works out the offsetting for being strictly larger than the
+  newest_time_stamp in a Fact collection in a graph
+
 * the time_stamp class adds some random offset time
-  (e.g. between 100 and 99 ns) to a new time_stamp
+  (e.g. between 1 and 999 ns) to a new time_stamp
 
 * add a store method on Graph
   * that will store a (Provenance)Resource instance

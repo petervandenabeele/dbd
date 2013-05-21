@@ -29,35 +29,11 @@ module Dbd
   private
 
     ##
-    # Allow max 2 ms offset of time_stamps precursing actual time
-    # reported by Wall clock (because of 1 ms granularity of JRuby,
-    # that should be enough). The problem is that the newest_time_stamp
-    # starts to precurse a few ns, compared to reported Wall clock
-    # on JRuby, and this falsely triggers the OutOfOrderError below.
-    MAX_OFFSET = Rational('2/1000') # 2 ms
-
-    ##
-    # Offset given to reported Wall clock to enforce the
-    # monotonic increasing order.
-    TIME_OFFSET = Rational('2/1000_000_000') # 2 ns
-
-    ##
     # Setting a strictly monotonically increasing time_stamp (if not yet set).
-    #
-    # Sometimes an offset needs to be given, since on Java (JRuby) the Wall
-    # time has a resolution of only 1 ms so sometimes, the exact same value
-    # for Time.now (with ms granularity) is reported when passing here.
+    # The time_stamp also has some randomness (1 .. 999 ns) to reduce the
+    # chance on collisions when merging fact streams from different sources.
     def enforce_strictly_monotonic_time(fact)
-      return if fact.time_stamp
-      new_time_stamp = TimeStamp.new
-      newest_time_stamp = newest_time_stamp()
-      if newest_time_stamp && (newest_time_stamp - new_time_stamp) > MAX_OFFSET
-        raise OutOfOrderError, "newest_time_stamp.nsec = #{newest_time_stamp.time.nsec} :: new_time_stamp.nsec = #{new_time_stamp.time.nsec}"
-      end
-      if newest_time_stamp && new_time_stamp <= newest_time_stamp
-        new_time_stamp = newest_time_stamp + TIME_OFFSET
-      end
-      fact.time_stamp = new_time_stamp
+      fact.time_stamp = TimeStamp.new(larger_than: newest_time_stamp) unless fact.time_stamp
     end
 
   end
