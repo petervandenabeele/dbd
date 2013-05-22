@@ -1,0 +1,13 @@
+0.0.1 (12 May 2013)
+=====
+
+* Initial release showing the basic Fact format
+* a description with features and rationale
+
+0.0.2 (22 May 2013)
+=====
+
+* Better TimeStamp management (better randomness)
+* Adding a (Provenance)Resource directly to a Graph with <<
+* Simplification and cleaner implementations
+* Adding Fact to a Resource now sets (provenance_)subject

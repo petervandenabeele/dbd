@@ -9,9 +9,15 @@ module Dbd
 
     include Fact::Collection
 
-    def <<(fact)
-      enforce_strictly_monotonic_time(fact)
-      super(fact)
+    ##
+    # Add a Fact or Resource to the Graph.
+    #
+    # This will add a time_stamp to the Facts.
+    def <<(fact_or_resource)
+      Array(fact_or_resource).each do |fact|
+        enforce_strictly_monotonic_time(fact)
+        super(fact)
+      end
     end
 
     ##

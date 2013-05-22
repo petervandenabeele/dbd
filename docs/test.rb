@@ -26,7 +26,17 @@ nobel_peace_2012 << fact_EU_story
 
 graph = Dbd::Graph.new
 
-provenance.each {|provenance_fact| graph << provenance_fact}
-nobel_peace_2012.each {|fact| graph << fact}
+graph << provenance
+graph << nobel_peace_2012
 
 puts graph.to_CSV
+
+# "9f868d99-af27-4d83-86ae-ea5f4a1fa654","2013-05-22 21:25:48.136527770 UTC","","a6e028dd-a340-49ce-b3f8-2f158e257a87","provenance:context","public"
+# "28496b40-1891-4bd0-9ee1-0c6c2a878cc1","2013-05-22 21:25:48.136596276 UTC","","a6e028dd-a340-49ce-b3f8-2f158e257a87","dcterms:creator","@peter_v"
+# "98b9dd72-3473-4500-814d-d955eec2c5ee","2013-05-22 21:25:48.136621174 UTC","","a6e028dd-a340-49ce-b3f8-2f158e257a87","provenance:created_at","2013-05-22 21:25:40 UTC"
+# "a0482b46-414d-40df-b436-41142728fda6","2013-05-22 21:25:55.367834295 UTC","a6e028dd-a340-49ce-b3f8-2f158e257a87","cd66aece-0b21-4e3e-8286-4191efb3aea1","base:nobelPeacePriceWinner","2012"
+# "c1af381d-800f-4279-a2cc-ccccf31f5134","2013-05-22 21:25:55.367891996 UTC","a6e028dd-a340-49ce-b3f8-2f158e257a87","cd66aece-0b21-4e3e-8286-4191efb3aea1","rdfs:label","EU"
+# "ac08843a-baae-49ea-a725-81b7e199e8f9","2013-05-22 21:25:55.367910018 UTC","a6e028dd-a340-49ce-b3f8-2f158e257a87","cd66aece-0b21-4e3e-8286-4191efb3aea1","rdfs:comment","European Union"
+# "6e91fa40-daa8-45d1-916e-f9b243d01f2c","2013-05-22 21:25:55.367928936 UTC","a6e028dd-a340-49ce-b3f8-2f158e257a87","cd66aece-0b21-4e3e-8286-4191efb3aea1","base:story","A long period of peace,
+# that is a ""bliss""."
+

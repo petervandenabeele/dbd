@@ -48,7 +48,7 @@ module Dbd
         end
       end
 
-      describe "sets the time_stamp and adds 2 nanoseconds if needed" do
+      describe "sets the time_stamp and adds a random time (1..999 nanoseconds) if needed" do
 
         # NOTE: reduced the far_future from 2500 to 2250 as work around for
         #       http://jira.codehaus.org/browse/JRUBY-7095
@@ -83,6 +83,29 @@ module Dbd
             subject.first.time_stamp.should > fake_time_stamp
             (subject.first.time_stamp - fake_time_stamp).should < Rational('1/1000_000') # 1 us
           end
+        end
+      end
+
+      describe "a ProvenanceResource and a Resource" do
+
+        let(:provenance_resource) { Factories::ProvenanceResource.provenance_resource }
+        let(:resource) { Factories::Resource.facts_resource(provenance_resource.subject) }
+
+        it "does not fail" do
+          subject << provenance_resource
+        end
+
+        it "Adds the facts from the provenance_resource to the graph" do
+          subject << provenance_resource
+          subject.size.should == 2
+        end
+
+        it "Adds the facts from the provenance_resource and the resource to the graph" do
+          subject << provenance_resource
+          subject << resource
+          subject.size.should == 4
+          subject.first.should be_a(ProvenanceFact)
+          subject.last.class.should == Fact
         end
       end
     end

@@ -74,23 +74,22 @@ Open Source [MIT]
 
     graph = Dbd::Graph.new
 
-    provenance.each { |provenance_fact| graph << provenance_fact }
-    nobel_peace_2012.each { |fact| graph << fact }
+    graph << provenance
+    graph << nobel_peace_2012
 
     puts graph.to_CSV
 
 results in
 
-
     $ ruby test.rb
-    "611dbc31-6961-4a86-9259-4a2700add783","2013-05-12 21:50:19 UTC","","98b7bb17-9921-4d52-a08a-39667c2abb4c","provenance:context","public"
-    "79e9c0e7-b6fd-4735-817c-8c21c97c9575","2013-05-12 21:50:19 UTC","","98b7bb17-9921-4d52-a08a-39667c2abb4c","dcterms:creator","@peter_v"
-    "7d143a50-8a63-4637-8ab8-c2aa7fc6e12e","2013-05-12 21:50:19 UTC","","98b7bb17-9921-4d52-a08a-39667c2abb4c","provenance:created_at","2013-05-12 21:50:19 UTC"
-    "fd121b00-7934-4e22-81c8-8e810760c686","2013-05-12 21:50:19 UTC","98b7bb17-9921-4d52-a08a-39667c2abb4c","477a2e10-5e34-434d-8fc1-969277f61f9f","base:nobelPeacePriceWinner","2012"
-    "2d852fe1-911f-497d-9485-6c24a6000fbb","2013-05-12 21:50:19 UTC","98b7bb17-9921-4d52-a08a-39667c2abb4c","477a2e10-5e34-434d-8fc1-969277f61f9f","rdfs:label","EU"
-    "ab00b092-65a3-47c0-b10b-837cb0a5ad81","2013-05-12 21:50:19 UTC","98b7bb17-9921-4d52-a08a-39667c2abb4c","477a2e10-5e34-434d-8fc1-969277f61f9f","rdfs:comment","European Union"
-    "a8d6b34b-6e02-4a5e-8529-4785f090866a","2013-05-12 21:50:19 UTC","98b7bb17-9921-4d52-a08a-39667c2abb4c","477a2e10-5e34-434d-8fc1-969277f61f9f","base:story","A long period of peace,
-     that is a ""bliss""."
+    "aaf11676-d016-4e74-a502-2db042ea8c67","2013-05-22 21:30:08.830374243 UTC","","3fe37986-0c00-45fb-a574-ed2d0374b3fc","provenance:context","public"
+    "1fd25f59-b838-4872-a290-4857e783a12c","2013-05-22 21:30:08.830416859 UTC","","3fe37986-0c00-45fb-a574-ed2d0374b3fc","dcterms:creator","@peter_v"
+    "f118e66a-aa96-4523-ae47-4f9ceff11916","2013-05-22 21:30:08.830434360 UTC","","3fe37986-0c00-45fb-a574-ed2d0374b3fc","provenance:created_at","2013-05-22 21:30:08 UTC"
+    "c2d29b70-7135-4434-829b-f0640475aeb5","2013-05-22 21:30:08.830450090 UTC","3fe37986-0c00-45fb-a574-ed2d0374b3fc","f628f608-27c3-4eb6-a687-cb121f793a4d","base:nobelPeacePriceWinner","2012"
+    "9c8048a5-b9e3-459c-9e82-6ae195ce22e6","2013-05-22 21:30:08.830465012 UTC","3fe37986-0c00-45fb-a574-ed2d0374b3fc","f628f608-27c3-4eb6-a687-cb121f793a4d","rdfs:label","EU"
+    "5e06472d-2146-4933-a31c-90873fa9ed26","2013-05-22 21:30:08.830478065 UTC","3fe37986-0c00-45fb-a574-ed2d0374b3fc","f628f608-27c3-4eb6-a687-cb121f793a4d","rdfs:comment","European Union"
+    "d984e5c3-8acd-4c50-b40f-4cacf9f8f5c7","2013-05-22 21:30:08.830489061 UTC","3fe37986-0c00-45fb-a574-ed2d0374b3fc","f628f608-27c3-4eb6-a687-cb121f793a4d","base:story","A long period of peace,
+ that is a ""bliss""."
 
 [RDF]:              http://www.w3.org/RDF/
 [Rationale]:        http://github.com/petervandenabeele/dbd/blob/master/docs/rationale.md
