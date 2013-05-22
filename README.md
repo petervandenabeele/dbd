@@ -89,7 +89,7 @@ results in
     "9c8048a5-b9e3-459c-9e82-6ae195ce22e6","2013-05-22 21:30:08.830465012 UTC","3fe37986-0c00-45fb-a574-ed2d0374b3fc","f628f608-27c3-4eb6-a687-cb121f793a4d","rdfs:label","EU"
     "5e06472d-2146-4933-a31c-90873fa9ed26","2013-05-22 21:30:08.830478065 UTC","3fe37986-0c00-45fb-a574-ed2d0374b3fc","f628f608-27c3-4eb6-a687-cb121f793a4d","rdfs:comment","European Union"
     "d984e5c3-8acd-4c50-b40f-4cacf9f8f5c7","2013-05-22 21:30:08.830489061 UTC","3fe37986-0c00-45fb-a574-ed2d0374b3fc","f628f608-27c3-4eb6-a687-cb121f793a4d","base:story","A long period of peace,
- that is a ""bliss""."
+    that is a ""bliss""."
 
 [RDF]:              http://www.w3.org/RDF/
 [Rationale]:        http://github.com/petervandenabeele/dbd/blob/master/docs/rationale.md
