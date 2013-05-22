@@ -1,7 +1,6 @@
 module Dbd
 
   class OutOfOrderError < StandardError ; end
-  class SetOnceError < StandardError ; end
   class FactError < StandardError ; end
 
   class ProvenanceError < StandardError ; end

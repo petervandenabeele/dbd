@@ -63,23 +63,17 @@ module Dbd
       it "checks the type (too easy to try to give a Time arg" do
         lambda { fact_1.time_stamp = Time.now } . should raise_error(ArgumentError)
       end
+
       describe "set_once" do
 
         let(:time_stamp_now) { TimeStamp.new }
 
         it "can be set when nil" do
-          fact_1.time_stamp.should be_nil # assert pre-condition
           fact_1.time_stamp = time_stamp_now
           fact_1.time_stamp.should == time_stamp_now
         end
 
         describe "setting it two times" do
-          it "with the same value just works" do
-            fact_1.time_stamp = time_stamp_now
-            fact_1.time_stamp = time_stamp_now
-            fact_1.time_stamp.should == time_stamp_now
-          end
-
           it "with a different value raises a SetOnceError" do
             fact_1.time_stamp = time_stamp_now
             lambda { fact_1.time_stamp = (time_stamp_now+1) } . should raise_error SetOnceError

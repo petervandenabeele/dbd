@@ -80,8 +80,7 @@ module Dbd
     # never be changed after that.
     def time_stamp=(time_stamp)
       raise ArgumentError unless time_stamp.is_a?(TimeStamp)
-      raise SetOnceError if (@time_stamp && time_stamp != @time_stamp)
-      @time_stamp = time_stamp
+      set_once(:time_stamp, time_stamp)
     end
 
     ##
@@ -139,7 +138,8 @@ module Dbd
     #
     # @return [Array] an Array of error messages
     def errors
-      # id not validated, is set automatically later
+      # id not validated, is set automatically upon creation
+      # time_stamp not validated, is set automatically later
       # predicate not validated, is validated in initialize
       # object not validated, is validated in initialize
       [].tap do |a|
