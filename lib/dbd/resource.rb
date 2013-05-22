@@ -19,13 +19,21 @@ module Dbd
   # Resources that are associated with it.
   #
   # During build-up of a Fact, the subject and the provenance_subject
-  # can be nil. These will then be set in a local duplicate when the
-  # Fact is added (with '<<') to a resource.
+  # can be nil. These will then be set when the Fact is added
+  # (with '<<') to a resource.
   class Resource
 
     include Helpers::OrderedSetCollection
 
     attr_reader :subject
+
+    ##
+    # Getter for provenance_subject.
+    #
+    # Will be overridden in the ProvenanceResource subclass.
+    def provenance_subject
+      @provenance_subject
+    end
 
     ##
     # @return [Fact::Subject] a new (random) Resource subject
@@ -56,57 +64,28 @@ module Dbd
     ##
     # Add a fact.
     #
-    # * if it has no subject, the subject is set in a duplicate fact
+    # * if it has no subject, the subject is set (this modifies the fact !)
     # * if is has the same subject as the resource, added unchanged.
     # * if it has a different subject, a SubjectError is raised.
-    # * if it has no provenance_subject, the provenance_subject is set in a duplicate fact
+    # * if it has no provenance_subject, the provenance_subject is set (this modifies the fact !)
     # * if is has the same provenance_subject as the resource, added unchanged.
     # * if it has a different provenance_subject, a ProvenanceError is raised.
     def <<(fact)
       # TODO: check the type of the fact (Fact)
-      super(check_or_set_subject_and_provenance(fact))
-    end
-
-    ##
-    # Getter for provenance_subject.
-    #
-    # Will be overridden in the ProvenanceResource subclass.
-    def provenance_subject
-      @provenance_subject
+      set_subject!(fact)
+      set_provenance!(fact)
+      super(fact)
     end
 
   private
 
-    def check_or_set_subject_and_provenance(element)
-      with_subject = check_or_set_subject(element)
-      check_or_set_provenance(with_subject)
-    end
-
-    def check_or_set_subject(element)
-      if element.subject
-        if element.subject == @subject
-          return element
-        else
-          raise SubjectError,
-            "self.subject is #{subject} and element.subject is #{element.subject}"
-        end
-      else
-        element.dup_with_subject(@subject)
-      end
+    def set_subject!(fact)
+      fact.subject = subject
     end
 
     # this will be overriden in the ProvenanceResource sub_class
-    def check_or_set_provenance(element)
-      if element.provenance_subject
-        if element.provenance_subject == @provenance_subject
-          return element
-        else
-          raise ProvenanceError,
-            "self.provenance_subject is #{provenance_subject} and element.provenance_subject is #{element.provenance_subject}"
-        end
-      else
-        element.dup_with_provenance_subject(@provenance_subject)
-      end
+    def set_provenance!(fact)
+      fact.provenance_subject = provenance_subject
     end
 
     def validate_provenance_subject

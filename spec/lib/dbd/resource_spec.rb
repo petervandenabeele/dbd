@@ -78,35 +78,37 @@ module Dbd
             end
 
             describe "when the subject of the fact is not equal to the resource_subject" do
-              it "raises a SubjectError" do
-                lambda {resource << fact_2_with_subject } . should raise_error SubjectError
+              it "raises a SetOnceError" do
+                lambda {resource << fact_2_with_subject } . should raise_error(
+                  SetOnceError,
+                  "Value of subject was #{fact_2_with_subject.subject}, " \
+                  "trying to set it to #{resource.subject}")
               end
             end
           end
 
           describe "adding a fact without subject" do
 
-            let (:new_fact) do
+            before(:each) do
               resource << fact_with_provenance
-              resource.first
             end
 
-            it "insert a different instance" do
-              new_fact.should_not be_equal(fact_with_provenance)
+            let(:fact_in_resource) do
+              resource.single
             end
 
-            it "is from the same class" do
-              new_fact.should be_a(fact_with_provenance.class)
+            it "insert the same instance" do
+              fact_in_resource.should be_equal(fact_with_provenance)
             end
 
-            it "has copied over the other attributes except :id" do
-              (fact_with_provenance.class.attributes - [:id,:subject]).each do |attr|
-                new_fact.send(attr).should == fact_with_provenance.send(attr)
+            it "has kept the other attributes" do
+              (fact_with_provenance.class.attributes - [:subject]).each do |attr|
+                fact_in_resource.send(attr).should == fact_with_provenance.send(attr)
               end
             end
 
             it "has set the subject to the Resource subject" do
-              new_fact.subject.should == resource_subject
+              fact_in_resource.subject.should == resource_subject
             end
           end
         end
@@ -116,44 +118,40 @@ module Dbd
             describe "when the provenance_subject of the fact is equal to the provenance_subject of the resource" do
               it "inserts the fact unaltered" do
                 resource << fact_with_provenance_and_resource_subject
-                resource.first.should be_equal(fact_with_provenance_and_resource_subject)
+                resource.single.should be_equal(fact_with_provenance_and_resource_subject)
               end
             end
 
             describe "when the provenance_subject of the fact is not equal to the resource" do
               it "raises a ProvenanceError" do
-                lambda {resource << fact_with_incorrect_provenance } . should raise_error ProvenanceError
+                lambda { resource << fact_with_incorrect_provenance } . should raise_error(
+                  SetOnceError,
+                  "Value of provenance_subject was #{fact_with_incorrect_provenance.provenance_subject}, " \
+                  "trying to set it to #{resource.provenance_subject}")
               end
             end
           end
 
           describe "adding a fact without provenance_subject" do
 
-            let (:new_fact) do
+            before(:each) do
               resource << fact_with_resource_subject
-              resource.first
             end
 
-            it "insert a different instance" do
-              new_fact.should_not be_equal(fact_with_resource_subject)
+            let(:fact_in_resource) do
+              resource.single
             end
 
-            it "is from the same class" do
-              new_fact.should be_a(fact_with_resource_subject.class)
+            it "inserts the same instance" do
+              fact_in_resource.should be_equal(fact_with_resource_subject)
             end
 
-            it "has copied over the other attributes except :id" do
-              (new_fact.class.attributes - [:id,:provenance_subject]).each do |attr|
-                new_fact.send(attr).should == fact_with_resource_subject.send(attr)
-              end
-            end
-
-            it "has set the subject to the Resource subject" do
-              new_fact.provenance_subject.should == provenance_subject
+            it "has set the provenance_subject to the Resource provenance_subject" do
+             fact_in_resource.provenance_subject.should == provenance_subject
             end
           end
-        end
 
+        end
       end
     end
 

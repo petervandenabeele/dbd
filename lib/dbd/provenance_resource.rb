@@ -44,10 +44,11 @@ module Dbd
     ##
     # Check provenance_subject, which should be nil here
     # @param [ProvenanceFact] provenance_fact
-    # @return [ProvenanceFact] with validated nil on provenance_subject
-    def check_or_set_provenance(provenance_fact)
-      raise ProvenanceError if provenance_fact.provenance_subject
-      provenance_fact
+    def set_provenance!(provenance_fact)
+      if provenance_fact.provenance_subject
+        raise ProvenanceError,
+          "trying to set provenance_subject to#{provenance_fact.provenance_subject}"
+      end
     end
 
   end

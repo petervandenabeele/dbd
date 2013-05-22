@@ -47,17 +47,19 @@ module Dbd
       let(:fact_1) { Factories::Fact.fact_1(provenance_resource_subject) }
 
       describe "data facts" do
-        it "with correct subject" do
+        it "with correct subject it works" do
           provenance_resource << provenance_fact_context_with_correct_subject
           provenance_resource.first.subject.should == provenance_resource_subject
         end
 
-        it "with incorrect subject it raise SubjectError" do
+        it "with incorrect subject it raises SubjectError" do
           lambda { provenance_resource << provenance_fact_context_with_incorrect_subject } .
-            should raise_error SubjectError
+            should raise_error SetOnceError,
+              "Value of subject was #{provenance_fact_context_with_incorrect_subject.subject}, " \
+              "trying to set it to #{provenance_resource.subject}"
         end
 
-        it "with nil subject" do
+        it "with nil subject it sets the subject" do
           provenance_resource << provenance_fact_context
           provenance_resource.first.subject.should == provenance_resource_subject
         end
@@ -67,7 +69,7 @@ module Dbd
           provenance_resource.first.provenance_subject.should be_nil
         end
 
-        it "with incorrect provenance_subjecti ProvenanceError" do
+        it "with incorrect provenance_subject it raises ProvenanceError" do
           lambda { provenance_resource << fact_1 } .
             should raise_error ProvenanceError
         end

@@ -73,7 +73,7 @@ module Dbd
     end
 
     ##
-    # A set_once setter.
+    # A set_once setter for time_stamp.
     #
     # This implements a "form" of immutable behavior. The value can
     # be set once (possibly after creation the object), but can
@@ -81,6 +81,26 @@ module Dbd
     def time_stamp=(time_stamp)
       raise ArgumentError unless time_stamp.is_a?(TimeStamp)
       set_once(:time_stamp, time_stamp)
+    end
+
+    ##
+    # A set_once setter for subject.
+    #
+    # This implements a "form" of immutable behavior. The value can
+    # be set once (possibly after creation the object), but can
+    # never be changed after that.
+    def subject=(subject)
+      set_once(:subject, subject)
+    end
+
+    ##
+    # A set_once setter for provenance_subject.
+    #
+    # This implements a "form" of immutable behavior. The value can
+    # be set once (possibly after creation the object), but can
+    # never be changed after that.
+    def provenance_subject=(provenance_subject)
+      set_once(:provenance_subject, provenance_subject)
     end
 
     ##
@@ -138,10 +158,10 @@ module Dbd
     #
     # @return [Array] an Array of error messages
     def errors
-      # id not validated, is set automatically upon creation
-      # time_stamp not validated, is set automatically later
-      # predicate not validated, is validated in initialize
-      # object not validated, is validated in initialize
+      # * id not validated, is set automatically upon creation
+      # * time_stamp not validated, is set automatically later
+      # * predicate not validated, is validated in initialize
+      # * object not validated, is validated in initialize
       [].tap do |a|
         a << provenance_subject_error(provenance_subject)
         a << "Subject is missing" unless subject
@@ -159,32 +179,6 @@ module Dbd
     # Return [nil, String] nil or an error message
     def provenance_subject_error(provenance_subject)
       "Provenance subject is missing" unless provenance_subject
-    end
-
-    ##
-    # Builds duplicate with the subject set.
-    #
-    # @param [Subject] subject_arg
-    # @return [Fact] the duplicate fact
-    def dup_with_subject(subject_arg)
-      self.class.new(
-       provenance_subject: provenance_subject,
-       subject: subject_arg, # from arg
-       predicate: predicate,
-       object: object)
-    end
-
-    ##
-    # Builds duplicate with the provenance_subject set.
-    #
-    # @param [Subject] provenance_subject_arg
-    # @return [Fact] the duplicate fact
-    def dup_with_provenance_subject(provenance_subject_arg)
-      self.class.new(
-       provenance_subject: provenance_subject_arg, # from arg
-       subject: subject,
-       predicate: predicate,
-       object: object)
     end
 
   end
