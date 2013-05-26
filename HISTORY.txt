@@ -11,3 +11,9 @@
 * Adding a (Provenance)Resource directly to a Graph with <<
 * Simplification and cleaner implementations
 * Adding Fact to a Resource now sets (provenance_)subject
+
+0.0.3 (26 May 2013)
+=====
+
+* relax performance spec (on JRuby on Travis can be a bit slower)
+* add (Provenance)Fact#short for easer viewing of fact stream

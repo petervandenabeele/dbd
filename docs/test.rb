@@ -2,14 +2,16 @@ require 'dbd'
 
 provenance = Dbd::ProvenanceResource.new
 
-# PREFIX provenance: <https://data.vandenabeele.com/ontologies/provenance#>
+# PREFIX prov: <https://data.vandenabeele.com/ontologies/provenance#>
 # PREFIX dcterms: <http://purl.org/dc/terms/>
-fact_context_public = Dbd::ProvenanceFact.new(predicate: "provenance:context", object: "public")
+fact_context_public  = Dbd::ProvenanceFact.new(predicate: "prov:context", object: "public")
+fact_source_dbd      = Dbd::ProvenanceFact.new(predicate: "prov:source",  object: "http://github.com/petervandenabeele/dbd")
 fact_creator_peter_v = Dbd::ProvenanceFact.new(predicate: "dcterms:creator", object: "@peter_v")
-fact_created_at_now = Dbd::ProvenanceFact.new(predicate: "provenance:created_at", object: Time.now.utc)
+fact_created_now     = Dbd::ProvenanceFact.new(predicate: "dcterms:created", object: Time.now.utc)
 provenance << fact_context_public
+provenance << fact_source_dbd
 provenance << fact_creator_peter_v
-provenance << fact_created_at_now
+provenance << fact_created_now
 
 nobel_peace_2012 = Dbd::Resource.new(provenance_subject: provenance.subject)
 
@@ -29,14 +31,25 @@ graph = Dbd::Graph.new
 graph << provenance
 graph << nobel_peace_2012
 
+puts "facts in short representation:"
+puts graph.map(&:short)
+# [ prov ] : bbc2248e : prov:context             : public
+# [ prov ] : bbc2248e : prov:source              : http://github.com/petervandenabeele/dbd
+# [ prov ] : bbc2248e : dcterms:creator          : @peter_v
+# [ prov ] : bbc2248e : dcterms:created          : 2013-05-26 22:01:50 UTC
+# bbc2248e : 78edb900 : base:nobelPeacePriceWinn : 2012
+# bbc2248e : 78edb900 : rdfs:label               : EU
+# bbc2248e : 78edb900 : rdfs:comment             : European Union
+# bbc2248e : 78edb900 : base:story               : A long period of peace,_ that is a "bliss".
+
+puts "facts in full detail in CSV:"
 puts graph.to_CSV
-
-# "9f868d99-af27-4d83-86ae-ea5f4a1fa654","2013-05-22 21:25:48.136527770 UTC","","a6e028dd-a340-49ce-b3f8-2f158e257a87","provenance:context","public"
-# "28496b40-1891-4bd0-9ee1-0c6c2a878cc1","2013-05-22 21:25:48.136596276 UTC","","a6e028dd-a340-49ce-b3f8-2f158e257a87","dcterms:creator","@peter_v"
-# "98b9dd72-3473-4500-814d-d955eec2c5ee","2013-05-22 21:25:48.136621174 UTC","","a6e028dd-a340-49ce-b3f8-2f158e257a87","provenance:created_at","2013-05-22 21:25:40 UTC"
-# "a0482b46-414d-40df-b436-41142728fda6","2013-05-22 21:25:55.367834295 UTC","a6e028dd-a340-49ce-b3f8-2f158e257a87","cd66aece-0b21-4e3e-8286-4191efb3aea1","base:nobelPeacePriceWinner","2012"
-# "c1af381d-800f-4279-a2cc-ccccf31f5134","2013-05-22 21:25:55.367891996 UTC","a6e028dd-a340-49ce-b3f8-2f158e257a87","cd66aece-0b21-4e3e-8286-4191efb3aea1","rdfs:label","EU"
-# "ac08843a-baae-49ea-a725-81b7e199e8f9","2013-05-22 21:25:55.367910018 UTC","a6e028dd-a340-49ce-b3f8-2f158e257a87","cd66aece-0b21-4e3e-8286-4191efb3aea1","rdfs:comment","European Union"
-# "6e91fa40-daa8-45d1-916e-f9b243d01f2c","2013-05-22 21:25:55.367928936 UTC","a6e028dd-a340-49ce-b3f8-2f158e257a87","cd66aece-0b21-4e3e-8286-4191efb3aea1","base:story","A long period of peace,
+# "4c825f73-eda9-4b7f-a925-352f079857fb","2013-05-26 22:01:50.446202656 UTC","","bbc2248e-89f0-4480-853d-1dba51f1801d","prov:context","public"
+# "09fc0e21-4749-44ab-858b-254dc24ee5a4","2013-05-26 22:01:50.446241720 UTC","","bbc2248e-89f0-4480-853d-1dba51f1801d","prov:source","http://github.com/petervandenabeele/dbd"
+# "8db7f62a-d94b-43b1-b3de-827fd0e8b324","2013-05-26 22:01:50.446259428 UTC","","bbc2248e-89f0-4480-853d-1dba51f1801d","dcterms:creator","@peter_v"
+# "0a76e215-cca5-44c7-9f58-f093e3ef0da7","2013-05-26 22:01:50.446272919 UTC","","bbc2248e-89f0-4480-853d-1dba51f1801d","dcterms:created","2013-05-26 22:01:50 UTC"
+# "fe7c7b67-5344-4e64-a690-49c5e054b862","2013-05-26 22:01:50.446288352 UTC","bbc2248e-89f0-4480-853d-1dba51f1801d","78edb900-0ab7-4dc3-9e00-272de6d47c03","base:nobelPeacePriceWinner","2012"
+# "f22bc359-e2e1-4ef1-bd8a-7f6b01d1b703","2013-05-26 22:01:50.446307209 UTC","bbc2248e-89f0-4480-853d-1dba51f1801d","78edb900-0ab7-4dc3-9e00-272de6d47c03","rdfs:label","EU"
+# "7ddc9674-fcff-40bf-9fc9-d5ccdf80cfad","2013-05-26 22:01:50.446321315 UTC","bbc2248e-89f0-4480-853d-1dba51f1801d","78edb900-0ab7-4dc3-9e00-272de6d47c03","rdfs:comment","European Union"
+# "dc664aee-44cd-4fc8-a6f0-fdcf4242e9c5","2013-05-26 22:01:50.446333480 UTC","bbc2248e-89f0-4480-853d-1dba51f1801d","78edb900-0ab7-4dc3-9e00-272de6d47c03","base:story","A long period of peace,
 # that is a ""bliss""."
-

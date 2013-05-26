@@ -46,50 +46,54 @@ Open Source [MIT]
 
 ## Examples
 
-    require 'dbd'
+```
+require 'dbd'
 
-    provenance = Dbd::ProvenanceResource.new
+provenance = Dbd::ProvenanceResource.new
 
-    # PREFIX provenance: <https://data.vandenabeele.com/ontologies/provenance#>
-    # PREFIX dcterms: <http://purl.org/dc/terms/>
-    fact_context_public = Dbd::ProvenanceFact.new(predicate: "provenance:context", object: "public")
-    fact_creator_peter_v = Dbd::ProvenanceFact.new(predicate: "dcterms:creator", object: "@peter_v")
-    fact_created_at_now = Dbd::ProvenanceFact.new(predicate: "provenance:created_at", object: Time.now.utc)
-    provenance << fact_context_public
-    provenance << fact_creator_peter_v
-    provenance << fact_created_at_now
+# PREFIX prov: <https://data.vandenabeele.com/ontologies/provenance#>
+# PREFIX dcterms: <http://purl.org/dc/terms/>
+fact_context_public  = Dbd::ProvenanceFact.new(predicate: "prov:context", object: "public")
+fact_source_dbd      = Dbd::ProvenanceFact.new(predicate: "prov:source",  object: "http://github.com/petervandenabeele/dbd")
+fact_creator_peter_v = Dbd::ProvenanceFact.new(predicate: "dcterms:creator", object: "@peter_v")
+fact_created_now     = Dbd::ProvenanceFact.new(predicate: "dcterms:created", object: Time.now.utc)
+provenance << fact_context_public
+provenance << fact_source_dbd
+provenance << fact_creator_peter_v
+provenance << fact_created_now
 
-    nobel_peace_2012 = Dbd::Resource.new(provenance_subject: provenance.subject)
+nobel_peace_2012 = Dbd::Resource.new(provenance_subject: provenance.subject)
 
-    # PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-    # PREFIX base: <https://data.vandenabeele.com/ontologies/base#>
-    fact_nobel_peace_2012 = Dbd::Fact.new(predicate: "base:nobelPeacePriceWinner", object: "2012")
-    fact_EU_label = Dbd::Fact.new(predicate: "rdfs:label", object: "EU") #  this will use some RDF predicates in future
-    fact_EU_comment = Dbd::Fact.new(predicate: "rdfs:comment", object: "European Union")
-    fact_EU_story = Dbd::Fact.new(predicate: "base:story", object: "A long period of peace,\n that is a \"bliss\".")
-    nobel_peace_2012 << fact_nobel_peace_2012
-    nobel_peace_2012 << fact_EU_label
-    nobel_peace_2012 << fact_EU_comment
-    nobel_peace_2012 << fact_EU_story
+# PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+# PREFIX base: <https://data.vandenabeele.com/ontologies/base#>
+fact_nobel_peace_2012 = Dbd::Fact.new(predicate: "base:nobelPeacePriceWinner", object: "2012")
+fact_EU_label = Dbd::Fact.new(predicate: "rdfs:label", object: "EU") #  this will use some RDF predicates in future
+fact_EU_comment = Dbd::Fact.new(predicate: "rdfs:comment", object: "European Union")
+fact_EU_story = Dbd::Fact.new(predicate: "base:story", object: "A long period of peace,\n that is a \"bliss\".")
+nobel_peace_2012 << fact_nobel_peace_2012
+nobel_peace_2012 << fact_EU_label
+nobel_peace_2012 << fact_EU_comment
+nobel_peace_2012 << fact_EU_story
 
-    graph = Dbd::Graph.new
+graph = Dbd::Graph.new
 
-    graph << provenance
-    graph << nobel_peace_2012
+graph << provenance
+graph << nobel_peace_2012
 
-    puts graph.to_CSV
+puts "facts in short representation:"
+puts graph.map(&:short)
+# [ prov ] : bbc2248e : prov:context             : public
+# [ prov ] : bbc2248e : prov:source              : http://github.com/petervandenabeele/dbd
+# [ prov ] : bbc2248e : dcterms:creator          : @peter_v
+# [ prov ] : bbc2248e : dcterms:created          : 2013-05-26 22:01:50 UTC
+# bbc2248e : 78edb900 : base:nobelPeacePriceWinn : 2012
+# bbc2248e : 78edb900 : rdfs:label               : EU
+# bbc2248e : 78edb900 : rdfs:comment             : European Union
+# bbc2248e : 78edb900 : base:story               : A long period of peace,_ that is a "bliss".
 
-results in
-
-    $ ruby test.rb
-    "aaf11676-d016-4e74-a502-2db042ea8c67","2013-05-22 21:30:08.830374243 UTC","","3fe37986-0c00-45fb-a574-ed2d0374b3fc","provenance:context","public"
-    "1fd25f59-b838-4872-a290-4857e783a12c","2013-05-22 21:30:08.830416859 UTC","","3fe37986-0c00-45fb-a574-ed2d0374b3fc","dcterms:creator","@peter_v"
-    "f118e66a-aa96-4523-ae47-4f9ceff11916","2013-05-22 21:30:08.830434360 UTC","","3fe37986-0c00-45fb-a574-ed2d0374b3fc","provenance:created_at","2013-05-22 21:30:08 UTC"
-    "c2d29b70-7135-4434-829b-f0640475aeb5","2013-05-22 21:30:08.830450090 UTC","3fe37986-0c00-45fb-a574-ed2d0374b3fc","f628f608-27c3-4eb6-a687-cb121f793a4d","base:nobelPeacePriceWinner","2012"
-    "9c8048a5-b9e3-459c-9e82-6ae195ce22e6","2013-05-22 21:30:08.830465012 UTC","3fe37986-0c00-45fb-a574-ed2d0374b3fc","f628f608-27c3-4eb6-a687-cb121f793a4d","rdfs:label","EU"
-    "5e06472d-2146-4933-a31c-90873fa9ed26","2013-05-22 21:30:08.830478065 UTC","3fe37986-0c00-45fb-a574-ed2d0374b3fc","f628f608-27c3-4eb6-a687-cb121f793a4d","rdfs:comment","European Union"
-    "d984e5c3-8acd-4c50-b40f-4cacf9f8f5c7","2013-05-22 21:30:08.830489061 UTC","3fe37986-0c00-45fb-a574-ed2d0374b3fc","f628f608-27c3-4eb6-a687-cb121f793a4d","base:story","A long period of peace,
-    that is a ""bliss""."
+puts "facts in full detail in CSV:"
+puts graph.to_CSV
+```
 
 [RDF]:              http://www.w3.org/RDF/
 [Rationale]:        http://github.com/petervandenabeele/dbd/blob/master/docs/rationale.md
