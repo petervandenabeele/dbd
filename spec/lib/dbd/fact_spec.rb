@@ -11,6 +11,7 @@ module Dbd
     let(:subject_class) { Fact::Subject }
     let(:fact_1) { Factories::Fact.fact_1(provenance_subject) }
     let(:fact_2_with_subject) { Factories::Fact.fact_2_with_subject(provenance_subject) }
+    let(:fact_with_newline) { Factories::Fact.fact_with_newline(provenance_subject) }
 
     describe ".new_subject" do
       it "creates a new (random) subject" do
@@ -86,6 +87,11 @@ module Dbd
         fact_1.subject = subject
         fact_1.time_stamp = TimeStamp.new
         fact_1.short.should match(/^[0-9a-f]{8} : [0-9a-f]{8} : http:\/\/example\.org\/test\/ : Gandhi$/)
+      end
+
+      it "for a fact with a newline replaces it with a underscore" do
+        fact_with_newline.subject = subject
+        fact_with_newline.short.should match(/^[0-9a-f]{8} : [0-9a-f]{8} : http:\/\/example\.org\/test\/ : A long story_really.$/)
       end
     end
 

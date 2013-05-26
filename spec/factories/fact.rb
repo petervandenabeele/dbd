@@ -48,6 +48,14 @@ module Factories
         object: "European Union")
     end
 
+    def self.fact_with_newline(provenance_subject = nil, subject = nil)
+      factory_for.new(
+        provenance_subject: provenance_subject,
+        subject: subject,
+        predicate: "http://example.org/test/comment",
+        object: "A long story\nreally.")
+    end
+
     module Collection
 
       def self.factory_for_instance
