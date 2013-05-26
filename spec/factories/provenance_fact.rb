@@ -20,7 +20,7 @@ module Factories
       factory_for.new(
         subject: subject,
         predicate: "https://data.vandenabeele.com/ontologies/provenance#created_by",
-        object:"peter_v")
+        object: "peter_v")
     end
 
     def self.original_source(subject = nil)
@@ -28,6 +28,13 @@ module Factories
         subject: subject,
         predicate: "https://data.vandenabeele.com/ontologies/provenance#original_source",
         object: "this has a comma , a newline \n and a double quote \"")
+    end
+
+    def self.created(subject = nil)
+      factory_for.new(
+        subject: subject,
+        predicate: "dcterms:created",
+        object: Time.now.utc)
     end
 
   end

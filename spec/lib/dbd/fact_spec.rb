@@ -59,7 +59,6 @@ module Dbd
     end
 
     describe "time_stamp=" do
-
       it "checks the type (too easy to try to give a Time arg" do
         lambda { fact_1.time_stamp = Time.now } . should raise_error(ArgumentError)
       end
@@ -79,6 +78,14 @@ module Dbd
             lambda { fact_1.time_stamp = (time_stamp_now+1) } . should raise_error SetOnceError
           end
         end
+      end
+    end
+
+    describe "short" do
+      it "for a base fact shows provenance, subj, predicate, object" do
+        fact_1.subject = subject
+        fact_1.time_stamp = TimeStamp.new
+        fact_1.short.should match(/^[0-9a-f]{8} : [0-9a-f]{8} : http:\/\/example\.org\/test\/ : Gandhi$/)
       end
     end
 

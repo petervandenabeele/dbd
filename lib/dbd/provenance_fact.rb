@@ -72,5 +72,9 @@ module Dbd
       raise ProvenanceError if options[:provenance_subject]
     end
 
+    def provenance_subject_short
+      "[ prov ]"
+    end
+
   end
 end

@@ -3,7 +3,7 @@
 As a client
 I can read the predicates for a provenance_fact from provenance ontology
 
-* make an ontology in a separate gem
+* make an ontology in a separate gem (dbd_onto)
 * import that gem
 * use this ontology to build a validated Provenance Resource
 * use this validate Provenance Resource instance to better build

@@ -140,6 +140,15 @@ module Dbd
     end
 
     ##
+    # @return [String] a short string representation of a Fact
+    def short
+      "#{provenance_subject_short} : " \
+      "#{subject.to_s[0...8]} : " \
+      "#{predicate.to_s.ljust(24, ' ')[0...24]} : " \
+      "#{object.to_s[0..60]}"
+    end
+
+    ##
     # Executes the required update in used_provenance_subjects.
     #
     # For a Fact, pointing to a ProvenanceResource in it's provenance_subject,
@@ -179,6 +188,12 @@ module Dbd
     # Return [nil, String] nil or an error message
     def provenance_subject_error(provenance_subject)
       "Provenance subject is missing" unless provenance_subject
+    end
+
+  private
+
+    def provenance_subject_short
+      "#{provenance_subject.to_s[0...8]}"
     end
 
   end

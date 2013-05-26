@@ -14,6 +14,10 @@ module Dbd
         Factories::ProvenanceFact.created_by(subject)
       end
 
+      let(:provenance_fact_created) do
+        Factories::ProvenanceFact.created(subject)
+      end
+
       describe "#new" do
         it "has a unique id (new_id.class)" do
           provenance_fact_1.id.should be_a(id_class)
@@ -45,6 +49,16 @@ module Dbd
             predicate: "test",
             object: "test") } .
               should raise_error ProvenanceError
+        end
+      end
+
+      describe "short" do
+        it "for a provenance fact shows [ prov ], subj, predicate, object" do
+          provenance_fact_1.short.should match(/^\[ prov \] : [0-9a-f]{8} : https:\/\/data\.vandenabeel : public$/)
+        end
+
+        it "for a provenance fact with non string object also works" do
+          provenance_fact_created.short.should match(/^\[ prov \] : [0-9a-f]{8} : dcterms:created          : \d{4}/)
         end
       end
 
