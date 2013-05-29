@@ -3,7 +3,9 @@
 This is facts based data store, inspired by [RDF] concepts, but adding a log based structure and fine-grained provenance.
 
 * [Why?][Rationale]
-* <http://github.com/petervandenabeele/dbd>
+* <https://github.com/petervandenabeele/dbd>
+* <http://rubydoc.info/github/petervandenabeele/dbd/frames/>
+* <https://rubygems.org/gems/dbd>
 
 [![Gem Version](https://badge.fury.io/rb/dbd.png)](http://badge.fury.io/rb/dbd)
 [![Build Status](https://travis-ci.org/petervandenabeele/dbd.png?branch=master)](http://travis-ci.org/petervandenabeele/dbd)
