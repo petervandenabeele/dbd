@@ -17,3 +17,8 @@
 
 * relax performance spec (on JRuby on Travis can be a bit slower)
 * add (Provenance)Fact#short for easer viewing of fact stream
+
+0.0.4 (29 May 2013)
+=====
+
+* Graph#<< takes recursive collections of Facts

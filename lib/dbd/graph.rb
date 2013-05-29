@@ -10,11 +10,11 @@ module Dbd
     include Fact::Collection
 
     ##
-    # Add a Fact or Resource to the Graph.
+    # Add a Fact or Resource or any set recursively.
     #
     # This will add a time_stamp to the Facts.
-    def <<(fact_or_resource)
-      Array(fact_or_resource).each do |fact|
+    def <<(recursive_fact_collection)
+      loop_recursively(recursive_fact_collection) do |fact|
         enforce_strictly_monotonic_time(fact)
         super(fact)
       end
@@ -40,6 +40,20 @@ module Dbd
     # chance on collisions when merging fact streams from different sources.
     def enforce_strictly_monotonic_time(fact)
       fact.time_stamp = TimeStamp.new(larger_than: newest_time_stamp) unless fact.time_stamp
+    end
+
+    def loop_recursively(recursive_collection, &block)
+      Array(recursive_collection).each do |fact_or_collection|
+        further_recursion_or_stop(fact_or_collection, &block)
+      end
+    end
+
+    def further_recursion_or_stop(fact_or_collection, &block)
+      if fact_or_collection.respond_to?(:each)
+        loop_recursively(fact_or_collection, &block)
+      else
+        yield(fact_or_collection)
+      end
     end
 
   end

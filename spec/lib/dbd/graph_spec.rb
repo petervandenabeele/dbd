@@ -18,6 +18,10 @@ module Dbd
     let(:subject_regexp) { Fact::Subject.regexp }
     let(:id_regexp) { Fact::ID.regexp }
 
+    let(:provenance_resource) { Factories::ProvenanceResource.provenance_resource }
+    let(:resource) { Factories::Resource.facts_resource(provenance_resource.subject) }
+    let(:resource_array) { [provenance_resource, resource]}
+
     describe "create a graph" do
       it "does not fail" do
         described_class.new # should_not raise_error
@@ -88,9 +92,6 @@ module Dbd
 
       describe "a ProvenanceResource and a Resource" do
 
-        let(:provenance_resource) { Factories::ProvenanceResource.provenance_resource }
-        let(:resource) { Factories::Resource.facts_resource(provenance_resource.subject) }
-
         it "does not fail" do
           subject << provenance_resource
         end
@@ -106,6 +107,29 @@ module Dbd
           subject.size.should == 4
           subject.first.should be_a(ProvenanceFact)
           subject.last.class.should == Fact
+        end
+      end
+
+      describe "an array of Resources" do
+        it "does not fail" do
+          subject << resource_array
+        end
+
+        it "Adds the facts from the provenance_resource and the resource to the graph" do
+          subject << resource_array
+          subject.first.class.should == ProvenanceFact
+          subject.last.class.should == Fact
+          subject.size.should == 4
+        end
+
+        it "goes 3 levels over collection deep" do
+          subject << [resource_array]
+          subject.size.should == 4
+        end
+
+        it "works with different levels deep in 1 collection" do
+          subject << [provenance_resource, [[resource]]]
+          subject.size.should == 4
         end
       end
     end
