@@ -14,7 +14,7 @@ module Dbd
     #
     # This will add a time_stamp to the Facts.
     def <<(recursive_fact_collection)
-      loop_recursively(recursive_fact_collection) do |fact|
+      do_recursively(recursive_fact_collection) do |fact|
         enforce_strictly_monotonic_time(fact)
         super(fact)
       end
@@ -40,20 +40,6 @@ module Dbd
     # chance on collisions when merging fact streams from different sources.
     def enforce_strictly_monotonic_time(fact)
       fact.time_stamp = TimeStamp.new(larger_than: newest_time_stamp) unless fact.time_stamp
-    end
-
-    def loop_recursively(recursive_collection, &block)
-      Array(recursive_collection).each do |fact_or_collection|
-        further_recursion_or_stop(fact_or_collection, &block)
-      end
-    end
-
-    def further_recursion_or_stop(fact_or_collection, &block)
-      if fact_or_collection.respond_to?(:each)
-        loop_recursively(fact_or_collection, &block)
-      else
-        yield(fact_or_collection)
-      end
     end
 
   end
