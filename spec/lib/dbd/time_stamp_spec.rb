@@ -80,8 +80,13 @@ module Dbd
       end
     end
 
-    describe "<=" do
+    describe ">=" do
+      it "is true if time_stamp_2 is really larger" do
+        time_stamp_2.should >= time_stamp_1
+      end
+    end
 
+    describe "<=" do
       it "is true if time_stamp_1 is really smaller" do
         time_stamp_1.should <= time_stamp_2
       end

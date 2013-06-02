@@ -35,6 +35,7 @@ module Dbd
   # in a fact stream.
   class TimeStamp
 
+    include DefineEquality(:time)
     attr_reader :time
 
     ##
@@ -73,14 +74,6 @@ module Dbd
       @time.strftime('%F %T.%N %Z')
     end
 
-    def ==(other)
-      @time == other.time
-    end
-
-    def hash
-      @time.hash
-    end
-
     def >(other)
       @time > other.time
     end
@@ -89,12 +82,16 @@ module Dbd
       @time < other.time
     end
 
+    def >=(other)
+      @time >= other.time
+    end
+
     def <=(other)
       @time <= other.time
     end
 
     def +(seconds)
-      TimeStamp.new(time: (@time + seconds))
+      self.class.new(time: (@time + seconds))
     end
 
     def -(other)
