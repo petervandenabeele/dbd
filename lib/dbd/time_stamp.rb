@@ -59,7 +59,7 @@ module Dbd
   private
 
     def new_time(larger_than)
-      max_with_nil(Time.now.utc, (larger_than && larger_than.time)) + random_offset
+      [Time.now.utc, (larger_than && larger_than.time)].compact.max + random_offset
     end
 
     def random_offset
