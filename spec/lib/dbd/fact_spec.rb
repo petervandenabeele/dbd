@@ -47,7 +47,7 @@ module Dbd
           described_class.new(
             predicate: nil,
             object: string_object_1)
-        end . should raise_error PredicateError
+        end.should raise_error(PredicateError)
       end
 
       it "a nil object raises ObjectError" do
@@ -55,13 +55,13 @@ module Dbd
           described_class.new(
             predicate: data_predicate,
             object: nil)
-        end . should raise_error ObjectError
+        end.should raise_error(ObjectError)
       end
     end
 
     describe "time_stamp=" do
       it "checks the type (too easy to try to give a Time arg" do
-        lambda { fact_1.time_stamp = Time.now } . should raise_error(ArgumentError)
+        lambda{ fact_1.time_stamp = Time.now }.should raise_error(ArgumentError)
       end
 
       describe "set_once" do
@@ -76,7 +76,7 @@ module Dbd
         describe "setting it two times" do
           it "with a different value raises a SetOnceError" do
             fact_1.time_stamp = time_stamp_now
-            lambda { fact_1.time_stamp = (time_stamp_now+1) } . should raise_error SetOnceError
+            lambda{ fact_1.time_stamp = (time_stamp_now+1) }.should raise_error(RubyPeterV::SetOnceError)
           end
         end
       end

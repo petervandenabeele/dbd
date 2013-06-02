@@ -14,7 +14,7 @@ module Dbd
     #
     # This will add a time_stamp to the Facts.
     def <<(recursive_fact_collection)
-      do_recursively(recursive_fact_collection) do |fact|
+      recursive_fact_collection.each_recursively do |fact|
         enforce_strictly_monotonic_time(fact)
         super(fact)
       end

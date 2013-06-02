@@ -79,8 +79,8 @@ module Dbd
 
             describe "when the subject of the fact is not equal to the resource_subject" do
               it "raises a SetOnceError" do
-                lambda {resource << fact_2_with_subject } . should raise_error(
-                  SetOnceError,
+                lambda{ resource << fact_2_with_subject }.should raise_error(
+                  RubyPeterV::SetOnceError,
                   "Value of subject was #{fact_2_with_subject.subject}, " \
                   "trying to set it to #{resource.subject}")
               end
@@ -123,9 +123,9 @@ module Dbd
             end
 
             describe "when the provenance_subject of the fact is not equal to the resource" do
-              it "raises a ProvenanceError" do
-                lambda { resource << fact_with_incorrect_provenance } . should raise_error(
-                  SetOnceError,
+              it "raises a SetOnceError" do
+                lambda{ resource << fact_with_incorrect_provenance }.should raise_error(
+                  RubyPeterV::SetOnceError,
                   "Value of provenance_subject was #{fact_with_incorrect_provenance.provenance_subject}, " \
                   "trying to set it to #{resource.provenance_subject}")
               end
