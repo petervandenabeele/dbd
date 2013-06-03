@@ -22,3 +22,8 @@
 =====
 
 * Graph#<< takes recursive collections of Facts
+
+0.0.5 (03 June 2013)
+=====
+
+* use ruby_peter_v 0.0.8 which does not have max_with_nil
