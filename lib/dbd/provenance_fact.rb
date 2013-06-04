@@ -52,18 +52,6 @@ module Dbd
       "Provenance subject should not be present in Provenance Fact" if provenance_subject
     end
 
-    ##
-    # Builds duplicate with the subject set.
-    #
-    # @param [Subject] subject_arg
-    # @return [ProvenanceFact] the duplicate fact
-    def dup_with_subject(subject_arg)
-      self.class.new(
-       subject: subject_arg, # from arg
-       predicate: predicate,
-       object: object)
-    end
-
   private
 
     ##
