@@ -6,9 +6,9 @@ module Factories
     end
 
     def self.provenance_resource
-      factory_for.new.tap do |resource|
-        resource << Factories::ProvenanceFact.context
-        resource << Factories::ProvenanceFact.created_by
+      factory_for.new.tap do |provenance_resource|
+        provenance_resource << Factories::ProvenanceFact.context
+        provenance_resource << Factories::ProvenanceFact.created_by
       end
     end
 

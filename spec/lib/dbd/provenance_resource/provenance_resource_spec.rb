@@ -15,7 +15,8 @@ module Dbd
 
       describe "with a subject argument" do
         it "has stored the resource_subject" do
-          described_class.new(subject: provenance_resource_subject).subject.should == provenance_resource_subject
+          described_class.new(subject: provenance_resource_subject).subject.
+            should == provenance_resource_subject
         end
       end
 
@@ -46,13 +47,13 @@ module Dbd
       let(:provenance_fact_context_with_correct_subject) { Factories::ProvenanceFact.context(provenance_resource_subject) }
       let(:fact_1) { Factories::Fact.fact_1(provenance_resource_subject) }
 
-      describe "data facts" do
+      describe "adding provenance facts with << " do
         it "with correct subject it works" do
           provenance_resource << provenance_fact_context_with_correct_subject
           provenance_resource.first.subject.should == provenance_resource_subject
         end
 
-        it "with incorrect subject it raises SubjectError" do
+        it "with incorrect subject it raises SetOnceError" do
           lambda{ provenance_resource << provenance_fact_context_with_incorrect_subject }.
             should raise_error(RubyPeterV::SetOnceError),
               "Value of subject was #{provenance_fact_context_with_incorrect_subject.subject}, " \
@@ -64,14 +65,9 @@ module Dbd
           provenance_resource.first.subject.should == provenance_resource_subject
         end
 
-        it "with nil (=correct) provenance_subject" do
+        it "with nil (=correct) provenance_subject it is a noop" do
           provenance_resource << provenance_fact_context
           provenance_resource.first.provenance_subject.should be_nil
-        end
-
-        it "with incorrect provenance_subject it raises ProvenanceError" do
-          lambda{ provenance_resource << fact_1 }.
-            should raise_error ProvenanceError
         end
       end
     end

@@ -5,16 +5,22 @@ module Dbd
   ##
   # The Graph stores the Facts and ProvenanceFacts in an in-memory
   # collection structure.
+  #
+  # On the other hand, it acts as an "interface" that can be
+  # re-implemented by other persistence mechanisms (duck typing).
   class Graph
 
     include Fact::Collection
 
     ##
-    # Add a Fact or Resource or any set recursively.
+    # Add a Fact, Resource or other recursive collection of facts.
     #
-    # This will add a time_stamp to the Facts.
-    def <<(recursive_fact_collection)
-      recursive_fact_collection.each_recursively do |fact|
+    # Side effect: this will set the time_stamp of the facts.
+    #
+    # @param [#time_stamp, #time_stamp=, #each] fact_collection A recursive collection of facts
+    # @return [Graph] self
+    def <<(fact_collection)
+      fact_collection.each_recursively do |fact|
         enforce_strictly_monotonic_time(fact)
         super(fact)
       end

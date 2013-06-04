@@ -2,7 +2,7 @@ require 'dbd/helpers/ordered_set_collection'
 
 module Dbd
   ##
-  # A Resource is a collection of facts that have the same subject.
+  # A Resource is a collection of Facts that have the same subject.
   #
   # In the real-world this is a mainly an "instance" about which all
   # facts are giving information (e.g. a conference, a person, a
@@ -51,6 +51,7 @@ module Dbd
     #
     # The provenance_subject argument is required. This will typically be
     # taken from an earlier created ProvenanceResource.
+    #
     # @param [Hash{Symbol => Object}] options
     # @option options [Fact::Subject] :provenance_subject (required) the subject of the provenance resource for this resource
     # @option options [Fact::Subject] :subject (new_subject) Optional: the subject for the resource
@@ -62,8 +63,9 @@ module Dbd
     end
 
     ##
-    # Add a fact.
+    # Add a Fact (strictly not a ProvenanceFact)
     #
+    # Side effects on subject and provenance_subject:
     # * if it has no subject, the subject is set (this modifies the fact !)
     # * if is has the same subject as the resource, added unchanged.
     # * if it has a different subject, a SubjectError is raised.
@@ -71,7 +73,7 @@ module Dbd
     # * if is has the same provenance_subject as the resource, added unchanged.
     # * if it has a different provenance_subject, a ProvenanceError is raised.
     def <<(fact)
-      # TODO: check the type of the fact (Fact)
+      assert_provenance_fact(fact)
       set_subject!(fact)
       set_provenance!(fact)
       super(fact)
@@ -83,13 +85,19 @@ module Dbd
       fact.subject = subject
     end
 
-    # this will be overriden in the ProvenanceResource sub_class
+    # Will be overriden in the ProvenanceResource sub_class.
     def set_provenance!(fact)
       fact.provenance_subject = provenance_subject
     end
 
+    # Will be overriden in the ProvenanceResource sub_class.
     def validate_provenance_subject
       raise ProvenanceError if @provenance_subject.nil?
+    end
+
+    # Assert _no_ ProvenanceFacts here
+    def assert_provenance_fact(fact)
+      raise ArgumentError, "Trying to add a ProvenanceFact to a Resource." if (fact.class == ProvenanceFact)
     end
 
   end

@@ -5,45 +5,9 @@ module Dbd
 
     let(:provenance_subject) { Factories::ProvenanceResource.provenance_resource.subject }
 
-    let(:resource) do
-      described_class.new(provenance_subject: provenance_subject)
-    end
+    let(:resource) { described_class.new(provenance_subject: provenance_subject) }
 
     let(:resource_subject) { resource.subject }
-
-    describe ".new_subject" do
-      it "returns a Fact#new_subject" do
-        described_class.new_subject.should be_a(Fact.new_subject.class)
-      end
-    end
-
-    describe ".new" do
-      describe "with a provenance_subject argument" do
-        it "has created a subject" do
-          resource.subject.should be_a(described_class.new_subject.class)
-        end
-
-        it "has stored the provenance_subject" do
-          resource.provenance_subject.should == provenance_subject
-        end
-      end
-
-      describe "with an explicit subject argument" do
-        it "has stored the given subject" do
-          explicit_subject = described_class.new_subject
-          described_class.new(
-            subject: explicit_subject,
-            provenance_subject: provenance_subject).subject.should == explicit_subject
-        end
-      end
-
-      describe "with a nil provenance_subject argument" do
-        it "raises a ProvenanceError" do
-          lambda { described_class.new(provenance_subject: nil) } .
-            should raise_error ProvenanceError
-        end
-      end
-    end
 
     describe "the fact collection" do
 
@@ -67,6 +31,12 @@ module Dbd
           resource << fact_with_provenance
           resource.size.should == 2
         end
+
+        it "complains if a provenance_subject is added" do
+          lambda{ resource << provenance_fact_context }.should raise_error(
+            ArgumentError,
+            "Trying to add a ProvenanceFact to a Resource.")
+         end
 
         describe "checks and sets subject :" do
           describe "adding a fact with subject :" do
@@ -138,9 +108,7 @@ module Dbd
               resource << fact_with_resource_subject
             end
 
-            let(:fact_in_resource) do
-              resource.single
-            end
+            let(:fact_in_resource) { resource.single }
 
             it "inserts the same instance" do
               fact_in_resource.should be_equal(fact_with_resource_subject)
@@ -150,14 +118,7 @@ module Dbd
              fact_in_resource.provenance_subject.should == provenance_subject
             end
           end
-
         end
-      end
-    end
-
-    describe "Factories::Resource" do
-      it ".facts_resource works" do
-        Factories::Resource.facts_resource(provenance_subject)
       end
     end
   end

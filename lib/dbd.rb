@@ -10,5 +10,5 @@ require 'dbd/resource'
 require 'dbd/provenance_resource'
 require 'dbd/graph'
 
-require 'dbd/rdf'
+require 'dbd/rdf_base'
 require 'dbd/repo'

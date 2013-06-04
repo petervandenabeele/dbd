@@ -17,13 +17,13 @@ module Dbd
     end
 
     ##
-    # Add a ProvenanceFact.
+    # Add a ProvenanceFact (strictly only a ProvenanceFact).
     #
+    # Side effect on subject:
     # * if it has no subject, the subject is set in a duplicate provenance_fact
     # * if is has the same subject as the resource, added unchanged.
     # * if it has a different subject, a SubjectError is raised.
     def <<(provenance_fact)
-      # TODO: check the type of the provenance_fact (ProvenanceFact)
       super
     end
 
@@ -32,23 +32,25 @@ module Dbd
     ##
     # Should not be called in ProvenanceResource subclass.
     def provenance_subject
-      raise RuntimeError, "provenance_subject should not be called in ProvenanceResource."
+      raise ProvenanceError, "provenance_subject should not be called in ProvenanceResource."
     end
 
     ##
-    # Validate that provenance_subject is not set here.
+    # Validate that provenance_subject is not present here.
     def validate_provenance_subject
       raise ProvenanceError if @provenance_subject
     end
 
     ##
-    # Check provenance_subject, which should be nil here
+    # A noop for ProvenanceResource.
     # @param [ProvenanceFact] provenance_fact
     def set_provenance!(provenance_fact)
-      if provenance_fact.provenance_subject
-        raise ProvenanceError,
-          "trying to set provenance_subject to#{provenance_fact.provenance_subject}"
-      end
+    end
+
+    ##
+    # Assert _only_ ProvenanceFacts here
+    def assert_provenance_fact(fact)
+      raise ArgumentError, "Trying to add a non-ProvenanceFact to a ProvenanceResource." if (fact.class != ProvenanceFact)
     end
 
   end
