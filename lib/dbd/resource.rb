@@ -7,7 +7,7 @@ module Dbd
   # In the real-world this is a mainly an "instance" about which all
   # facts are giving information (e.g. a conference, a person, a
   # bicycle, ...). More generally this can also be used to describe
-  # classes and other concepts in the software system.
+  # classes and other concepts in the system.
   #
   # A new (random) subject is generated for a resource. In Dbd,
   # a subject is a random uuid (like a oid), not a meaningful URI
@@ -25,15 +25,7 @@ module Dbd
 
     include Helpers::OrderedSetCollection
 
-    attr_reader :subject
-
-    ##
-    # Getter for provenance_subject.
-    #
-    # Will be overridden in the ProvenanceResource subclass.
-    def provenance_subject
-      @provenance_subject
-    end
+    attr_reader :subject, :provenance_subject
 
     ##
     # @return [Fact::Subject] a new (random) Resource subject
@@ -56,9 +48,8 @@ module Dbd
     # @option options [Fact::Subject] :provenance_subject (required) the subject of the provenance resource for this resource
     # @option options [Fact::Subject] :subject (new_subject) Optional: the subject for the resource
     def initialize(options)
-      @subject = options[:subject] || self.class.new_subject
-      @provenance_subject = options[:provenance_subject]
-      validate_provenance_subject
+      set_subject(options)
+      set_provenance_subject(options)
       super()
     end
 
@@ -73,30 +64,33 @@ module Dbd
     # * if is has the same provenance_subject as the resource, added unchanged.
     # * if it has a different provenance_subject, a ProvenanceError is raised.
     def <<(fact)
-      assert_provenance_fact(fact)
-      set_subject!(fact)
-      set_provenance!(fact)
+      assert_fact_provenance_fact(fact)
+      set_fact_subject!(fact)
+      set_fact_provenance!(fact)
       super(fact)
     end
 
   private
 
-    def set_subject!(fact)
+    def set_subject(options)
+      @subject = options[:subject] || self.class.new_subject
+    end
+
+    def set_provenance_subject(options)
+      @provenance_subject = options[:provenance_subject]
+      raise ProvenanceError, "provenance_subject cannot be nil" if @provenance_subject.nil?
+    end
+
+    def set_fact_subject!(fact)
       fact.subject = subject
     end
 
-    # Will be overriden in the ProvenanceResource sub_class.
-    def set_provenance!(fact)
+    def set_fact_provenance!(fact)
       fact.provenance_subject = provenance_subject
     end
 
-    # Will be overriden in the ProvenanceResource sub_class.
-    def validate_provenance_subject
-      raise ProvenanceError if @provenance_subject.nil?
-    end
-
     # Assert _no_ ProvenanceFacts here
-    def assert_provenance_fact(fact)
+    def assert_fact_provenance_fact(fact)
       raise ArgumentError, "Trying to add a ProvenanceFact to a Resource." if fact.provenance_fact?
     end
 

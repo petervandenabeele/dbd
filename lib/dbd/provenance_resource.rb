@@ -1,7 +1,9 @@
 module Dbd
   ##
   # A ProvenanceResource is derived from a Resource, specifically
-  # for a Provenance (does not have and does need a provenance_subject)
+  # for a Provenance.
+  #
+  # The main difference is that it does not have a provenance_subject.
   class ProvenanceResource < Resource
 
     ##
@@ -29,29 +31,32 @@ module Dbd
 
   private
 
-    ##
     # Should not be called in ProvenanceResource subclass.
     def provenance_subject
-      raise ProvenanceError, "provenance_subject should not be called in ProvenanceResource."
+      raise NoMethodError, "provenance_subject should not be called in ProvenanceResource."
     end
 
-    ##
+    def set_provenance_subject(options)
+      raise ArgumentError, "provenance_subject must not be in the options" if options[:provenance_subject]
+    end
+
     # Validate that provenance_subject is not present here.
+    # This should never raise as the setter was blocked above.
     def validate_provenance_subject
       raise ProvenanceError if @provenance_subject
     end
 
     ##
-    # A noop for ProvenanceResource.
-    # @param [ProvenanceFact] provenance_fact
-    def set_provenance!(provenance_fact)
-      # Do nothing
+    # Assert _only_ ProvenanceFacts here
+    def assert_fact_provenance_fact(fact)
+      raise ArgumentError, "Trying to add a non-ProvenanceFact to a ProvenanceResource." unless fact.provenance_fact?
     end
 
     ##
-    # Assert _only_ ProvenanceFacts here
-    def assert_provenance_fact(fact)
-      raise ArgumentError, "Trying to add a non-ProvenanceFact to a ProvenanceResource." unless fact.provenance_fact?
+    # A noop for ProvenanceResource.
+    # @param [ProvenanceFact] provenance_fact
+    def set_fact_provenance!(provenance_fact)
+      # Do nothing
     end
 
   end

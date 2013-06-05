@@ -23,7 +23,7 @@ module Dbd
       describe "with a provenance_subject argument" do
         it "raises an ProvenanceError" do
           lambda{ described_class.new(provenance_subject: provenance_resource_subject) }.
-            should raise_error(ProvenanceError)
+            should raise_error(ArgumentError)
         end
       end
     end
