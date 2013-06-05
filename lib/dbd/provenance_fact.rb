@@ -52,6 +52,15 @@ module Dbd
       "Provenance subject should not be present in Provenance Fact" if provenance_subject
     end
 
+    ##
+    # Confirms this is a ProvenanceFact
+    #
+    # Needed for validations that depend on different behavior for
+    # a provenance_fact (mainly, no provenance_subject).
+    def provenance_fact?
+      true
+    end
+
   private
 
     ##

@@ -97,7 +97,7 @@ module Dbd
 
     # Assert _no_ ProvenanceFacts here
     def assert_provenance_fact(fact)
-      raise ArgumentError, "Trying to add a ProvenanceFact to a Resource." if (fact.class == ProvenanceFact)
+      raise ArgumentError, "Trying to add a ProvenanceFact to a Resource." if fact.provenance_fact?
     end
 
   end

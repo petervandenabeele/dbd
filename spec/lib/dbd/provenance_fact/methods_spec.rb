@@ -58,5 +58,11 @@ module Dbd
         h.should be_empty
       end
     end
+
+    describe "provenance_fact?" do
+      it "is true for ProvenanceFact or derived from it" do
+        provenance_fact_1.provenance_fact?.should be_true
+      end
+    end
   end
 end

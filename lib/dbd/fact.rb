@@ -190,6 +190,15 @@ module Dbd
       "Provenance subject is missing" unless provenance_subject
     end
 
+    ##
+    # Confirms this is not a ProvenanceFact
+    #
+    # Needed for validations that depend on different behavior for
+    # a provenance_fact (mainly, no provenance_subject).
+    def provenance_fact?
+      false
+    end
+
   private
 
     def provenance_subject_short

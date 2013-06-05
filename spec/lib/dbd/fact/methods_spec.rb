@@ -2,6 +2,7 @@ require 'spec_helper'
 
 module Dbd
   describe Fact do
+
     let(:provenance_subject) { ProvenanceFact.new_subject }
     let(:subject) { described_class.new_subject }
     let(:fact_1) { Factories::Fact.fact_1(provenance_subject) }
@@ -9,7 +10,7 @@ module Dbd
     let(:fact_with_newline) { Factories::Fact.fact_with_newline(provenance_subject) }
 
     describe "time_stamp=" do
-      it "checks the type (too easy to try to give a Time arg" do
+      it "checks the type (too easy to try to give a Time arg)" do
         lambda{ fact_1.time_stamp = Time.now }.should raise_error(ArgumentError)
       end
 
@@ -23,6 +24,11 @@ module Dbd
         end
 
         describe "setting it two times" do
+          it "with the value succeeds" do
+            fact_1.time_stamp = time_stamp_now
+            fact_1.time_stamp = time_stamp_now
+          end
+
           it "with a different value raises a SetOnceError" do
             fact_1.time_stamp = time_stamp_now
             lambda{ fact_1.time_stamp = (time_stamp_now+1) }.should raise_error(RubyPeterV::SetOnceError)
@@ -32,7 +38,7 @@ module Dbd
     end
 
     describe "short" do
-      it "for a base fact shows provenance, subj, predicate, object" do
+      it "for a base fact shows provenance, subject, predicate, object" do
         fact_1.subject = subject
         fact_1.time_stamp = TimeStamp.new
         fact_1.short.should match(/^[0-9a-f]{8} : [0-9a-f]{8} : http:\/\/example\.org\/test\/ : Gandhi$/)
@@ -83,6 +89,12 @@ module Dbd
 
       it "there are 6 values" do
         fact_1.values.size.should == 6
+      end
+    end
+
+    describe "provenance_fact?" do
+      it "is false for a base fact or derived from it that is not a ProvenanceFact " do
+        fact_1.provenance_fact?.should be_false
       end
     end
   end

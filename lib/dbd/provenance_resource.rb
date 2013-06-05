@@ -45,12 +45,13 @@ module Dbd
     # A noop for ProvenanceResource.
     # @param [ProvenanceFact] provenance_fact
     def set_provenance!(provenance_fact)
+      # Do nothing
     end
 
     ##
     # Assert _only_ ProvenanceFacts here
     def assert_provenance_fact(fact)
-      raise ArgumentError, "Trying to add a non-ProvenanceFact to a ProvenanceResource." if (fact.class != ProvenanceFact)
+      raise ArgumentError, "Trying to add a non-ProvenanceFact to a ProvenanceResource." unless fact.provenance_fact?
     end
 
   end
