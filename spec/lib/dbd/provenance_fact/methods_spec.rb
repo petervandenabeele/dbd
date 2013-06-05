@@ -59,6 +59,16 @@ module Dbd
       end
     end
 
+    describe "attributes and values" do
+      it "there are 6 attributes" do
+        described_class.attributes.size.should == 6
+      end
+
+      it "there are 6 values" do
+        provenance_fact_1.values.size.should == 6
+      end
+    end
+
     describe "provenance_fact?" do
       it "is true for ProvenanceFact or derived from it" do
         provenance_fact_1.provenance_fact?.should be_true
