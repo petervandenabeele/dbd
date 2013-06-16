@@ -130,6 +130,10 @@ module Dbd
           subject.size.should == 4
         end
       end
+
+      it "returns self" do
+        (subject << Factories::Fact::Collection.provenance_facts(new_subject)).should be_a(described_class)
+      end
     end
   end
 end

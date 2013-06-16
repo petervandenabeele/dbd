@@ -24,6 +24,7 @@ module Dbd
         enforce_strictly_monotonic_time(fact)
         super(fact)
       end
+      self
     end
 
     ##
