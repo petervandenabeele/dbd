@@ -9,6 +9,8 @@ module Dbd
     let(:string_object_1)  { "Gandhi" }
     let(:id_class) { Fact::ID }
     let(:subject_class) { Fact::Subject }
+    let(:forced_id) { described_class.new_id }
+    let(:fact_with_forced_id) { Factories::Fact.fact_with_forced_id(forced_id) }
 
     describe ".new_subject" do
       it "creates a new (random) subject" do
@@ -29,6 +31,10 @@ module Dbd
 
       it "two facts have different id" do
         fact_1.id.should_not == fact_2_with_subject.id
+      end
+
+      it "optionally sets the id" do
+        fact_with_forced_id.id.should == forced_id
       end
 
       it "new sets the provenance_subject" do

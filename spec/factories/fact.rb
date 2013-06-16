@@ -16,6 +16,13 @@ module Factories
         object: "Gandhi")
     end
 
+    def self.fact_with_forced_id(forced_id)
+      factory_for.new(
+        id: forced_id,
+        predicate: "http://example.org/test/name",
+        object: "Gandhi")
+    end
+
     def self.fact_2_with_subject(provenance_subject = nil)
       factory_for.new(
         provenance_subject: provenance_subject,
