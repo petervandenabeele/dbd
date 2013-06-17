@@ -66,12 +66,23 @@ module Dbd
       Rational("#{1+rand(999)}/1_000_000_000")
     end
 
+    def self.time_format
+      '%F %T.%N %Z'
+    end
+
   public
 
     ##
-    # to a nanosecond granularity and in UTC
+    # with a nanosecond granularity and in UTC
     def to_s
-      @time.strftime('%F %T.%N %Z')
+      @time.strftime(self.class.time_format)
+    end
+
+    ##
+    # with a nanosecond granularity and in UTC
+    def self.from_s(time_string)
+      date_time = DateTime.strptime(time_string, time_format)
+      TimeStamp.new(time: date_time.to_time.utc)
     end
 
     def >(other)
