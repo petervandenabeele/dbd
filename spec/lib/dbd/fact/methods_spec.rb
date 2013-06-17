@@ -92,6 +92,22 @@ module Dbd
       end
     end
 
+    def values
+      ["825e44d5-af33-4858-8047-549bd813daa8",
+       "2013-06-17 21:55:09.967653012 UTC",
+       "40fab407-9b04-4a51-9a52-d978abfcbb1f",
+       "2e9fbc87-2e94-47e9-a8fd-121cc4bc3e8f",
+       "http://example.org/test/name",
+       "Gandhi"]
+    end
+
+    describe "from_values" do
+      it "reads the values correctly" do
+        fact = described_class.from_values(values)
+        fact.values.should == values
+      end
+    end
+
     describe "provenance_fact?" do
       it "is false for a base fact or derived from it that is not a ProvenanceFact " do
         fact_1.provenance_fact?.should be_false

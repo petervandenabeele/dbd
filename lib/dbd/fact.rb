@@ -143,6 +143,16 @@ module Dbd
     end
 
     ##
+    # Constructs a Fact from a values array
+    # (e.g. pulled from a CSV row).
+    #
+    # @param [Array] values Required : the array with values, organized as in attributes
+    # @return [Fact] the constructed fact
+    def self.from_values(values)
+      new(Hash[[self.attributes, values].transpose])
+    end
+
+    ##
     # @return [String] a short string representation of a Fact
     def short
       "#{provenance_subject_short} : " \
