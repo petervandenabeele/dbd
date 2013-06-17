@@ -27,3 +27,8 @@
 =====
 
 * use ruby_peter_v 0.0.8 which does not have max_with_nil
+
+0.0.6 (17 June 2013)
+=====
+
+* Fact.from_CSV reads from a CSV stream (file or stringIO)
