@@ -70,6 +70,15 @@ module Factories
         object: "A long story\nreally.")
     end
 
+    def self.full_fact
+      fixed_id = Factories::Fact::ID.fixed_id
+      fact_with_forced_id(fixed_id).tap do |fact|
+        fact.time_stamp = Factories::TimeStamp.fixed_time_stamp
+        fact.subject = Factories::Fact::Subject.fixed_subject
+        fact.provenance_subject = Factories::Fact::Subject.fixed_provenance_subject
+      end
+    end
+
     module Collection
 
       def self.factory_for_instance

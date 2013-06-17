@@ -7,6 +7,7 @@ module Dbd
     let(:data_predicate)  { "http://example.org/test/name" }
     let(:string_object_1)  { "Gandhi" }
     let(:fact_2_with_subject) { Factories::Fact.fact_2_with_subject(provenance_subject) }
+    let(:full_fact) { Factories::Fact.full_fact }
 
     describe "factory works" do
       it "with explicit provenance_subject" do
@@ -60,6 +61,20 @@ module Dbd
             Factories::Fact.data_fact(provenance_subject, subject).
               subject.should == subject
           end
+        end
+      end
+
+      describe "full_fact" do
+        it "does not fail" do
+          full_fact
+        end
+
+        it "has values for all attributes" do
+          full_fact.values.all?.should be_true
+        end
+
+        it "is valid (no errors)" do
+          full_fact.errors.should be_empty
         end
       end
     end

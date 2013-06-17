@@ -17,7 +17,7 @@ module Dbd
     #
     # Side effect: this will set the time_stamp of the facts.
     #
-    # @param [#time_stamp, #time_stamp=, #each] fact_collection A recursive collection of facts
+    # @param [#time_stamp, #time_stamp=, #each] fact_collection a recursive collection of facts
     # @return [Graph] self
     def <<(fact_collection)
       fact_collection.each_recursively do |fact|
