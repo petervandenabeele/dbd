@@ -39,6 +39,20 @@ module Dbd
       end.encode("utf-8")
     end
 
+    ##
+    # Import a graph from a CSV string.
+    #
+    # @param [String] csv a string that contains the CSV serialization
+    # @return [Graph] the imported graph
+    def self.from_CSV(csv)
+      Graph.new.tap do |graph|
+        CSV.new(csv).each do |row|
+          # TODO validate the input formats (e.g. invalid uuid codes)
+          graph << Fact.from_values(row)
+        end
+      end
+    end
+
   private
 
     ##

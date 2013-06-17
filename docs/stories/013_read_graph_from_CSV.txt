@@ -1,0 +1,10 @@
+013_read_graph_from_CSV
+
+As a client
+I can read a graph from a CSV file
+
+* read a CSV file
+* with some special characters
+* with comma, new line and escape double quote
+* without double quotes
+* checks that each Fact has 6 valid fields
