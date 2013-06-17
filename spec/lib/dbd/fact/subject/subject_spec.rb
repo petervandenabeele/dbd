@@ -3,8 +3,16 @@ require 'spec_helper'
 module Dbd
   class Fact
     describe Subject do
-      it ".new creates a Subject" do
-        subject.should be_a(described_class)
+      describe ".new" do
+        it "creates a Subject" do
+          subject.should be_a(described_class)
+        end
+
+        it "takes an optional :uuid option argument" do
+          uuid = "fe75eae3-cb14-4495-b726-7ecba8798b6d"
+          subject = described_class.new(uuid: uuid)
+          subject.to_s.should == uuid
+        end
       end
 
       it "#to_s is a UUID string" do

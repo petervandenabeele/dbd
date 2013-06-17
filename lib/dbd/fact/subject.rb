@@ -4,12 +4,12 @@ module Dbd
   class Fact
     class Subject
 
-      def initialize
-        @uuid = Helpers::UUID.new
+      def initialize(options = {})
+        @uuid = options[:uuid] || Helpers::UUID.new.to_s
       end
 
       def to_s
-        @uuid.to_s
+        @uuid
       end
 
       def self.regexp
