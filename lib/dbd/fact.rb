@@ -123,9 +123,11 @@ module Dbd
     # @option options [#to_s] :object Required :  the object for this Fact (required)
     # @option options [Subject] :provenance_subject (nil) Optional: the subject of the provenance(resource|fact)
     # @option options [Subject] :subject (nil) Optional: the subject for this Fact
+    # @option options [TimeStamp] :time_stamp (nil) Optional: the time_stamp for this Fact
     # @option options [ID] :id Optional : set the id
     def initialize(options)
       @id = options[:id] || self.class.new_id
+      @time_stamp = options[:time_stamp]
       @provenance_subject = options[:provenance_subject]
       @subject = options[:subject]
       @predicate = options[:predicate]

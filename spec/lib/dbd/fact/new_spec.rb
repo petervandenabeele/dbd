@@ -11,6 +11,8 @@ module Dbd
     let(:subject_class) { Fact::Subject }
     let(:forced_id) { described_class.new_id }
     let(:fact_with_forced_id) { Factories::Fact.fact_with_forced_id(forced_id) }
+    let(:time_stamp) { TimeStamp.new }
+    let(:fact_with_time_stamp) { Factories::Fact.fact_with_time_stamp(time_stamp) }
 
     describe ".new_subject" do
       it "creates a new (random) subject" do
@@ -35,6 +37,10 @@ module Dbd
 
       it "optionally sets the id" do
         fact_with_forced_id.id.should == forced_id
+      end
+
+      it "optionally sets the time_stamp" do
+        fact_with_time_stamp.time_stamp.should == time_stamp
       end
 
       it "new sets the provenance_subject" do

@@ -23,6 +23,13 @@ module Factories
         object: "Gandhi")
     end
 
+    def self.fact_with_time_stamp(time_stamp)
+      factory_for.new(
+        time_stamp: time_stamp,
+        predicate: "http://example.org/test/name",
+        object: "Gandhi")
+    end
+
     def self.fact_2_with_subject(provenance_subject = nil)
       factory_for.new(
         provenance_subject: provenance_subject,
