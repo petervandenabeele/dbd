@@ -81,8 +81,19 @@ module Dbd
     ##
     # with a nanosecond granularity and in UTC
     def self.from_s(time_string)
-      date_time = DateTime.strptime(time_string, time_format)
-      TimeStamp.new(time: date_time.to_time.utc)
+      # For ns precision in JRuby this extended process is required
+      time_hash = DateTime._strptime(time_string, time_format)
+      raise(
+        ArgumentError,
+        "Time zone must be UTC, was #{time_hash[:zone]}") unless time_hash[:zone] == "UTC"
+      time = Time.utc(time_hash[:year],
+                      time_hash[:mon],
+                      time_hash[:mday],
+                      time_hash[:hour],
+                      time_hash[:min],
+                      time_hash[:sec],
+                      time_hash[:sec_fraction] * 1_000_000)
+      TimeStamp.new(time: time)
     end
 
     def >(other)

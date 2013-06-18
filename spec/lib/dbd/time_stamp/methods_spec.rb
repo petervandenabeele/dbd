@@ -32,6 +32,11 @@ module Dbd
         time_stamp = described_class.from_s(a_time_stamp)
         time_stamp.to_s.should == a_time_stamp
       end
+
+      it "raises ArgumentError is time_zone is not UTC" do
+        time_CET = a_time_stamp.sub(/UTC/, 'CET')
+        lambda{ described_class.from_s(time_CET) }.should raise_error ArgumentError
+      end
     end
  end
 end
