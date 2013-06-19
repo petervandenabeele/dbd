@@ -32,3 +32,8 @@
 =====
 
 * Fact.from_CSV reads from a CSV stream (file or stringIO)
+
+0.0.7 (18 June 2013)
+=====
+
+* fix a bug in TimeStamp round trip in JRuby

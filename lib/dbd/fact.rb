@@ -143,13 +143,14 @@ module Dbd
     end
 
     ##
-    # Constructs a Fact from a values array
+    # Constructs a Fact or ProvenanceFact from a values array
     # (e.g. pulled from a CSV row).
     #
     # @param [Array] values Required : the array with values, organized as in attributes
-    # @return [Fact] the constructed fact
+    # @return [Fact, ProvenanceFact] the constructed fact
     def self.from_values(values)
-      new(Hash[[self.attributes, values].transpose])
+      hash = hash_from_values(values)
+      fact_from_hash(hash)
     end
 
     ##
@@ -204,7 +205,7 @@ module Dbd
     end
 
     ##
-    # Confirms this is not a ProvenanceFact
+    # Confirms this is not a ProvenanceFact.
     #
     # Needed for validations that depend on different behavior for
     # a provenance_fact (mainly, no provenance_subject).
@@ -216,6 +217,20 @@ module Dbd
 
     def provenance_subject_short
       "#{provenance_subject.to_s[0...8]}"
+    end
+
+    def self.hash_from_values(values)
+      # Do not keep "empty" values (e.g. the provenance_subject for a ProvenanceFact).
+      attributes_values_array = [attributes, values].transpose.select{|a,v| v != ''}
+      Hash[attributes_values_array]
+    end
+
+    def self.fact_from_hash(hash)
+      if hash[:provenance_subject]
+        new(hash)
+      else
+        ProvenanceFact.new(hash)
+      end
     end
 
   end
