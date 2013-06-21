@@ -164,6 +164,26 @@ module Dbd
     end
 
     ##
+    # Equivalent facts (have all same values, except time_stamp).
+    #
+    # For "equality" only a test on the id is used. If the id
+    # (which is a uuid) is the same, we assume that is the "same"
+    # fact. This equivalent? method is used to test is equal
+    # methods are "really" equivalent.
+    #
+    # The time_stamp may be slightly different (because shifts
+    # of a few nanoseconds will be required to resolve collisions
+    # on merge).
+    def equivalent?(other)
+      attributes_without_time_stamp = self.class.attributes - [:time_stamp]
+      attributes_without_time_stamp.all?{ |attribute| self.send(attribute) == other.send(attribute) } &&
+        (self.time_stamp - other.time_stamp).abs <= MAX_DRIFT
+    end
+
+    # Max drift in time_stamp
+    MAX_DRIFT = Rational("1/1_000_000")
+
+    ##
     # @return [String] a short string representation of a Fact
     def short
       "#{provenance_subject_short} : " \

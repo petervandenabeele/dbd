@@ -109,9 +109,15 @@ module Dbd
       end
     end
 
+    describe "provenance_fact?" do
+      it "is false for a base fact or derived from it that is not a ProvenanceFact " do
+        fact_1.provenance_fact?.should be_false
+      end
+    end
+
     def string_values
       ["825e44d5-af33-4858-8047-549bd813daa8",
-       "2013-06-17 21:55:09.967653012 UTC",
+       "2013-06-17 21:55:09.967653013 UTC",
        "40fab407-9b04-4a51-9a52-d978abfcbb1f",
        "2e9fbc87-2e94-47e9-a8fd-121cc4bc3e8f",
        "http://example.org/test/name",
@@ -125,9 +131,47 @@ module Dbd
       end
     end
 
-    describe "provenance_fact?" do
-      it "is false for a base fact or derived from it that is not a ProvenanceFact " do
-        fact_1.provenance_fact?.should be_false
+    describe "equivalent?" do
+
+      let(:ref) { described_class.from_string_values(string_values) }
+
+      it "is true for facts with same values" do
+        other = described_class.from_string_values(string_values)
+        other.should be_equivalent(ref)
+      end
+
+      it "is false for each of the entries largely different" do
+        (0...string_values.size).each do |index|
+          string_values_1_modified = string_values.dup.tap { |_string_values|
+            _string_values[index][3] = '4' # different and valid for all cases
+          }
+          other = described_class.from_string_values(string_values_1_modified)
+          other.should_not be_equivalent(ref)
+        end
+      end
+
+      it "is true when the time_stamp is 500 ns larger" do
+        string_values_time_modified = string_values.dup.tap { |_string_values|
+          _string_values[1] = "2013-06-17 21:55:09.967653513 UTC"
+        }
+        other = described_class.from_string_values(string_values_time_modified)
+        other.should be_equivalent(ref)
+      end
+
+      it "is true when the time_stamp is 500 ns smaller" do
+        string_values_time_modified = string_values.dup.tap { |_string_values|
+          _string_values[1] = "2013-06-17 21:55:09.967652513 UTC"
+        }
+        other = described_class.from_string_values(string_values_time_modified)
+        other.should be_equivalent(ref)
+      end
+
+      it "is false when the time_stamp is 1500 ns larger" do
+        string_values_time_modified = string_values.dup.tap { |_string_values|
+          _string_values[1] = "2013-06-17 21:55:09.967654513 UTC"
+        }
+        other = described_class.from_string_values(string_values_time_modified)
+        other.should_not be_equivalent(ref)
       end
     end
   end
