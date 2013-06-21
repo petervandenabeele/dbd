@@ -6,6 +6,8 @@ module Dbd
 
       let(:time) { Time.now.utc }
 
+      let(:time_string) { Factories::TimeStamp.fixed_time_string }
+
       before(:each) do
         time
         Time.stub(:now).and_return(time)
@@ -15,10 +17,15 @@ module Dbd
         subject # should_not raise_error
       end
 
-      it "with :time option, sets that to time" do
+      it "with :time option given a Time object, sets that to time" do
         near_future = time + 100
         time_stamp = described_class.new(time: near_future)
         time_stamp.time.should == near_future
+      end
+
+      it "with :time option given a String object, sets that to time" do
+        time_stamp = described_class.new(time: time_string)
+        time_stamp.to_s.should == time_string
       end
 
       it "with :larger_than, sets a time that is strictly and slightly larger than this" do

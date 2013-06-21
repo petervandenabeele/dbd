@@ -42,10 +42,11 @@ module Dbd
     # Builds a new TimeStamp.
     #
     # @param [Hash{Symbol => Object}] options
-    # @option options [Time] :time (Time.now) force the time to this value
+    # @option options [Time, String] :time (Time.now) force the time to this value
     # @option options [TimeStamp] :larger_than (void) time_stamp must be larger than this
     def initialize(options={})
       @time = options[:time] || new_time(options[:larger_than])
+      @time = time_from_s(@time) if @time.is_a?(String)
     end
 
     ##
@@ -66,8 +67,29 @@ module Dbd
       Rational("#{1+rand(999)}/1_000_000_000")
     end
 
-    def self.time_format
+    def time_format
       '%F %T.%N %Z'
+    end
+
+    ##
+    # with a nanosecond granularity and in UTC
+    def time_from_s(time_string)
+      # For ns precision in JRuby this extended process is required
+      time_hash = DateTime._strptime(time_string, time_format)
+      validate_time_zone(time_hash)
+      Time.utc(time_hash[:year],
+               time_hash[:mon],
+               time_hash[:mday],
+               time_hash[:hour],
+               time_hash[:min],
+               time_hash[:sec],
+               time_hash[:sec_fraction] * 1_000_000)
+    end
+
+    def validate_time_zone(time_hash)
+      unless time_hash[:zone] == 'UTC'
+        raise(ArgumentError, "Time zone was #{time_hash[:zone]}, must be 'UTC'")
+      end
     end
 
   public
@@ -75,25 +97,7 @@ module Dbd
     ##
     # with a nanosecond granularity and in UTC
     def to_s
-      @time.strftime(self.class.time_format)
-    end
-
-    ##
-    # with a nanosecond granularity and in UTC
-    def self.from_s(time_string)
-      # For ns precision in JRuby this extended process is required
-      time_hash = DateTime._strptime(time_string, time_format)
-      raise(
-        ArgumentError,
-        "Time zone must be UTC, was #{time_hash[:zone]}") unless time_hash[:zone] == "UTC"
-      time = Time.utc(time_hash[:year],
-                      time_hash[:mon],
-                      time_hash[:mday],
-                      time_hash[:hour],
-                      time_hash[:min],
-                      time_hash[:sec],
-                      time_hash[:sec_fraction] * 1_000_000)
-      TimeStamp.new(time: time)
+      @time.strftime(time_format)
     end
 
     def >(other)

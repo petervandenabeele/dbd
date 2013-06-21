@@ -5,8 +5,12 @@ module Factories
       ::Dbd::TimeStamp
     end
 
+    def self.fixed_time_string
+      "2013-06-17 21:55:09.967653013 UTC"
+    end
+
     def self.fixed_time_stamp
-      factory_for.from_s("2013-06-17 21:55:09.967653012 UTC")
+      factory_for.new(time: fixed_time_string)
     end
   end
 end
