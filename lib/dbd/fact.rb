@@ -129,9 +129,10 @@ module Dbd
     # @option options [ID] :id Optional : set the id
     def initialize(options)
       @id = options[:id] || self.class.new_id
-      self.time_stamp = options[:time_stamp]
-      self.provenance_subject = options[:provenance_subject]
-      self.subject = options[:subject]
+      @time_stamp = options[:time_stamp]
+      validate_time_stamp_class(@time_stamp)
+      @provenance_subject = options[:provenance_subject]
+      @subject = options[:subject]
       @predicate = options[:predicate]
       @object = options[:object]
       raise PredicateError, "predicate cannot be nil" if predicate.nil?

@@ -2,9 +2,9 @@ require 'spec_helper'
 
 module Dbd
   describe Fact do
+    let(:provenance_subject) { ProvenanceFact.new_subject }
     let(:fact_1) { Factories::Fact.fact_1(provenance_subject) }
     let(:fact_2_with_subject) { Factories::Fact.fact_2_with_subject(provenance_subject) }
-    let(:provenance_subject) { ProvenanceFact.new_subject }
     let(:data_predicate)  { "http://example.org/test/name" }
     let(:string_object_1)  { "Gandhi" }
     let(:id_class) { Fact::ID }
@@ -13,6 +13,7 @@ module Dbd
     let(:fact_with_forced_id) { Factories::Fact.fact_with_forced_id(forced_id) }
     let(:time_stamp) { TimeStamp.new }
     let(:fact_with_time_stamp) { Factories::Fact.fact_with_time_stamp(time_stamp) }
+    let(:fact_with_incorrect_time_stamp) { Factories::Fact.fact_with_time_stamp(time_stamp.time) }
 
     describe ".new_subject" do
       it "creates a new (random) subject" do
@@ -41,6 +42,10 @@ module Dbd
 
       it "optionally sets the time_stamp" do
         fact_with_time_stamp.time_stamp.should == time_stamp
+      end
+
+      it "setting the time_stamp to a non TimeStamp raises ArgumentError" do
+        lambda{ fact_with_incorrect_time_stamp }.should raise_error ArgumentError
       end
 
       it "new sets the provenance_subject" do

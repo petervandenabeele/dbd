@@ -36,6 +36,7 @@ module Dbd
         duration.should < 0.000_15 * NUMBER_OF_FACTS
         # typ. 37 us on Mac Ruby 2.0.0 (on 2013-05-15 over 15K iterations)
         # typ. 45 us on Mac Ruby 2.0.0 (on 2013-06-05 over 10K iterations)
+        # typ. 47 us on Mac Ruby 2.0.0 (on 2013-06-21 over 10K iterations)
         # typ. 60 us on Mac jruby 1.7.3
       end
     end
