@@ -14,7 +14,7 @@ module Dbd
       graph_from_CSV.to_CSV.should == graph.to_CSV
     end
 
-    describe "#from_CSV reads back a csv exported graph correctly" do
+    describe ".from_CSV reads back a csv exported graph correctly" do
 
       describe "for a graph with only provenance_facts" do
 
