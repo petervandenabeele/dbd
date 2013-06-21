@@ -78,8 +78,10 @@ module Dbd
     # This implements a "form" of immutable behavior. The value can
     # be set once (possibly after creation the object), but can
     # never be changed after that.
+    #
+    # The input class is validated (easy confusion with String or Time).
     def time_stamp=(time_stamp)
-      raise ArgumentError unless time_stamp.is_a?(TimeStamp)
+      validate_time_stamp_class(time_stamp)
       set_once(:time_stamp, time_stamp)
     end
 
@@ -127,9 +129,9 @@ module Dbd
     # @option options [ID] :id Optional : set the id
     def initialize(options)
       @id = options[:id] || self.class.new_id
-      @time_stamp = options[:time_stamp]
-      @provenance_subject = options[:provenance_subject]
-      @subject = options[:subject]
+      self.time_stamp = options[:time_stamp]
+      self.provenance_subject = options[:provenance_subject]
+      self.subject = options[:subject]
       @predicate = options[:predicate]
       @object = options[:object]
       raise PredicateError, "predicate cannot be nil" if predicate.nil?
@@ -143,14 +145,21 @@ module Dbd
     end
 
     ##
-    # Constructs a Fact or ProvenanceFact from a values array
+    # @return [Array] The 6 values of a Fact converted to a string.
+    # This is similar to the 6 entries in the to_CSV mapping
+    def string_values
+      values.map(&:to_s)
+    end
+
+    ##
+    # Constructs a Fact or ProvenanceFact from a string values array
     # (e.g. pulled from a CSV row).
     #
     # @param [Array] values Required : the array with values, organized as in attributes
     # @return [Fact, ProvenanceFact] the constructed fact
-    def self.from_values(values)
-      hash = hash_from_values(values)
-      fact_from_hash(hash)
+    def self.from_string_values(string_values)
+      string_hash = hash_from_values(string_values)
+      fact_from_hash(values_hash(string_hash))
     end
 
     ##
@@ -219,17 +228,30 @@ module Dbd
       "#{provenance_subject.to_s[0...8]}"
     end
 
+    # FIXME This has to move to a Fact::Factory
     def self.hash_from_values(values)
       # Do not keep "empty" values (e.g. the provenance_subject for a ProvenanceFact).
-      attributes_values_array = [attributes, values].transpose.select{|a,v| v != ''}
+      attributes_values_array = [attributes, values].transpose.delete_if{|a,v| v.nil? || v == ''}
       Hash[attributes_values_array]
+    end
+
+    def self.values_hash(string_hash)
+      string_hash.dup.tap do |h|
+        h[:time_stamp] = TimeStamp.new(time: h[:time_stamp])
+      end
     end
 
     def self.fact_from_hash(hash)
       if hash[:provenance_subject]
-        new(hash)
+        Fact.new(hash)
       else
         ProvenanceFact.new(hash)
+      end
+    end
+
+    def validate_time_stamp_class(time_stamp)
+      unless time_stamp.nil? || time_stamp.is_a?(TimeStamp)
+        raise ArgumentError, "time_stamp is of class #{time_stamp.class}, should be TimeStamp"
       end
     end
 

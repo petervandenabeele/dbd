@@ -8,6 +8,7 @@ module Dbd
     let(:fact_1) { Factories::Fact.fact_1(provenance_subject) }
     let(:fact_2_with_subject) { Factories::Fact.fact_2_with_subject(provenance_subject) }
     let(:fact_with_newline) { Factories::Fact.fact_with_newline(provenance_subject) }
+    let(:full_fact) { Factories::Fact.full_fact }
 
     describe "time_stamp=" do
       it "checks the type (too easy to try to give a Time arg)" do
@@ -78,7 +79,7 @@ module Dbd
       end
     end
 
-    describe "attributes and values" do
+    describe "attributes" do
       it "there are 6 attributes" do
         described_class.attributes.size.should == 6
       end
@@ -86,13 +87,29 @@ module Dbd
       it "first attribute is :id" do
         described_class.attributes.first.should == :id
       end
+    end
 
+    describe "values" do
       it "there are 6 values" do
-        fact_1.values.size.should == 6
+        full_fact.values.size.should == 6
+      end
+
+      it "the second element (time_stamp) is a TimeStamp" do
+        full_fact.values[1].should be_a(TimeStamp)
       end
     end
 
-    def values
+    describe "string_values" do
+      it "there are 6 string_values" do
+        full_fact.string_values.size.should == 6
+      end
+
+      it "the second element (time_stamp) is a String" do
+        full_fact.string_values[1].should be_a(String)
+      end
+    end
+
+    def string_values
       ["825e44d5-af33-4858-8047-549bd813daa8",
        "2013-06-17 21:55:09.967653012 UTC",
        "40fab407-9b04-4a51-9a52-d978abfcbb1f",
@@ -101,10 +118,10 @@ module Dbd
        "Gandhi"]
     end
 
-    describe "from_values" do
-      it "reads the values correctly" do
-        fact = described_class.from_values(values)
-        fact.values.should == values
+    describe "from_string_values" do
+      it "reads the values correctly (round trip test)" do
+        fact = described_class.from_string_values(string_values)
+        fact.string_values.should == string_values
       end
     end
 

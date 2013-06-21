@@ -48,7 +48,7 @@ module Dbd
       new.tap do |graph|
         CSV.new(csv).each do |row|
           # TODO validate the input formats (e.g. invalid uuid codes)
-          graph << Fact.from_values(row)
+          graph << Fact.from_string_values(row)
         end
       end
     end
