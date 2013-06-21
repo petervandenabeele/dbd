@@ -84,16 +84,6 @@ module Dbd
     end
 
     ##
-    # A set_once setter for subject.
-    #
-    # This implements a "form" of immutable behavior. The value can
-    # be set once (possibly after creation the object), but can
-    # never be changed after that.
-    def subject=(subject)
-      set_once(:subject, subject)
-    end
-
-    ##
     # A set_once setter for provenance_subject.
     #
     # This implements a "form" of immutable behavior. The value can
@@ -101,6 +91,16 @@ module Dbd
     # never be changed after that.
     def provenance_subject=(provenance_subject)
       set_once(:provenance_subject, provenance_subject)
+    end
+
+    ##
+    # A set_once setter for subject.
+    #
+    # This implements a "form" of immutable behavior. The value can
+    # be set once (possibly after creation the object), but can
+    # never be changed after that.
+    def subject=(subject)
+      set_once(:subject, subject)
     end
 
     ##
