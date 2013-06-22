@@ -23,6 +23,14 @@ module Factories
         object: "Gandhi")
     end
 
+    def self.fact_with_special_chars(provenance_subject = nil, subject = nil)
+      factory_for.new(
+        provenance_subject: provenance_subject,
+        subject: subject,
+        predicate: "http://example.org/test/comment",
+        object: "A long story\nreally with a comma, a double quote \" and a non-ASCII char éà Über.")
+    end
+
     def self.fact_with_time_stamp(time_stamp)
       factory_for.new(
         time_stamp: time_stamp,

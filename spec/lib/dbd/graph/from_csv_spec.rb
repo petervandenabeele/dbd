@@ -45,5 +45,21 @@ module Dbd
         end
       end
     end
+
+    describe ".from_CSV reads special cases correctly" do
+
+      let(:provenance_subject) { Factories::Fact::Subject.fixed_provenance_subject }
+      let(:resource) { Factories::Resource.empty(provenance_subject) }
+      let(:special_fact) { Factories::Fact.fact_with_special_chars(provenance_subject, resource.subject) }
+
+      it "as object" do
+        resource << special_fact
+        graph = described_class.new << resource
+        csv = graph.to_CSV
+        csv.should match(%r{A long story\nreally with a comma, a double quote "" and a non-ASCII char éà Über.})
+        graph_from_CSV = described_class.from_CSV(csv)
+        graph_from_CSV.first.should be_equivalent(graph.first)
+      end
+    end
   end
 end
