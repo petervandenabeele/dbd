@@ -100,6 +100,20 @@ module Dbd
       @time.strftime(time_format)
     end
 
+    # Max drift in time_stamp
+    MAX_DRIFT = Rational("1/1_000_000")
+
+    ##
+    # determines if 2 time_stamps are "near".
+    #
+    # The time_stamp of an equivalent fact may be slightly different
+    # (because shifts of a few nanoseconds will be required to resolve
+    # collisions on a merge of fact streams with overlapping time_stamp
+    # ranges).
+    def near?(other)
+      (self - other).abs <= MAX_DRIFT
+    end
+
     def >(other)
       @time > other.time
     end

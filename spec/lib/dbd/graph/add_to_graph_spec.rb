@@ -54,7 +54,7 @@ module Dbd
 
         # NOTE: reduced the far_future from 2500 to 2250 as work around for
         #       http://jira.codehaus.org/browse/JRUBY-7095
-        let(:far_future) { TimeStamp.new(time: Time.new(2250,1,1,12,0,0).utc) }
+        let(:far_future) { TimeStamp.new(time: Time.utc(2250,1,1,12,0,0)) }
 
         it "don't touch the time_stamp if already set" do
           data_fact.time_stamp = far_future

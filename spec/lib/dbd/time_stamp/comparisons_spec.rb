@@ -3,9 +3,13 @@ require 'spec_helper'
 module Dbd
   describe TimeStamp do
 
-    let(:time_stamp_0) { described_class.new(time: Time.new(2013,5,18,12,0,0)) }
-    let(:time_stamp_1) { described_class.new(time: Time.new(2013,5,18,12,0,0)) }
-    let(:time_stamp_2) { described_class.new(time: Time.new(2013,5,18,12,0,1)) }
+    let(:time_stamp_0) { described_class.new(time: Time.utc(2013,5,18,12,0,0)) }
+    let(:time_stamp_1) { described_class.new(time: Time.utc(2013,5,18,12,0,0)) }
+    let(:time_stamp_2) { described_class.new(time: Time.utc(2013,5,18,12,0,1,5_000)) }
+    let(:time_stamp_3) { described_class.new(time: Time.utc(2013,5,18,12,0,1,5_001)) }
+    let(:time_stamp_4) { described_class.new(time: Time.utc(2013,5,18,12,0,1,4_999)) }
+    let(:time_stamp_5) { described_class.new(time: Time.utc(2013,5,18,12,0,1,5_002)) }
+    let(:time_stamp_6) { described_class.new(time: Time.utc(2013,5,18,12,0,1,4_998)) }
 
     describe "==" do
       it "should be ==" do
@@ -14,6 +18,24 @@ module Dbd
 
       it "hash should also be equal" do
         time_stamp_0.hash.should == time_stamp_1.hash
+      end
+    end
+
+    describe "near?(other)" do
+      it "is true when the time_stamp is 1000 ns larger" do
+        time_stamp_2.near?(time_stamp_3).should be_true
+      end
+
+      it "is true when the time_stamp is 1000 ns smaller" do
+        time_stamp_2.near?(time_stamp_4).should be_true
+      end
+
+      it "is false when the time_stamp is 2000 ns larger" do
+        time_stamp_2.near?(time_stamp_5).should_not be_true
+      end
+
+      it "is false when the time_stamp is 2000 ns smaller" do
+        time_stamp_2.near?(time_stamp_6).should_not be_true
       end
     end
 

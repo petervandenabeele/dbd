@@ -157,22 +157,6 @@ module Dbd
         other = described_class.from_string_values(string_values_time_modified)
         other.should be_equivalent(ref)
       end
-
-      it "is true when the time_stamp is 500 ns smaller" do
-        string_values_time_modified = string_values.dup.tap { |_string_values|
-          _string_values[1] = "2013-06-17 21:55:09.967652513 UTC"
-        }
-        other = described_class.from_string_values(string_values_time_modified)
-        other.should be_equivalent(ref)
-      end
-
-      it "is false when the time_stamp is 1500 ns larger" do
-        string_values_time_modified = string_values.dup.tap { |_string_values|
-          _string_values[1] = "2013-06-17 21:55:09.967654513 UTC"
-        }
-        other = described_class.from_string_values(string_values_time_modified)
-        other.should_not be_equivalent(ref)
-      end
     end
   end
 end

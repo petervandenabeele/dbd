@@ -175,13 +175,10 @@ module Dbd
     # of a few nanoseconds will be required to resolve collisions
     # on merge).
     def equivalent?(other)
-      attributes_without_time_stamp = self.class.attributes - [:time_stamp]
-      attributes_without_time_stamp.all?{ |attribute| self.send(attribute) == other.send(attribute) } &&
-        (self.time_stamp - other.time_stamp).abs <= MAX_DRIFT
+      (self.class.attributes - [:time_stamp]).
+        all?{ |attribute| self.send(attribute) == other.send(attribute) } &&
+        self.time_stamp.near?(other.time_stamp)
     end
-
-    # Max drift in time_stamp
-    MAX_DRIFT = Rational("1/1_000_000")
 
     ##
     # @return [String] a short string representation of a Fact
