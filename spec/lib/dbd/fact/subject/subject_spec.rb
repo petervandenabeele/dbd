@@ -22,6 +22,13 @@ module Dbd
       it ".regexp has a regexp for the to_s" do
         described_class.regexp.should == Helpers::UUID.regexp
       end
+
+      it "has equality on uuid" do
+        uuid = "825e44d5-af33-4858-8047-549bd813daa8"
+        subject_1 = described_class.new(uuid: uuid)
+        subject_2 = described_class.new(uuid: uuid)
+        subject_1.should == subject_2
+      end
     end
   end
 end

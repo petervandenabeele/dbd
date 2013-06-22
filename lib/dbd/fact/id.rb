@@ -1,6 +1,8 @@
 module Dbd
   class Fact
     class ID
+      include DefineEquality(:uuid)
+      attr_reader :uuid
 
       def initialize(options = {})
         @uuid = options[:uuid] || Helpers::UUID.new.to_s
