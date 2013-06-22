@@ -2,17 +2,7 @@ require 'dbd/helpers/uuid'
 
 module Dbd
   class Fact
-    class Subject
-      include DefineEquality(:uuid)
-      attr_reader :uuid
-
-      def initialize(options = {})
-        @uuid = options[:uuid] || self.class.new_subject
-      end
-
-      def to_s
-        @uuid
-      end
+    module Subject
 
       def self.regexp
         Helpers::UUID.regexp

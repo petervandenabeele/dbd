@@ -1,16 +1,6 @@
 module Dbd
   class Fact
-    class ID
-      include DefineEquality(:uuid)
-      attr_reader :uuid
-
-      def initialize(options = {})
-        @uuid = options[:uuid] || self.class.new_id
-      end
-
-      def to_s
-        @uuid
-      end
+    module ID
 
       def self.regexp
         Helpers::UUID.regexp
