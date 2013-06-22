@@ -10,6 +10,7 @@ module Dbd
     let(:id_class) { Fact::ID }
     let(:subject_class) { Fact::Subject }
     let(:forced_id) { described_class.new_id }
+    let(:subject) { described_class.new_subject }
     let(:fact_with_forced_id) { Factories::Fact.fact_with_forced_id(forced_id) }
     let(:time_stamp) { TimeStamp.new }
     let(:fact_with_time_stamp) { Factories::Fact.fact_with_time_stamp(time_stamp) }
@@ -24,6 +25,26 @@ module Dbd
         subject_1 = described_class.new_subject
         subject_2 = described_class.new_subject
         subject_1.should_not == subject_2
+      end
+
+      it "takes an options hash" do
+        described_class.new_subject(uuid: subject.to_s).to_s.should == subject.to_s
+      end
+    end
+
+    describe ".new_id" do
+      it "creates a new (random) id" do
+        described_class.new_id.should be_a(id_class)
+      end
+
+      it "creating a second one is different" do
+        id_1 = described_class.new_id
+        id_2 = described_class.new_id
+        id_1.should_not == id_2
+      end
+
+      it "takes an options hash" do
+        described_class.new_id(uuid: forced_id.to_s).to_s.should == forced_id.to_s
       end
     end
 

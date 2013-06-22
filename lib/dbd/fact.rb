@@ -106,15 +106,15 @@ module Dbd
     end
 
     ##
-    # @return [Subject] A new random subject.
-    def self.new_subject
-      Subject.new
+    # @return [Subject] A new subject.
+    def self.new_subject(options = {})
+      Subject.new(options)
     end
 
     ##
-    # @return [ID] A new random id.
-    def self.new_id
-      ID.new
+    # @return [ID] A new id.
+    def self.new_id(options = {})
+      ID.new(options)
     end
 
     ##
