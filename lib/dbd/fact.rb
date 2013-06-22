@@ -176,8 +176,7 @@ module Dbd
     # on merge).
     def equivalent?(other)
       attributes_without_time_stamp = self.class.attributes - [:time_stamp]
-      # FIXME temporarily comparing on the to_s representation of the values
-      attributes_without_time_stamp.all?{ |attribute| self.send(attribute).to_s == other.send(attribute).to_s } &&
+      attributes_without_time_stamp.all?{ |attribute| self.send(attribute) == other.send(attribute) } &&
         (self.time_stamp - other.time_stamp).abs <= MAX_DRIFT
     end
 
