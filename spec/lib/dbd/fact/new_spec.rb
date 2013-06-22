@@ -7,8 +7,8 @@ module Dbd
     let(:fact_2_with_subject) { Factories::Fact.fact_2_with_subject(provenance_subject) }
     let(:data_predicate)  { "http://example.org/test/name" }
     let(:string_object_1)  { "Gandhi" }
-    let(:id_class) { Fact::ID }
-    let(:subject_class) { Fact::Subject }
+    let(:id_regexp) { Fact::ID.regexp }
+    let(:subject_regexp) { Fact::Subject.regexp }
     let(:forced_id) { described_class.new_id }
     let(:subject) { described_class.new_subject }
     let(:fact_with_forced_id) { Factories::Fact.fact_with_forced_id(forced_id) }
@@ -18,7 +18,7 @@ module Dbd
 
     describe ".new_subject" do
       it "creates a new (random) subject" do
-        described_class.new_subject.should be_a(subject_class)
+        described_class.new_subject.should match(subject_regexp)
       end
 
       it "creating a second one is different" do
@@ -26,15 +26,11 @@ module Dbd
         subject_2 = described_class.new_subject
         subject_1.should_not == subject_2
       end
-
-      it "takes an options hash" do
-        described_class.new_subject(uuid: subject.to_s).to_s.should == subject.to_s
-      end
     end
 
     describe ".new_id" do
       it "creates a new (random) id" do
-        described_class.new_id.should be_a(id_class)
+        described_class.new_id.should match(id_regexp)
       end
 
       it "creating a second one is different" do
@@ -42,15 +38,11 @@ module Dbd
         id_2 = described_class.new_id
         id_1.should_not == id_2
       end
-
-      it "takes an options hash" do
-        described_class.new_id(uuid: forced_id.to_s).to_s.should == forced_id.to_s
-      end
     end
 
     describe "create a fact" do
-      it "has a unique id (id_class)" do
-        fact_1.id.should be_a(id_class)
+      it "has a unique id (matches id_regexp)" do
+        fact_1.id.should match(id_regexp)
       end
 
       it "two facts have different id" do
@@ -74,7 +66,7 @@ module Dbd
       end
 
       it "new sets the subject" do
-        fact_2_with_subject.subject.should be_a(subject_class)
+        fact_2_with_subject.subject.should match(subject_regexp)
       end
 
       it "a nil predicate raises PredicateError" do

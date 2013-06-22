@@ -106,15 +106,15 @@ module Dbd
     end
 
     ##
-    # @return [Subject] A new subject.
-    def self.new_subject(options = {})
-      Subject.new(options)
+    # @return [String] A new subject string.
+    def self.new_subject
+      Subject.new_subject
     end
 
     ##
-    # @return [ID] A new id.
-    def self.new_id(options = {})
-      ID.new(options)
+    # @return [String] A new id string.
+    def self.new_id
+      ID.new_id
     end
 
     ##
@@ -123,10 +123,10 @@ module Dbd
     # @param [Hash{Symbol => Object}] options
     # @option options [#to_s] :predicate Required : the predicate for this Fact
     # @option options [#to_s] :object Required :  the object for this Fact (required)
-    # @option options [Subject] :provenance_subject (nil) Optional: the subject of the provenance(resource|fact)
-    # @option options [Subject] :subject (nil) Optional: the subject for this Fact
+    # @option options [String (uuid)] :provenance_subject (nil) Optional: the subject of the provenance(resource|fact)
+    # @option options [String (uuid)] :subject (nil) Optional: the subject for this Fact
     # @option options [TimeStamp] :time_stamp (nil) Optional: the time_stamp for this Fact
-    # @option options [ID] :id Optional : set the id
+    # @option options [String (uuid)] :id Optional : set the id
     def initialize(options)
       @id = options[:id] || self.class.new_id
       @time_stamp = options[:time_stamp]
