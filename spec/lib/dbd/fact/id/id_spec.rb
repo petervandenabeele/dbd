@@ -23,6 +23,10 @@ module Dbd
         described_class.regexp.should == Helpers::UUID.regexp
       end
 
+      it ".new_id" do
+        described_class.new_id.should match(described_class.regexp)
+      end
+
       it "has equality on uuid" do
         uuid = "825e44d5-af33-4858-8047-549bd813daa8"
         id_1 = described_class.new(uuid: uuid)

@@ -7,7 +7,7 @@ module Dbd
       attr_reader :uuid
 
       def initialize(options = {})
-        @uuid = options[:uuid] || Helpers::UUID.new.to_s
+        @uuid = options[:uuid] || self.class.new_subject
       end
 
       def to_s
@@ -16,6 +16,10 @@ module Dbd
 
       def self.regexp
         Helpers::UUID.regexp
+      end
+
+      def self.new_subject
+        Helpers::UUID.new.to_s
       end
 
     end
