@@ -37,3 +37,9 @@
 =====
 
 * fix a bug in TimeStamp round trip in JRuby
+
+0.0.8 (23 June 2013)
+=====
+
+* bin/test_1.rb was used for first successful writing of 10M facts using
+  ruby-1.9.3-p429 (will report issues on ruby-2.0.0-p195 and jruby-1.7.4)
