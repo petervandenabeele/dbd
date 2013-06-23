@@ -23,7 +23,7 @@ provenance_resource << Dbd::ProvenanceFact.new(predicate: "prov:test" , object: 
 
 resource = Dbd::Resource.new(provenance_subject: provenance_resource.subject)
 (0...count).each do |i|
-  resource << Dbd::Fact.new(predicate: "test" , object: "#{'B' * 100} #{i}")
+  resource << Dbd::Fact.new(predicate: "test", object: "#{'B' * 80} #{i}")
 end
 
 graph = Dbd::Graph.new
