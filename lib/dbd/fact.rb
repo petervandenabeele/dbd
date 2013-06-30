@@ -156,7 +156,7 @@ module Dbd
     # Constructs a Fact or ProvenanceFact from a string values array
     # (e.g. pulled from a CSV row).
     #
-    # @param [Array] values Required : the array with values, organized as in attributes
+    # @param [Array] string_values Required : the array with values, organized as in attributes
     # @return [Fact, ProvenanceFact] the constructed fact
     def self.from_string_values(string_values)
       string_hash = hash_from_values(string_values)
