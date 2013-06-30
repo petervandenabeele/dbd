@@ -7,3 +7,6 @@ rvm:
   - 1.9.2
   - jruby-19mode
   - jruby-head
+branches:
+  only:
+    - master
