@@ -1,3 +1,4 @@
+# encoding=utf-8
 require 'spec_helper'
 
 module Dbd
@@ -10,6 +11,7 @@ module Dbd
     let(:provenance_facts) { Factories::Fact::Collection.provenance_facts(new_subject) }
     let(:provenance_fact_1) { provenance_facts.first }
     let(:fact_2_3) { Factories::Fact::Collection.fact_2_3(provenance_fact_1.subject) }
+    let(:fact_special_characters) { Factories::Fact::fact_with_special_chars(provenance_fact_1.subject, new_subject) }
 
     let(:subject_regexp) { Fact::Subject.regexp }
     let(:id_regexp) { Fact::ID.regexp }
@@ -155,6 +157,35 @@ module Dbd
 
       it "has six lines" do
         subject.to_CSV.lines.count.should == 6
+      end
+    end
+
+    describe "#to_CSV_file" do
+
+      before do
+        provenance_facts.each do |provenance_fact|
+          subject << provenance_fact
+        end
+        fact_2_3.each do |fact|
+          subject << fact
+        end
+        subject << fact_special_characters
+      end
+
+      it "has eight lines" do
+        filename = 'data/foo.csv'
+        subject.to_CSV_file(filename)
+        File.open(filename) do |f|
+          f.readlines.count.should == 8
+        end
+      end
+
+      it "reads back UTF-8 characters correctly" do
+        filename = 'data/foo.csv'
+        subject.to_CSV_file(filename)
+        File.open(filename) do |f|
+          f.readlines.detect{|l| l.match(%r{really with a comma, a double quote "" and a non-ASCII char éà Über.})}.should_not be_nil
+        end
       end
     end
   end

@@ -38,6 +38,16 @@ module Dbd
     end
 
     ##
+    # Export the graph to a CSV file
+    #
+    # @param [String] :filename the filename to stream the CSV to
+    def to_CSV_file(filename)
+      CSV.open(filename, 'w', csv_defaults) do |csv|
+        push_facts(csv)
+      end
+    end
+
+    ##
     # Import a graph from a CSV IO stream
     #
     # @param [IO Stream] csv an IO Stream that contains the CSV serialization
