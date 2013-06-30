@@ -1,5 +1,8 @@
 #!/usr/bin/env ruby
 
+# This is a test program for an issue with CSV.generate
+# in ruby-2.0.0 and ruby-head, see http://bugs.ruby-lang.org/issues/8585
+
 count = ARGV[0].to_i
 unless count > 0
   puts "Give a 'count' as first argument."
