@@ -18,14 +18,14 @@ module Dbd
       # Store a SecureRandom.uuid.
       # @return [void]
       def initialize
-        @uuid = SecureRandom.uuid
+        @uuid = SecureRandom.uuid.encode('utf-8')
       end
 
       ##
       # The to_s of the uuid.
       # @return [String]
       def to_s
-        @uuid.to_s
+        @uuid
       end
 
     end
