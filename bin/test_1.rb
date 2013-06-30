@@ -12,7 +12,7 @@ unless count > 0
 end
 
 filename = ARGV[1]
-unless filename.size > 0
+unless filename
   puts "Give a 'filename' as second argument."
   exit(1)
 end
