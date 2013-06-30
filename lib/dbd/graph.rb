@@ -32,17 +32,15 @@ module Dbd
     #
     # @return [String] comma separated string with double quoted cells
     def to_CSV
-      CSV.generate(force_quotes: true) do |csv|
-        @internal_collection.each do |fact|
-          csv << fact.values
-        end
-      end.encode("utf-8")
+      CSV.generate(csv_defaults) do |csv|
+        push_facts(csv)
+      end
     end
 
     ##
-    # Import a graph from a CSV string.
+    # Import a graph from a CSV IO stream
     #
-    # @param [String] csv a string that contains the CSV serialization
+    # @param [IO Stream] csv an IO Stream that contains the CSV serialization
     # @return [Graph] the imported graph
     def self.from_CSV(csv)
       new.tap do |graph|
@@ -61,6 +59,17 @@ module Dbd
     # chance on collisions when merging fact streams from different sources.
     def enforce_strictly_monotonic_time(fact)
       fact.time_stamp = TimeStamp.new(larger_than: newest_time_stamp) unless fact.time_stamp
+    end
+
+    def csv_defaults
+      {force_quotes: true,
+       encoding: 'utf-8'}
+    end
+
+    def push_facts(target)
+      @internal_collection.each do |fact|
+        target << fact.values
+      end
     end
 
   end
