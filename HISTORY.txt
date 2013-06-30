@@ -43,3 +43,10 @@
 
 * bin/test_1.rb was used for first successful writing of 10M facts using
   ruby-1.9.3-p429 (will report issues on ruby-2.0.0-p195 and jruby-1.7.4)
+
+0.0.9 (30 June 2013)
+=====
+
+* new function graph#to_CSV_file
+* bin/test_5.rb was used to write 10M facts using ruby-2.0.0, 1.9.3 and jruby-1.7.4
+* jruby is 3 time faster, but 10% more memory comsumption

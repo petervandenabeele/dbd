@@ -44,7 +44,7 @@ Open Source [MIT]
 
 ## Installation
 
-    $ gem install dbd      # Ruby 1.9.2, 1.9.3, 2.0.x, jruby (see .travis.yml)
+    $ gem install dbd      # Ruby 1.9.3, 2.0.x, jruby (see .travis.yml)
 
 ## Examples
 
@@ -117,6 +117,25 @@ puts imported_graph.map(&:short)
 # 5eb1ea27 : 3767c493 : rdfs:comment             : European Union
 # 5eb1ea27 : 3767c493 : todo:story               : A long period of peace,_ that is a "bliss".
 ```
+
+## Performance tests on 10 M facts
+
+In version 0.0.9 a number of test programs where added (e.g. ../bin/test_5.rb)
+that where used to populated in memory and write to disk a data set with 10 M facts.
+
+This function was tested on ruby-2.0.0, ruby-1.9.3 and jruby-1.7.4. The facts
+had an approximate size of 250 Bytes each (80 Bytes object).
+
+The time needed and memory size (RSS) for populating the in-memory dataset was:
+
+10 M facts (of 250 Bytes; 2.5 GB netto data):
+
+| ruby	     | time        | memory (RSS} |
+|------------|-------------| ------------:|
+| ruby-1.9.3 | 863 seconds |       8.1 GB |
+| ruby-2.0.0 | 862 seconds |       9.0 GB |
+|jruby-1.7.4 | 345 seconds |      10.8 GB |
+
 
 [RDF]:              http://www.w3.org/RDF/
 [Rationale]:        http://github.com/petervandenabeele/dbd/blob/master/docs/rationale.md
