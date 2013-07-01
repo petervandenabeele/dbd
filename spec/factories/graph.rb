@@ -10,7 +10,11 @@ module Factories
     end
 
     def self.only_provenance
-      factory_for.new << Factories::Fact::Collection.provenance_facts(new_subject)
+      factory_for.new << Factories::ProvenanceResource.provenance_resource
+    end
+
+    def self.only_facts(provenance_subject = new_subject)
+      factory_for.new << Factories::Resource.facts_resource(provenance_subject)
     end
 
     def self.full
