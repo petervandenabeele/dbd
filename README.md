@@ -130,7 +130,7 @@ The time needed and memory size (RSS) for populating the in-memory dataset was:
 
 10 M facts (of 250 Bytes; 2.5 GB netto data):
 
-| ruby	     | time        | memory (RSS} |
+| ruby	     | time        | memory (RSS) |
 |------------|-------------| ------------:|
 | ruby-1.9.3 | 863 seconds |       8.1 GB |
 | ruby-2.0.0 | 862 seconds |       9.0 GB |
