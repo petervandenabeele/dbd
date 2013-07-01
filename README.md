@@ -121,7 +121,7 @@ puts imported_graph.map(&:short)
 ## Performance tests on 10 M facts
 
 In version 0.0.9 a number of test programs where added (e.g. ../bin/test_5.rb)
-that where used to populated in memory and write to disk a data set with 10 M facts.
+that where used to populate in memory and write to disk a data set with 10 M facts.
 
 This function was tested on ruby-2.0.0, ruby-1.9.3 and jruby-1.7.4. The facts
 had an approximate size of 250 Bytes each (80 Bytes object).
