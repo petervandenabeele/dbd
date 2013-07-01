@@ -5,7 +5,7 @@ module Dbd
   describe Graph do
 
     def round_tripped_graph(graph)
-      Graph.from_CSV(StringIO.new(graph.to_CSV))
+      described_class.new.from_CSV(StringIO.new(graph.to_CSV))
     end
 
     def validate_round_trip(graph)
@@ -15,8 +15,7 @@ module Dbd
       graph_from_CSV.to_CSV.should == graph.to_CSV
     end
 
-    describe ".from_CSV reads back a csv exported graph correctly" do
-
+    describe "#from_CSV reads back a csv exported graph correctly" do
       describe "for a graph with only provenance_facts" do
 
         let(:graph) { Factories::Graph.only_provenance }
@@ -41,13 +40,41 @@ module Dbd
         end
 
         it "the short export of a graph is correct after a round trip" do
-          imported_graph = Dbd::Graph.from_CSV(graph.to_CSV)
+          imported_graph = described_class.new.from_CSV(graph.to_CSV)
           imported_graph.map(&:short).should == (graph.map(&:short))
         end
       end
     end
 
-    describe ".from_CSV reads special cases correctly" do
+    describe "#from_CSV reads back _two_ csv exported graphs correctly" do
+      describe "for a graph with facts and provenance_facts" do
+
+        let(:graph_provenance) { Factories::Graph.only_provenance }
+        let(:graph_facts) { Factories::Graph.only_facts(graph_provenance.first.subject) }
+        let(:graph_provenance_csv) { graph_provenance.to_CSV }
+        let(:graph_facts_csv) { graph_facts.to_CSV }
+
+        let(:graph_from_2_csv_s) do
+          stream_1 = StringIO.new(graph_provenance_csv)
+          stream_2 = StringIO.new(graph_facts_csv)
+          graph = described_class.new
+          graph.from_CSV(stream_1)
+          graph.from_CSV(stream_2)
+        end
+
+        it "round_trip validates" do
+          # we do not have full graph equivalence yet
+          graph_from_2_csv_s.first.should be_equivalent(graph_provenance.first)
+          graph_from_2_csv_s.last.should be_equivalent(graph_facts.last)
+        end
+
+        it "a string concat of 2 CSV files works to logically concat them" do
+          graph_from_2_csv_s.to_CSV.should == (graph_provenance_csv + graph_facts_csv)
+        end
+      end
+    end
+
+    describe "#from_CSV reads special cases correctly" do
 
       let(:provenance_subject) { Factories::Fact::Subject.fixed_provenance_subject }
       let(:resource) { Factories::Resource.empty(provenance_subject) }
@@ -58,7 +85,7 @@ module Dbd
         graph = described_class.new << resource
         csv = graph.to_CSV
         csv.should match(%r{A long story\nreally with a comma, a double quote "" and a non-ASCII char éà Über.})
-        graph_from_CSV = described_class.from_CSV(csv)
+        graph_from_CSV = described_class.new.from_CSV(csv)
         graph_from_CSV.first.should be_equivalent(graph.first)
       end
     end

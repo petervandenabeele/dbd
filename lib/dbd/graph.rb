@@ -52,8 +52,8 @@ module Dbd
     #
     # @param [IO Stream] csv an IO Stream that contains the CSV serialization
     # @return [Graph] the imported graph
-    def self.from_CSV(csv)
-      new.tap do |graph|
+    def from_CSV(csv)
+      self.tap do |graph|
         CSV.new(csv).each do |row|
           # TODO validate the input formats (e.g. invalid uuid codes)
           graph << Fact.from_string_values(row)
