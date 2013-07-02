@@ -129,6 +129,64 @@ module Dbd
         fact = described_class.from_string_values(string_values)
         fact.string_values.should == string_values
       end
+
+      it "calls validate_string_hash if options[:validate]" do
+        described_class.should_receive(:validate_string_hash)
+        described_class.from_string_values(string_values, validate: true)
+      end
+
+      it "does not call validate_string_hash if not options[:validate]" do
+        described_class.should_not_receive(:validate_string_hash)
+        described_class.from_string_values(string_values)
+      end
+    end
+
+    describe "validate_string_hash" do
+
+      let(:hash_from_values) { described_class.hash_from_values(string_values) }
+
+      describe "does not raise exception" do
+        it "for string_values" do
+          described_class.validate_string_hash(hash_from_values)
+        end
+
+        it "for a empty provenance_subject (for provenance_facts)" do
+          hash_from_values[:provenance_subject] = nil
+          described_class.validate_string_hash(hash_from_values)
+        end
+      end
+
+      describe "does raise exception" do
+        it "for invalid id" do
+          hash_from_values[:id] = 'foo'
+          lambda{ described_class.validate_string_hash(hash_from_values) }.should raise_error(FactError)
+        end
+
+        it "for invalid time_stamp" do
+          hash_from_values[:time_stamp] = 'foo'
+          lambda{ described_class.validate_string_hash(hash_from_values) }.should raise_error(FactError)
+        end
+
+        it "for invalid provenance_subject" do
+          hash_from_values[:provenance_subject] = 'foo'
+          lambda{ described_class.validate_string_hash(hash_from_values) }.should raise_error(FactError)
+        end
+
+        it "for invalid subject" do
+          hash_from_values[:subject] = 'foo'
+          lambda{ described_class.validate_string_hash(hash_from_values) }.should raise_error(FactError)
+        end
+
+        it "for invalid predicate" do
+          hash_from_values[:predicate] = ''
+          lambda{ described_class.validate_string_hash(hash_from_values) }.should raise_error(FactError)
+        end
+
+        it "for invalid object" do
+          hash_from_values[:id] = ''
+          lambda{ described_class.validate_string_hash(hash_from_values) }.should raise_error(FactError)
+        end
+      end
     end
 
     describe "equivalent?" do

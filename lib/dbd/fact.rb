@@ -57,21 +57,15 @@ module Dbd
   #   in RDF. Probably more detailed modeling using RDF object will follow.
   class Fact
 
-    def self.attribute_formats
-      {
-        id: [true, Helpers::UUID.regexp],
-        time_stamp: [true, TimeStamp.valid_regexp],
-        provenance_subject: [false, Helpers::UUID.regexp],
-        subject: [true, Helpers::UUID.regexp],
-        predicate: [true, /.+/],
-        object: [true, /.+/]
-      }
-    end
-
     ##
     # @return [Array] The 6 attributes of a Fact.
     def self.attributes
-      attribute_formats.keys
+      [:id,
+       :time_stamp,
+       :provenance_subject,
+       :subject,
+       :predicate,
+       :object]
     end
 
     attributes.each do |attribute|
@@ -166,15 +160,7 @@ module Dbd
     # @return [Fact, ProvenanceFact] the constructed fact
     def self.from_string_values(string_values, options={})
       string_hash = hash_from_values(string_values)
-      if options[:validate]
-        attribute_formats.each do |attr, validation|
-          mandatory, format = validation
-          unless !mandatory && string_hash[attr].nil? ||
-                 string_hash[attr].match(format)
-            raise FactError
-          end
-        end
-      end
+      validate_string_hash(string_hash) if options[:validate]
       fact_from_hash(values_hash(string_hash))
     end
 
@@ -261,6 +247,12 @@ module Dbd
       "#{provenance_subject.to_s[0...8]}"
     end
 
+    def validate_time_stamp_class(time_stamp)
+      unless time_stamp.nil? || time_stamp.is_a?(TimeStamp)
+        raise ArgumentError, "time_stamp is of class #{time_stamp.class}, should be TimeStamp"
+      end
+    end
+
     # FIXME This has to move to a Fact::Factory
     def self.hash_from_values(values)
       # Do not keep "empty" values (e.g. the provenance_subject for a ProvenanceFact).
@@ -282,9 +274,28 @@ module Dbd
       end
     end
 
-    def validate_time_stamp_class(time_stamp)
-      unless time_stamp.nil? || time_stamp.is_a?(TimeStamp)
-        raise ArgumentError, "time_stamp is of class #{time_stamp.class}, should be TimeStamp"
+    def self.attribute_formats
+      {
+        id: [true, Helpers::UUID.regexp],
+        time_stamp: [true, TimeStamp.valid_regexp],
+        provenance_subject: [false, Helpers::UUID.regexp],
+        subject: [true, Helpers::UUID.regexp],
+        predicate: [true, /./],
+        object: [true, /./]
+      }
+    end
+
+    def self.validate_string_hash(string_hash)
+      attribute_formats.each do |attr, validation|
+        string = string_hash[attr]
+        mandatory, format = validation
+        validate_string(mandatory, string, format)
+      end
+    end
+
+    def self.validate_string(mandatory, string, format)
+      if (mandatory ? true : string) && (string !~ format)
+        raise FactError, "invalid entry found : #{string}"
       end
     end
 
