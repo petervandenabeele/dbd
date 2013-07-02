@@ -56,7 +56,7 @@ module Dbd
         end
 
         it "has time_stamp as second value" do
-          first_line.split(',')[1].should match(TimeStamp.to_s_regexp)
+          first_line.split(',')[1][1..-2].should match(TimeStamp.to_s_regexp)
         end
 
         it "has an empty third value (signature of a provenance_fact)" do
@@ -123,7 +123,7 @@ module Dbd
         end
 
         it "has time_stamp as second value" do
-          first_line.split(',')[1].should match(TimeStamp.to_s_regexp)
+          first_line.split(',')[1][1..-2].should match(TimeStamp.to_s_regexp)
         end
 
         it "has provenance_fact_1.subject as third value" do
