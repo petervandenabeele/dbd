@@ -19,7 +19,7 @@ row_data = [
   "test",
   "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB 0"]
 
-puts "starting CSV.open"
+puts "starting CSV.generate"
 
 start_time = Time.now
 
@@ -29,4 +29,4 @@ csv_string = CSV.generate(force_quotes: true) do |csv|
   end
 end
 
-puts "CSV.open took #{Time.now - start_time} seconds"
+puts "CSV.generate took #{Time.now - start_time} seconds"
