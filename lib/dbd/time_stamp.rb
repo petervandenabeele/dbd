@@ -57,6 +57,10 @@ module Dbd
       /\d{4}-\d\d-\d\d \d\d:\d\d:\d\d\.\d{9} UTC/
     end
 
+    class << self
+      alias_method :valid_regexp, :to_s_regexp
+    end
+
   private
 
     def new_time(larger_than)
