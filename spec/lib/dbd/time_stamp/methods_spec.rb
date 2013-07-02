@@ -9,6 +9,10 @@ module Dbd
       it "matches an example string" do
         a_time_stamp.should match(described_class.to_s_regexp)
       end
+
+      it "does not match an incorrect string" do
+        ('0' + a_time_stamp).should_not match(described_class.to_s_regexp)
+      end
     end
 
     describe "#time to allow comparison" do

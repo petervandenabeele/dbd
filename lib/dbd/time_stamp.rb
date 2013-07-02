@@ -54,7 +54,7 @@ module Dbd
     #
     # Can be used to validate input strings or in tests.
     def self.to_s_regexp
-      /\d{4}-\d\d-\d\d \d\d:\d\d:\d\d\.\d{9} UTC/
+      /\A\d{4}-\d\d-\d\d \d\d:\d\d:\d\d\.\d{9} UTC\Z/
     end
 
     class << self
