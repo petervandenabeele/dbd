@@ -3,8 +3,14 @@ require 'spec_helper'
 module Dbd
   module Helpers
     describe UUID do
-      it ".regex" do
-        '12345678-abcd-4567-89ab-0123456789ab'.should match(UUID.regexp)
+      describe ".regex" do
+        it "matches correct uuid" do
+          '12345678-abcd-4567-89ab-0123456789ab'.should match(UUID.regexp)
+        end
+
+        it "does not match incorrect uuid" do
+          '012345678-abcd-4567-89ab-0123456789ab'.should_not match(UUID.regexp)
+        end
       end
 
       it ".new creates a new random UUID" do
