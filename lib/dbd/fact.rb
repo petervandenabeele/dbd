@@ -57,15 +57,21 @@ module Dbd
   #   in RDF. Probably more detailed modeling using RDF object will follow.
   class Fact
 
+    def self.attribute_formats
+      {
+        id: [true, Helpers::UUID.regexp],
+        time_stamp: [true, TimeStamp.valid_regexp],
+        provenance_subject: [false, Helpers::UUID.regexp],
+        subject: [true, Helpers::UUID.regexp],
+        predicate: [true, /.+/],
+        object: [true, /.+/]
+      }
+    end
+
     ##
     # @return [Array] The 6 attributes of a Fact.
     def self.attributes
-      [:id,
-       :time_stamp,
-       :provenance_subject,
-       :subject,
-       :predicate,
-       :object]
+      attribute_formats.keys
     end
 
     attributes.each do |attribute|
@@ -158,8 +164,17 @@ module Dbd
     #
     # @param [Array] string_values Required : the array with values, organized as in attributes
     # @return [Fact, ProvenanceFact] the constructed fact
-    def self.from_string_values(string_values)
+    def self.from_string_values(string_values, options={})
       string_hash = hash_from_values(string_values)
+      if options[:validate]
+        attribute_formats.each do |attr, validation|
+          mandatory, format = validation
+          unless !mandatory && string_hash[attr].nil? ||
+                 string_hash[attr].match(format)
+            raise FactError
+          end
+        end
+      end
       fact_from_hash(values_hash(string_hash))
     end
 
