@@ -294,7 +294,7 @@ module Dbd
     end
 
     def self.validate_string(mandatory, string, format)
-      if (mandatory ? true : string) && (string !~ format)
+      if (mandatory || string) && (string !~ format)
         raise FactError, "invalid entry found : #{string}"
       end
     end
