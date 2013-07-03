@@ -13,36 +13,36 @@ module Dbd
         o
       end
 
-      describe "create an elements collection" do
-        it "the collection is not an array" do
+      describe 'create an elements collection' do
+        it 'the collection is not an array' do
           # do not derive from Ruby standard classes
           subject.should_not be_a(Array)
         end
       end
 
-      describe "accessor functions" do
-        it "the collection has Enumerable methods" do
+      describe 'accessor functions' do
+        it 'the collection has Enumerable methods' do
           subject.map #should_not raise_exception
           subject.first #should_not raise_exception
         end
 
-        it "<< adds the element" do
+        it '<< adds the element' do
           subject << element_1
           subject.count.should == 1
         end
 
-        it "returns self to allow chaining" do
+        it 'returns self to allow chaining' do
           (subject << element_1).should == subject
         end
 
-        it "other functions (e.g. pop) do not work" do
+        it 'other functions (e.g. pop) do not work' do
           lambda {subject.pop} . should raise_exception NoMethodError
         end
 
-        describe "add_and_return_index returns the index of the inserted element" do
+        describe 'add_and_return_index returns the index of the inserted element' do
 
           let(:internal_collection) do
-            subject.instance_variable_get("@internal_collection")
+            subject.instance_variable_get('@internal_collection')
           end
 
           let(:index) do
@@ -51,26 +51,26 @@ module Dbd
 
           before(:each) { index }
 
-          it "works for 1 element" do
+          it 'works for 1 element' do
             index.should == 0
           end
 
-          it "works for 2 elements" do
+          it 'works for 2 elements' do
             index_2 = described_class.add_and_return_index(element_2, internal_collection)
             index_2.should == 1
           end
         end
 
-        describe "last" do
-          it "returns the last element" do
+        describe 'last' do
+          it 'returns the last element' do
             subject << element_1
             subject << element_2
             subject.last.should == element_2
           end
         end
 
-        describe "size" do
-          it "returns the last element" do
+        describe 'size' do
+          it 'returns the last element' do
             subject << element_1
             subject << element_2
             subject.size.should == 2
@@ -78,8 +78,8 @@ module Dbd
         end
       end
 
-      describe "on empty collection" do
-        it "#last returns nil" do
+      describe 'on empty collection' do
+        it '#last returns nil' do
           subject.last.should be_nil
         end
       end

@@ -1,4 +1,4 @@
-module Factories
+module TestFactories
   module TimeStamp
 
     def self.factory_for
@@ -6,7 +6,7 @@ module Factories
     end
 
     def self.fixed_time_string
-      "2013-06-17 21:55:09.967653013 UTC"
+      '2013-06-17 21:55:09.967653013 UTC'
     end
 
     def self.fixed_time_stamp

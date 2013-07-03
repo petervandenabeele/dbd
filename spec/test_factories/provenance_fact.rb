@@ -1,7 +1,6 @@
 # encoding=utf-8
-module Factories
+module TestFactories
   module ProvenanceFact
-
     def self.factory_for
       ::Dbd::ProvenanceFact
     end
@@ -13,30 +12,29 @@ module Factories
     def self.context(subject = nil)
       factory_for.new(
         subject: subject,
-        predicate: "https://data.vandenabeele.com/ontologies/provenance#context",
-        object: "public")
+        predicate: 'https://data.vandenabeele.com/ontologies/provenance#context',
+        object: 'public')
     end
 
     def self.created_by(subject = nil)
       factory_for.new(
         subject: subject,
-        predicate: "https://data.vandenabeele.com/ontologies/provenance#created_by",
-        object: "peter_v")
+        predicate: 'https://data.vandenabeele.com/ontologies/provenance#created_by',
+        object: 'peter_v')
     end
 
     def self.original_source(subject = nil)
       factory_for.new(
         subject: subject,
-        predicate: "https://data.vandenabeele.com/ontologies/provenance#original_source",
+        predicate: 'https://data.vandenabeele.com/ontologies/provenance#original_source',
         object: "this has a comma , a newline \n and a double quote \"")
     end
 
     def self.created(subject = nil)
       factory_for.new(
         subject: subject,
-        predicate: "dcterms:created",
+        predicate: 'dcterms:created',
         object: Time.now.utc)
     end
-
   end
 end
