@@ -3,13 +3,14 @@ require 'spec_helper'
 module Dbd
   describe TimeStamp do
 
-    let(:time_stamp_0) { described_class.new(time: Time.utc(2013,5,18,12,0,0)) }
-    let(:time_stamp_1) { described_class.new(time: Time.utc(2013,5,18,12,0,0)) }
-    let(:time_stamp_2) { described_class.new(time: Time.utc(2013,5,18,12,0,1,5_000)) }
-    let(:time_stamp_3) { described_class.new(time: Time.utc(2013,5,18,12,0,1,5_001)) }
-    let(:time_stamp_4) { described_class.new(time: Time.utc(2013,5,18,12,0,1,4_999)) }
-    let(:time_stamp_5) { described_class.new(time: Time.utc(2013,5,18,12,0,1,5_002)) }
-    let(:time_stamp_6) { described_class.new(time: Time.utc(2013,5,18,12,0,1,4_998)) }
+    let(:base_time) { Time.utc(2013,5,18,12,0,0)}
+    let(:time_stamp_0) { described_class.new(time: base_time) }
+    let(:time_stamp_1) { described_class.new(time: base_time) }
+    let(:time_stamp_2) { described_class.new(time: base_time + Rational('5_000/1_000_000')) }
+    let(:time_stamp_3) { described_class.new(time: base_time + Rational('5_001/1_000_000')) }
+    let(:time_stamp_4) { described_class.new(time: base_time + Rational('4_999/1_000_000')) }
+    let(:time_stamp_5) { described_class.new(time: base_time + Rational('5_002/1_000_000')) }
+    let(:time_stamp_6) { described_class.new(time: base_time + Rational('4_998/1_000_000')) }
 
     describe '==' do
       it 'should be ==' do
