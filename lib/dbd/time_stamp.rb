@@ -67,15 +67,24 @@ module Dbd
       [Time.now.utc, (larger_than && larger_than.time)].compact.max + random_offset
     end
 
+    # Minimum offset between consecutive times.
+    # For jruby, a 1 ns offset was not enough
+    # (some collisions, see https://github.com/jruby/jruby/issues/843)
+    # With 2 ns, the problem disappears (probably a "1 off" rounding error
+    # that cannot occur with a minimum distance of 2?).
+    def minimum_time_offset
+      Rational('2/1_000_000_000')
+    end
+
+    # Random offset, between minimum_time_offset and 1 us (1 micro second)
     def random_offset
-      Rational("#{1+rand(999)}/1_000_000_000")
+      minimum_time_offset + Rational("#{rand(990)}/1_000_000_000")
     end
 
     def time_format
       '%F %T.%N %Z'
     end
 
-    ##
     # with a nanosecond granularity and in UTC
     def time_from_s(time_string)
       # For ns precision in JRuby this extended process is required
@@ -87,7 +96,7 @@ module Dbd
                time_hash[:hour],
                time_hash[:min],
                time_hash[:sec],
-               time_hash[:sec_fraction] * 1_000_000)
+               time_hash[:sec_fraction] * 1_000_000 + Rational('3/10_000_000_000'))
     end
 
     def validate_time_zone(time_hash)
@@ -104,8 +113,8 @@ module Dbd
       @time.strftime(time_format)
     end
 
-    # Max drift in time_stamp
-    MAX_DRIFT = Rational("1/1_000_000")
+    # Max drift in time_stamp for near?
+    MAX_DRIFT = Rational("1/1_000_000").freeze
 
     ##
     # determines if 2 time_stamps are "near".
