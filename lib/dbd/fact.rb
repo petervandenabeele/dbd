@@ -276,10 +276,10 @@ module Dbd
 
     def self.attribute_formats
       {
-        id: [true, Helpers::UUID.regexp],
+        id: [true, Fact::ID.valid_regexp],
         time_stamp: [true, TimeStamp.valid_regexp],
-        provenance_subject: [false, Helpers::UUID.regexp],
-        subject: [true, Helpers::UUID.regexp],
+        provenance_subject: [false, Fact::Subject.valid_regexp],
+        subject: [true, Fact::Subject.valid_regexp],
         predicate: [true, /./],
         object: [true, /./]
       }

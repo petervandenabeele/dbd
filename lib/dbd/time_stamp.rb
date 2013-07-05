@@ -53,12 +53,8 @@ module Dbd
     # regexp for the nanosecond granularity and in UTC
     #
     # Can be used to validate input strings or in tests.
-    def self.to_s_regexp
+    def self.valid_regexp
       /\A\d{4}-\d\d-\d\d \d\d:\d\d:\d\d\.\d{9} UTC\Z/
-    end
-
-    class << self
-      alias_method :valid_regexp, :to_s_regexp
     end
 
   private

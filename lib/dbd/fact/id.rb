@@ -2,8 +2,8 @@ module Dbd
   class Fact
     module ID
 
-      def self.regexp
-        Helpers::UUID.regexp
+      def self.valid_regexp
+        Helpers::UUID.valid_regexp
       end
 
       def self.new_id

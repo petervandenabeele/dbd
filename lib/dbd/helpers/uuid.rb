@@ -10,7 +10,7 @@ module Dbd
       ##
       # A regexp that can be used in tests.
       # @return [Regexp]
-      def self.regexp
+      def self.valid_regexp
         /\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\Z/
       end
 

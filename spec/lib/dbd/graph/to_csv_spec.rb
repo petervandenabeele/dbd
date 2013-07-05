@@ -13,8 +13,9 @@ module Dbd
     let(:fact_2_3) { TestFactories::Fact::Collection.fact_2_3(provenance_fact_1.subject) }
     let(:fact_special_characters) { TestFactories::Fact::fact_with_special_chars(provenance_fact_1.subject, new_subject) }
 
-    let(:subject_regexp) { Fact::Subject.regexp }
-    let(:id_regexp) { Fact::ID.regexp }
+    let(:subject_valid_regexp) { Fact::Subject.valid_regexp }
+    let(:id_valid_regexp) { Fact::ID.valid_regexp }
+    let(:time_stamp_valid_regexp) { TimeStamp.valid_regexp }
 
     describe '#to_CSV with only provenance_facts' do
       before do
@@ -52,11 +53,11 @@ module Dbd
         end
 
         it 'has id (a Fact::ID) as first value' do
-          first_line.split(',')[0].gsub(/"/, '').should match(id_regexp)
+          first_line.split(',')[0].gsub(/"/, '').should match(id_valid_regexp)
         end
 
         it 'has time_stamp as second value' do
-          first_line.split(',')[1][1..-2].should match(TimeStamp.to_s_regexp)
+          first_line.split(',')[1][1..-2].should match(time_stamp_valid_regexp)
         end
 
         it 'has an empty third value (signature of a provenance_fact)' do
@@ -64,7 +65,7 @@ module Dbd
         end
 
         it 'has subject as 4th value' do
-          first_line.split(',')[3].gsub(/"/, '').should match(subject_regexp)
+          first_line.split(',')[3].gsub(/"/, '').should match(subject_valid_regexp)
         end
 
         it 'has data_predicate as 5th value' do
@@ -119,11 +120,11 @@ module Dbd
         end
 
         it 'has id (a Fact::ID) as first value' do
-          first_line.split(',')[0].gsub(/"/, '').should match(id_regexp)
+          first_line.split(',')[0].gsub(/"/, '').should match(id_valid_regexp)
         end
 
         it 'has time_stamp as second value' do
-          first_line.split(',')[1][1..-2].should match(TimeStamp.to_s_regexp)
+          first_line.split(',')[1][1..-2].should match(time_stamp_valid_regexp)
         end
 
         it 'has provenance_fact_1.subject as third value' do
@@ -131,7 +132,7 @@ module Dbd
         end
 
         it 'has subject as 4th value' do
-          first_line.split(',')[3].gsub(/"/, '').should match(subject_regexp)
+          first_line.split(',')[3].gsub(/"/, '').should match(subject_valid_regexp)
         end
 
         it 'has data_predicate as 5th value' do

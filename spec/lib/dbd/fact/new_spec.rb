@@ -7,8 +7,8 @@ module Dbd
     let(:fact_2_with_subject) { TestFactories::Fact.fact_2_with_subject(provenance_subject) }
     let(:data_predicate)  { 'http://example.org/test/name' }
     let(:string_object_1)  { 'Gandhi' }
-    let(:id_regexp) { Fact::ID.regexp }
-    let(:subject_regexp) { Fact::Subject.regexp }
+    let(:id_valid_regexp) { Fact::ID.valid_regexp }
+    let(:subject_valid_regexp) { Fact::Subject.valid_regexp }
     let(:forced_id) { described_class.new_id }
     let(:subject) { described_class.new_subject }
     let(:fact_with_forced_id) { TestFactories::Fact.fact_with_forced_id(forced_id) }
@@ -18,7 +18,7 @@ module Dbd
 
     describe '.new_subject' do
       it 'creates a new (random) subject' do
-        described_class.new_subject.should match(subject_regexp)
+        described_class.new_subject.should match(subject_valid_regexp)
       end
 
       it 'creating a second one is different' do
@@ -30,7 +30,7 @@ module Dbd
 
     describe '.new_id' do
       it 'creates a new (random) id' do
-        described_class.new_id.should match(id_regexp)
+        described_class.new_id.should match(id_valid_regexp)
       end
 
       it 'creating a second one is different' do
@@ -41,8 +41,8 @@ module Dbd
     end
 
     describe 'create a fact' do
-      it 'has a unique id (matches id_regexp)' do
-        fact_1.id.should match(id_regexp)
+      it 'has a unique id (matches id_valid_regexp)' do
+        fact_1.id.should match(id_valid_regexp)
       end
 
       it 'two facts have different id' do
@@ -66,7 +66,7 @@ module Dbd
       end
 
       it 'new sets the subject' do
-        fact_2_with_subject.subject.should match(subject_regexp)
+        fact_2_with_subject.subject.should match(subject_valid_regexp)
       end
 
       it 'a nil predicate raises PredicateError' do
