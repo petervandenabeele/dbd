@@ -1,3 +1,4 @@
+require 'dbd/fact/factory'
 require 'dbd/fact/collection'
 require 'dbd/fact/subject'
 require 'dbd/fact/id'
@@ -70,6 +71,12 @@ module Dbd
 
     attributes.each do |attribute|
       attr_reader attribute
+    end
+
+    ##
+    # @return [Module] The module that has the factories for Fact
+    def self.factory
+      self::Factory
     end
 
     ##
@@ -150,18 +157,6 @@ module Dbd
     # This is similar to the 6 entries in the to_CSV mapping
     def string_values
       values.map(&:to_s)
-    end
-
-    ##
-    # Constructs a Fact or ProvenanceFact from a string values array
-    # (e.g. pulled from a CSV row).
-    #
-    # @param [Array] string_values Required : the array with values, organized as in attributes
-    # @return [Fact, ProvenanceFact] the constructed fact
-    def self.from_string_values(string_values, options={})
-      string_hash = hash_from_values(string_values)
-      validate_string_hash(string_hash) if options[:validate]
-      fact_from_hash(values_hash(string_hash))
     end
 
     ##
@@ -246,55 +241,9 @@ module Dbd
       "#{provenance_subject.to_s[0...8]}"
     end
 
-    # FIXME This has to move to a Fact::Factory
     def validate_time_stamp_class(time_stamp)
       unless time_stamp.nil? || time_stamp.is_a?(TimeStamp)
         raise ArgumentError, "time_stamp is of class #{time_stamp.class}, should be TimeStamp"
-      end
-    end
-
-    def self.hash_from_values(values)
-      # Do not keep "empty" values (e.g. the provenance_subject for a ProvenanceFact).
-      attributes_values_array = [attributes, values].transpose.delete_if{|a,v| v.nil? || v == ''}
-      Hash[attributes_values_array]
-    end
-
-    def self.values_hash(string_hash)
-      string_hash.dup.tap do |h|
-        h[:time_stamp] = TimeStamp.new(time: h[:time_stamp])
-      end
-    end
-
-    def self.fact_from_hash(hash)
-      if hash[:provenance_subject]
-        Fact.new(hash)
-      else
-        ProvenanceFact.new(hash)
-      end
-    end
-
-    def self.attribute_formats
-      {
-        id: [true, Fact::ID.valid_regexp],
-        time_stamp: [true, TimeStamp.valid_regexp],
-        provenance_subject: [false, Fact::Subject.valid_regexp],
-        subject: [true, Fact::Subject.valid_regexp],
-        predicate: [true, /./],
-        object: [true, /./]
-      }
-    end
-
-    def self.validate_string_hash(string_hash)
-      attribute_formats.each do |attr, validation|
-        string = string_hash[attr]
-        mandatory, format = validation
-        validate_string(mandatory, string, format)
-      end
-    end
-
-    def self.validate_string(mandatory, string, format)
-      if (mandatory || string) && (string !~ format)
-        raise FactError, "invalid entry found : #{string}"
       end
     end
 

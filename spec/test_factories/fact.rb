@@ -9,6 +9,15 @@ module TestFactories
       factory_for.new_subject
     end
 
+    def self.string_values
+      ['825e44d5-af33-4858-8047-549bd813daa8',
+       '2013-06-17 21:55:09.967653013 UTC',
+       '40fab407-9b04-4a51-9a52-d978abfcbb1f',
+       '2e9fbc87-2e94-47e9-a8fd-121cc4bc3e8f',
+       'http://example.org/test/name',
+       'Gandhi']
+    end
+
     def self.fact_1(provenance_subject = nil)
       factory_for.new(
         provenance_subject: provenance_subject,

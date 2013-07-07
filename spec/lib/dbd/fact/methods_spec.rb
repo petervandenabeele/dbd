@@ -9,6 +9,13 @@ module Dbd
     let(:fact_2_with_subject) { TestFactories::Fact.fact_2_with_subject(provenance_subject) }
     let(:fact_with_newline) { TestFactories::Fact.fact_with_newline(provenance_subject) }
     let(:full_fact) { TestFactories::Fact.full_fact }
+    let(:factory) { described_class::Factory }
+
+    describe '.factory' do
+      it 'should return the factory for a Fact' do
+        described_class.factory.should == factory
+      end
+    end
 
     describe 'time_stamp=' do
       it 'checks the type (too easy to try to give a Time arg)' do
@@ -115,86 +122,17 @@ module Dbd
       end
     end
 
-    def string_values
-      ['825e44d5-af33-4858-8047-549bd813daa8',
-       '2013-06-17 21:55:09.967653013 UTC',
-       '40fab407-9b04-4a51-9a52-d978abfcbb1f',
-       '2e9fbc87-2e94-47e9-a8fd-121cc4bc3e8f',
-       'http://example.org/test/name',
-       'Gandhi']
-    end
-
-    describe 'from_string_values' do
-      it 'reads the values correctly (round trip test)' do
-        fact = described_class.from_string_values(string_values)
-        fact.string_values.should == string_values
-      end
-
-      it 'calls validate_string_hash if options[:validate]' do
-        described_class.should_receive(:validate_string_hash)
-        described_class.from_string_values(string_values, validate: true)
-      end
-
-      it 'does not call validate_string_hash if not options[:validate]' do
-        described_class.should_not_receive(:validate_string_hash)
-        described_class.from_string_values(string_values)
-      end
-    end
-
-    describe 'validate_string_hash' do
-
-      let(:hash_from_values) { described_class.hash_from_values(string_values) }
-
-      describe 'does not raise exception' do
-        it 'for string_values' do
-          described_class.validate_string_hash(hash_from_values)
-        end
-
-        it 'for a empty provenance_subject (for provenance_facts)' do
-          hash_from_values[:provenance_subject] = nil
-          described_class.validate_string_hash(hash_from_values)
-        end
-      end
-
-      describe 'does raise exception' do
-        it 'for invalid id' do
-          hash_from_values[:id] = 'foo'
-          lambda{ described_class.validate_string_hash(hash_from_values) }.should raise_error(FactError)
-        end
-
-        it 'for invalid time_stamp' do
-          hash_from_values[:time_stamp] = 'foo'
-          lambda{ described_class.validate_string_hash(hash_from_values) }.should raise_error(FactError)
-        end
-
-        it 'for invalid provenance_subject' do
-          hash_from_values[:provenance_subject] = 'foo'
-          lambda{ described_class.validate_string_hash(hash_from_values) }.should raise_error(FactError)
-        end
-
-        it 'for invalid subject' do
-          hash_from_values[:subject] = 'foo'
-          lambda{ described_class.validate_string_hash(hash_from_values) }.should raise_error(FactError)
-        end
-
-        it 'for invalid predicate' do
-          hash_from_values[:predicate] = ''
-          lambda{ described_class.validate_string_hash(hash_from_values) }.should raise_error(FactError)
-        end
-
-        it 'for invalid object' do
-          hash_from_values[:id] = ''
-          lambda{ described_class.validate_string_hash(hash_from_values) }.should raise_error(FactError)
-        end
-      end
-    end
-
     describe 'equivalent?' do
 
-      let(:ref) { described_class.from_string_values(string_values) }
+      # no let, since we want a fresh copy on each invocation
+      def string_values
+        TestFactories::Fact.string_values
+      end
+
+      let(:ref) { factory.from_string_values(string_values) }
 
       it 'is true for facts with same values' do
-        other = described_class.from_string_values(string_values)
+        other = factory.from_string_values(string_values)
         other.should be_equivalent(ref)
       end
 
@@ -203,7 +141,7 @@ module Dbd
           string_values_1_modified = string_values.dup.tap { |_string_values|
             _string_values[index][3] = '4' # different and valid for all cases
           }
-          other = described_class.from_string_values(string_values_1_modified)
+          other = factory.from_string_values(string_values_1_modified)
           other.should_not be_equivalent(ref)
         end
       end
@@ -212,7 +150,7 @@ module Dbd
         string_values_time_modified = string_values.dup.tap { |_string_values|
           _string_values[1] = '2013-06-17 21:55:09.967653513 UTC'
         }
-        other = described_class.from_string_values(string_values_time_modified)
+        other = factory.from_string_values(string_values_time_modified)
         other.should be_equivalent(ref)
       end
     end
