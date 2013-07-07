@@ -50,7 +50,7 @@ puts csv
 # "a3da9295-b43a-4c3a-8e8c-97c3f04c1fa3","2013-06-19 22:02:20.490036790 UTC","5eb1ea27-6691-4a57-ab13-8a59021968e1","3767c493-79d3-4a97-a832-79e6361ddc4c","todo:story","A long period of peace,
 #  that is a ""bliss""."
 
-imported_graph = Dbd::Graph.from_CSV(csv)
+imported_graph = Dbd::Graph.new.from_CSV(csv)
 
 puts imported_graph.map(&:short)
 
