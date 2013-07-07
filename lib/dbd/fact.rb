@@ -130,11 +130,11 @@ module Dbd
     def initialize(options)
       @id = options[:id] || self.class.new_id
       @time_stamp = options[:time_stamp]
-      validate_time_stamp_class(@time_stamp)
       @provenance_subject = options[:provenance_subject]
       @subject = options[:subject]
       @predicate = options[:predicate]
       @object = options[:object]
+      validate_time_stamp_class(@time_stamp)
       raise PredicateError, "predicate cannot be nil" if predicate.nil?
       raise ObjectError, "object cannot be nil" if object.nil?
     end
@@ -165,7 +165,7 @@ module Dbd
     end
 
     ##
-    # Equivalent facts (have all same values, except time_stamp).
+    # Equivalent facts (have all same values, except time_stamp which is near?).
     #
     # For "equality" only a test on the id is used. If the id
     # (which is a uuid) is the same, we assume that is the "same"
@@ -211,22 +211,21 @@ module Dbd
     def errors
       # * id not validated, is set automatically upon creation
       # * time_stamp not validated, is set automatically later
-      # * predicate not validated, is validated in initialize
-      # * object not validated, is validated in initialize
-      [].tap do |a|
-        a << provenance_subject_error(provenance_subject)
-        a << "Subject is missing" unless subject
-      end.compact
+      # * predicate not validated, is validated upon creation
+      # * object not validated, is validated upon creation
+      [provenance_subject_error(provenance_subject),
+       subject ? nil : "Subject is missing"].compact
     end
 
     ##
     # Validates the presence or absence of provenance_subject.
     #
-    # Here, in (base) Fact, provenance_subject must be present
-    # In the derived ProvenanceFact it must not be present.
+    # Here, in (base) Fact, provenance_subject must be present.
+    #
+    # In the derived ProvenanceFact it must NOT be present.
     # This is how the difference is encoded between Fact and
     # ProvenanceFact in the fact stream.
-    # @param [#nil?] provenance_subject
+    # @param [Object] provenance_subject
     # Return [nil, String] nil or an error message
     def provenance_subject_error(provenance_subject)
       "Provenance subject is missing" unless provenance_subject
@@ -247,13 +246,13 @@ module Dbd
       "#{provenance_subject.to_s[0...8]}"
     end
 
+    # FIXME This has to move to a Fact::Factory
     def validate_time_stamp_class(time_stamp)
       unless time_stamp.nil? || time_stamp.is_a?(TimeStamp)
         raise ArgumentError, "time_stamp is of class #{time_stamp.class}, should be TimeStamp"
       end
     end
 
-    # FIXME This has to move to a Fact::Factory
     def self.hash_from_values(values)
       # Do not keep "empty" values (e.g. the provenance_subject for a ProvenanceFact).
       attributes_values_array = [attributes, values].transpose.delete_if{|a,v| v.nil? || v == ''}
