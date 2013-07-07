@@ -48,7 +48,7 @@ Open Source [MIT]
 
 ## Examples
 
-Also see the file `docs/test.rb` to execute the script below.
+Running `ruby docs/test.rb` will execute the script below.
 
 ```
 require 'dbd'
@@ -103,7 +103,7 @@ puts csv
 # "a3da9295-b43a-4c3a-8e8c-97c3f04c1fa3","2013-06-19 22:02:20.490036790 UTC","5eb1ea27-6691-4a57-ab13-8a59021968e1","3767c493-79d3-4a97-a832-79e6361ddc4c","todo:story","A long period of peace,
 #  that is a ""bliss""."
 
-imported_graph = Dbd::Graph.from_CSV(csv)
+imported_graph = Dbd::Graph.new.from_CSV(csv)
 
 puts imported_graph.map(&:short)
 
@@ -128,7 +128,7 @@ had an approximate size of 250 Bytes each (80 Bytes object).
 
 The time needed and memory size (RSS) for populating the in-memory dataset was:
 
-10 M facts (of 250 Bytes; 2.5 GB netto data):
+Generate in memory 10 M facts (of 250 Bytes; 2.5 GB netto data):
 
 | ruby	     | time        | memory (RSS) |
 |------------|-------------| ------------:|
@@ -136,6 +136,25 @@ The time needed and memory size (RSS) for populating the in-memory dataset was:
 | ruby-2.0.0 | 862 seconds |       9.0 GB |
 |jruby-1.7.4 | 345 seconds |      10.8 GB |
 
+In version 0.0.10 a test for reading a fact stream from a CSV file was added
+(e.g. ../bin/test_6.rb). Reading back a CSV file that was written earlier with
+10 M facts (with test_5.rb) was tested on jruby-1.7.4. and ruby-2.0.0.
+
+This version also has input validation on the strings in the CSV. The time needed
+and memory size (RSS) for reading the file (and populating the in-memory dataset
+was):
+
+Read from CSV (to_CSV) 10 M facts (of 250 Bytes; 2.5 GB netto data):
+
+| ruby	     | time          |  memory (RSS) |
+|------------|---------------|--------------:|
+| ruby-1.9.3 | 4434  seconds | approx. 10 GB |
+| ruby-2.0.0 | 5163  seconds | approx. 15 GB |
+|jruby-1.7.4 | 1513  seconds | approx. 14 GB |
+
+The significantly larger times to read from_CSV versus writing to_CSV are _not_
+significantly caused by input validation (a test in JRuby without validation on
+reading 1M facts was only 6% faster with the input validation turned off).
 
 [RDF]:              http://www.w3.org/RDF/
 [Rationale]:        http://github.com/petervandenabeele/dbd/blob/master/docs/rationale.md

@@ -50,3 +50,14 @@
 * new function graph#to_CSV_file
 * bin/test_5.rb was used to write 10M facts using ruby-2.0.0, 1.9.3 and jruby-1.7.4
 * jruby is 3 time faster, but 10% more memory comsumption
+
+0.0.10 (7 July 2013)
+======
+
+* Input validation for Graph#from_CSV (pairing with @marksim)
+* Convert Graph.from_CSV => Graph#from_CSV (can apply multiple
+  from_CSV's on same graph)
+* moved factories out of Fact to Fact::Factory
+  (removing the dependency injection violations from the Fact class)
+* work-arounds for JRuby nanosecond rounding issues (#1)
+* renamed Factories to TestFactories
