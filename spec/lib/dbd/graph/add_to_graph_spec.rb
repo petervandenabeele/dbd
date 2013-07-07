@@ -4,7 +4,7 @@ module Dbd
   describe Graph do
 
     def new_subject
-      Fact.new_subject
+      Fact.factory.new_subject
     end
 
     let(:data_fact) { TestFactories::Fact.data_fact(new_subject, new_subject) }

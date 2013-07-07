@@ -3,8 +3,8 @@ require 'spec_helper'
 module Dbd
   describe ProvenanceFact do
 
-    let(:subject) { described_class.new_subject }
-    let(:id_class) { described_class.new_id.class }
+    let(:subject) { described_class.factory.new_subject }
+    let(:id_class) { described_class.factory.new_id.class }
 
     let(:provenance_fact_1) do
       TestFactories::ProvenanceFact.context(subject)
@@ -41,7 +41,7 @@ module Dbd
 
       it 'raises an ProvenanceError when provenance_subject is present in options hash' do
         lambda { described_class.new(
-          provenance_subject: described_class.new_subject,
+          provenance_subject: subject,
           predicate: 'test',
           object: 'test') } .
             should raise_error ProvenanceError

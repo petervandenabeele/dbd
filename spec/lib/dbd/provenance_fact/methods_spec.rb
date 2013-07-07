@@ -3,7 +3,7 @@ require 'spec_helper'
 module Dbd
   describe ProvenanceFact do
 
-    let(:subject) { described_class.new_subject }
+    let(:subject) { described_class.factory.new_subject }
 
     let(:provenance_fact_1) do
       TestFactories::ProvenanceFact.context(subject)

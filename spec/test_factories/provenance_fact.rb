@@ -6,7 +6,7 @@ module TestFactories
     end
 
     def self.new_subject
-      factory_for.new_subject
+      factory_for.factory.new_subject
     end
 
     def self.context(subject = nil)

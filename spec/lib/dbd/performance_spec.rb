@@ -8,7 +8,7 @@ module Dbd
 
     # no let because we do not want memoized
     def new_subject
-      Fact.new_subject
+      Fact.factory.new_subject
     end
 
     let(:provenance_fact_1) { TestFactories::ProvenanceFact.context(new_subject) }

@@ -5,7 +5,7 @@ module TestFactories
     end
 
     def self.new_subject
-      ::Dbd::ProvenanceFact.new_subject
+      ::Dbd::Fact.factory.new_subject
     end
 
     def self.only_provenance

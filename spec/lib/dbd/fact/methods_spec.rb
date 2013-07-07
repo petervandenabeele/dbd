@@ -3,17 +3,17 @@ require 'spec_helper'
 module Dbd
   describe Fact do
 
-    let(:provenance_subject) { ProvenanceFact.new_subject }
-    let(:subject) { described_class.new_subject }
+    let(:factory) { described_class.factory }
+    let(:provenance_subject) { factory.new_subject }
+    let(:subject) { factory.new_subject }
     let(:fact_1) { TestFactories::Fact.fact_1(provenance_subject) }
     let(:fact_2_with_subject) { TestFactories::Fact.fact_2_with_subject(provenance_subject) }
     let(:fact_with_newline) { TestFactories::Fact.fact_with_newline(provenance_subject) }
     let(:full_fact) { TestFactories::Fact.full_fact }
-    let(:factory) { described_class::Factory }
 
     describe '.factory' do
       it 'should return the factory for a Fact' do
-        described_class.factory.should == factory
+        factory.should == described_class::Factory
       end
     end
 

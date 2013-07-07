@@ -4,8 +4,8 @@ module Dbd
   class Fact
     describe Collection do
 
-      let(:provenance_subject_1) { ProvenanceFact.new_subject }
-      let(:provenance_subject_2) { ProvenanceFact.new_subject }
+      let(:provenance_subject_1) { Fact.factory.new_subject }
+      let(:provenance_subject_2) { Fact.factory.new_subject }
 
       let(:provenance_fact_context) { TestFactories::ProvenanceFact.context(provenance_subject_1) }
       let(:provenance_fact_created_by) { TestFactories::ProvenanceFact.created_by(provenance_subject_1) }

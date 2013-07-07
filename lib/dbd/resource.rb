@@ -30,7 +30,7 @@ module Dbd
     ##
     # @return [Fact::Subject] a new (random) Resource subject
     def self.new_subject
-      Fact.new_subject
+      Fact.factory.new_subject
     end
 
     ##

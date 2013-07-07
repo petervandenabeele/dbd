@@ -9,7 +9,7 @@ module Dbd
 
     describe '.new_subject' do
       it 'returns a Fact#new_subject' do
-        described_class.new_subject.should be_a(Fact.new_subject.class)
+        described_class.new_subject.should be_a(Fact.factory.new_subject.class)
       end
     end
 

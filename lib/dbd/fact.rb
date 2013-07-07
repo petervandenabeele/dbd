@@ -59,6 +59,12 @@ module Dbd
   class Fact
 
     ##
+    # @return [Module] The module that has the factories for Fact
+    def self.factory
+      self::Factory
+    end
+
+    ##
     # @return [Array] The 6 attributes of a Fact.
     def self.attributes
       [:id,
@@ -74,19 +80,15 @@ module Dbd
     end
 
     ##
-    # @return [Module] The module that has the factories for Fact
-    def self.factory
-      self::Factory
-    end
-
-    ##
+    # These "set once" setters implement a form of immutable behavior.
+    # The value can be set once (after initial creation the object),
+    # but can never be changed after that.
+    #
     # A set_once setter for time_stamp.
     #
-    # This implements a "form" of immutable behavior. The value can
-    # be set once (possibly after creation the object), but can
-    # never be changed after that.
-    #
     # The input class is validated (easy confusion with String or Time).
+    #
+    # @param [TimeStamp] :time_stamp a time_stamp (not a Time or a String)
     def time_stamp=(time_stamp)
       validate_time_stamp_class(time_stamp)
       set_once(:time_stamp, time_stamp)
@@ -95,9 +97,7 @@ module Dbd
     ##
     # A set_once setter for provenance_subject.
     #
-    # This implements a "form" of immutable behavior. The value can
-    # be set once (possibly after creation the object), but can
-    # never be changed after that.
+    # @param [String] :provenance_subject a string representation of the uuid
     def provenance_subject=(provenance_subject)
       set_once(:provenance_subject, provenance_subject)
     end
@@ -105,29 +105,15 @@ module Dbd
     ##
     # A set_once setter for subject.
     #
-    # This implements a "form" of immutable behavior. The value can
-    # be set once (possibly after creation the object), but can
-    # never be changed after that.
+    # @param [String] :subject a string representation of the uuid
     def subject=(subject)
       set_once(:subject, subject)
     end
 
     ##
-    # @return [String] A new subject string.
-    def self.new_subject
-      Subject.new_subject
-    end
-
-    ##
-    # @return [String] A new id string.
-    def self.new_id
-      ID.new_id
-    end
-
-    ##
     # Builds a new Fact.
     #
-    # @param [Hash{Symbol => Object}] options
+    # @param [Hash{Symbol => Object}] :options
     # @option options [#to_s] :predicate Required : the predicate for this Fact
     # @option options [#to_s] :object Required :  the object for this Fact (required)
     # @option options [String (uuid)] :provenance_subject (nil) Optional: the subject of the provenance(resource|fact)
@@ -135,7 +121,7 @@ module Dbd
     # @option options [TimeStamp] :time_stamp (nil) Optional: the time_stamp for this Fact
     # @option options [String (uuid)] :id Optional : set the id
     def initialize(options)
-      @id = options[:id] || self.class.new_id
+      @id = options[:id] || self.class.factory.new_id
       @time_stamp = options[:time_stamp]
       @provenance_subject = options[:provenance_subject]
       @subject = options[:subject]
@@ -170,6 +156,9 @@ module Dbd
     # The time_stamp may be slightly different (because shifts
     # of a few nanoseconds will be required to resolve collisions
     # on merge).
+    #
+    # @param [Fact] :other the other fact to compare with
+    # @return [trueish]
     def equivalent?(other)
       (self.class.attributes - [:time_stamp]).
         all?{ |attribute| self.send(attribute) == other.send(attribute) } &&
@@ -194,6 +183,8 @@ module Dbd
     # ProvenanceResource with this provenance_subject.
     #
     # This is overridden in the ProvenanceFact, since only relevant for a Fact.
+    #
+    # @param[Hash] :h the hash that contains the provenance_subject index
     def update_used_provenance_subjects(h)
       # using a provenance_subject sets the key
       h[provenance_subject] = true
@@ -220,6 +211,7 @@ module Dbd
     # In the derived ProvenanceFact it must NOT be present.
     # This is how the difference is encoded between Fact and
     # ProvenanceFact in the fact stream.
+    #
     # @param [Object] provenance_subject
     # Return [nil, String] nil or an error message
     def provenance_subject_error(provenance_subject)
@@ -231,6 +223,8 @@ module Dbd
     #
     # Needed for validations that depend on different behavior for
     # a provenance_fact (mainly, no provenance_subject).
+    #
+    # @return [trueish] false in the Fact implementation
     def provenance_fact?
       false
     end

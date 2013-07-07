@@ -4,8 +4,22 @@ module Dbd
 
       class << self
 
+        ##
+        # @return [Class] the top class for which instances are created here.
         def top_class
           Fact
+        end
+
+        ##
+        # @return [String] A new subject string.
+        def new_subject
+          top_class::Subject.new_subject
+        end
+
+        ##
+        # @return [String] A new id string.
+        def new_id
+          top_class::ID.new_id
         end
 
         ##
