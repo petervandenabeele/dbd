@@ -23,13 +23,14 @@ This is facts based data store, inspired by [RDF] concepts, but adding a log bas
     must remove this fact and replace the back-up
   * since one single back-up file suffices, replacing the *single* back-up  
     file will actually remove the hard deleted fact(s) for good
-* Fine grained Provenance
-  * Each base Fact points to a ProvenanceResource, so separate provenance  
-    possible for different facts about 1 resource
+* Fine grained context (including provenance)
+  * Each base Fact points to a ContextResource, so separate context and  
+    provenance is possible per fact (e.g. different properties about the same  
+    resource can come from different sources, different visibility etc.)
   * can keep the original_source reference, creator, date, …
   * can have a context that allows filtering data (e.g. private, professional, …)
   * separate encryption schemes per context are possible
-  * ProvenanceResource is flexible, since built itself from Facts
+  * ContextResource is flexible, since built itself from Facts
 * Schemaless
   * uses the [RDF] (subject, predicate, object) concepts
   * predicates, types can be defined in an ontology for declaring meaning
@@ -53,7 +54,7 @@ Running `ruby docs/test.rb` will execute the script below.
 ```
 require 'dbd'
 
-context = Dbd::ProvenanceResource.new
+context = Dbd::ContextResource.new
 
 context << Dbd::Context.new(predicate: "prov:context", object: "public")
 context << Dbd::Context.new(predicate: "prov:source",  object: "http://github.com/petervandenabeele/dbd")
@@ -76,15 +77,15 @@ puts "facts in short representation:"
 puts graph.map(&:short)
 
 # facts in short representation:
-# [ cont ] : a1c5ee46 : prov:context             : public
-# [ cont ] : a1c5ee46 : prov:source              : http://github.com/petervandenabeele/dbd
-# [ cont ] : a1c5ee46 : dcterms:creator          : @peter_v
-# [ cont ] : a1c5ee46 : dcterms:created          : 2013-07-08 16:02:56 UTC
-# [ cont ] : a1c5ee46 : prov:license             : MIT
-# a1c5ee46 : c1337587 : todo:nobelPeacePriceWinn : 2012
-# a1c5ee46 : c1337587 : rdfs:label               : EU
-# a1c5ee46 : c1337587 : rdfs:comment             : European Union
-# a1c5ee46 : c1337587 : todo:story               : A long period of peace,_ that is a "bliss".
+# [ cont ] : 8e944a5b : prov:context             : public
+# [ cont ] : 8e944a5b : prov:source              : http://github.com/petervandenabeele/dbd
+# [ cont ] : 8e944a5b : dcterms:creator          : @peter_v
+# [ cont ] : 8e944a5b : dcterms:created          : 2013-07-08 18:56:22 UTC
+# [ cont ] : 8e944a5b : prov:license             : MIT
+# 8e944a5b : ce210dee : todo:nobelPeacePriceWinn : 2012
+# 8e944a5b : ce210dee : rdfs:label               : EU
+# 8e944a5b : ce210dee : rdfs:comment             : European Union
+# 8e944a5b : ce210dee : todo:story               : A long period of peace,_ that is a "bliss".
 
 csv = graph.to_CSV
 
@@ -92,29 +93,29 @@ puts "facts in full detail in CSV:"
 puts csv
 
 # facts in full detail in CSV:
-# "185380bf-166d-4e6d-bc3f-010b42dc63f9","2013-07-08 16:02:56.069610807 UTC","","a1c5ee46-b8a1-422a-95c6-75f3a3022498","prov:context","public"
-# "7a5e7f00-bc5e-4943-8de2-4bdc1c35c586","2013-07-08 16:02:56.069658035 UTC","","a1c5ee46-b8a1-422a-95c6-75f3a3022498","prov:source","http://github.com/petervandenabeele/dbd"
-# "fc5f2328-07cb-496d-a4fd-7dbe8d18f814","2013-07-08 16:02:56.069687066 UTC","","a1c5ee46-b8a1-422a-95c6-75f3a3022498","dcterms:creator","@peter_v"
-# "13956658-dd38-462e-bb6e-c46c81a5a885","2013-07-08 16:02:56.069702269 UTC","","a1c5ee46-b8a1-422a-95c6-75f3a3022498","dcterms:created","2013-07-08 16:02:56 UTC"
-# "3d31affd-1a0f-4a29-aff6-53c9ccceee62","2013-07-08 16:02:56.069715865 UTC","","a1c5ee46-b8a1-422a-95c6-75f3a3022498","prov:license","MIT"
-# "564302b7-3231-4904-a774-e61b60a87b4d","2013-07-08 16:02:56.069733020 UTC","a1c5ee46-b8a1-422a-95c6-75f3a3022498","c1337587-0635-4163-9e1e-111ddca8ca01","todo:nobelPeacePriceWinner","2012"
-# "c4e6096e-087a-4eb5-bfe6-71dfd784ba1e","2013-07-08 16:02:56.069750945 UTC","a1c5ee46-b8a1-422a-95c6-75f3a3022498","c1337587-0635-4163-9e1e-111ddca8ca01","rdfs:label","EU"
-# "be4f6f43-cfd2-4bc8-9173-cd3daadb9be5","2013-07-08 16:02:56.069765607 UTC","a1c5ee46-b8a1-422a-95c6-75f3a3022498","c1337587-0635-4163-9e1e-111ddca8ca01","rdfs:comment","European Union"
-# "0da6d81b-8137-41e0-a1a0-fc1f6f1c1708","2013-07-08 16:02:56.069779069 UTC","a1c5ee46-b8a1-422a-95c6-75f3a3022498","c1337587-0635-4163-9e1e-111ddca8ca01","todo:story","A long period of peace,
+# "f851b1be-62c1-4304-b5ec-338d0f1db270","2013-07-08 18:56:22.104811959 UTC","","8e944a5b-9b88-4ec4-b920-5e6d34840442","prov:context","public"
+# "56e46bd0-7b64-4fa0-aee1-2399c13eef18","2013-07-08 18:56:22.104857149 UTC","","8e944a5b-9b88-4ec4-b920-5e6d34840442","prov:source","http://github.com/petervandenabeele/dbd"
+# "7da8b320-f7ef-470c-8ccb-4d2fa003320f","2013-07-08 18:56:22.104876326 UTC","","8e944a5b-9b88-4ec4-b920-5e6d34840442","dcterms:creator","@peter_v"
+# "76c36dd8-929f-4284-a450-ab8fb1aeb418","2013-07-08 18:56:22.104894231 UTC","","8e944a5b-9b88-4ec4-b920-5e6d34840442","dcterms:created","2013-07-08 18:56:22 UTC"
+# "a5b8573d-aef1-4dcd-8b73-c96f06ffc6ec","2013-07-08 18:56:22.104909283 UTC","","8e944a5b-9b88-4ec4-b920-5e6d34840442","prov:license","MIT"
+# "0db3b6f8-96f4-4243-b0cf-6632e5aa6d4b","2013-07-08 18:56:22.104926520 UTC","8e944a5b-9b88-4ec4-b920-5e6d34840442","ce210dee-c0b4-4053-99ff-b4338cff1a06","todo:nobelPeacePriceWinner","2012"
+# "61eeeb57-30d7-484e-acfc-e62db5e56ea4","2013-07-08 18:56:22.104943653 UTC","8e944a5b-9b88-4ec4-b920-5e6d34840442","ce210dee-c0b4-4053-99ff-b4338cff1a06","rdfs:label","EU"
+# "94fd717b-f50f-4c02-a271-5012d26c248f","2013-07-08 18:56:22.104957856 UTC","8e944a5b-9b88-4ec4-b920-5e6d34840442","ce210dee-c0b4-4053-99ff-b4338cff1a06","rdfs:comment","European Union"
+# "68782219-b2fc-41c2-b8f6-57ff1ac6e73b","2013-07-08 18:56:22.104971734 UTC","8e944a5b-9b88-4ec4-b920-5e6d34840442","ce210dee-c0b4-4053-99ff-b4338cff1a06","todo:story","A long period of peace,
 #  that is a ""bliss""."
 
 imported_graph = Dbd::Graph.new.from_CSV(csv)
 
 puts imported_graph.map(&:short)
-# [ cont ] : a1c5ee46 : prov:context             : public
-# [ cont ] : a1c5ee46 : prov:source              : http://github.com/petervandenabeele/dbd
-# [ cont ] : a1c5ee46 : dcterms:creator          : @peter_v
-# [ cont ] : a1c5ee46 : dcterms:created          : 2013-07-08 16:02:56 UTC
-# [ cont ] : a1c5ee46 : prov:license             : MIT
-# a1c5ee46 : c1337587 : todo:nobelPeacePriceWinn : 2012
-# a1c5ee46 : c1337587 : rdfs:label               : EU
-# a1c5ee46 : c1337587 : rdfs:comment             : European Union
-# a1c5ee46 : c1337587 : todo:story               : A long period of peace,_ that is a "bliss".
+# [ cont ] : 8e944a5b : prov:context             : public
+# [ cont ] : 8e944a5b : prov:source              : http://github.com/petervandenabeele/dbd
+# [ cont ] : 8e944a5b : dcterms:creator          : @peter_v
+# [ cont ] : 8e944a5b : dcterms:created          : 2013-07-08 18:56:22 UTC
+# [ cont ] : 8e944a5b : prov:license             : MIT
+# 8e944a5b : ce210dee : todo:nobelPeacePriceWinn : 2012
+# 8e944a5b : ce210dee : rdfs:label               : EU
+# 8e944a5b : ce210dee : rdfs:comment             : European Union
+# 8e944a5b : ce210dee : todo:story               : A long period of peace,_ that is a "bliss".
 ```
 
 ## Performance tests on 10 M facts

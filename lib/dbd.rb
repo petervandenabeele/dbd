@@ -7,7 +7,7 @@ require 'dbd/time_stamp'
 require 'dbd/fact'
 require 'dbd/context'
 require 'dbd/resource'
-require 'dbd/provenance_resource'
+require 'dbd/context_resource'
 require 'dbd/graph'
 
 require 'dbd/rdf_base'

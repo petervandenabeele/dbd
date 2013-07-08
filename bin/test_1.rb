@@ -18,16 +18,16 @@ unless filename
 end
 
 require 'dbd'
-provenance_resource = Dbd::ProvenanceResource.new
-provenance_resource << Dbd::Context.new(predicate: "prov:test" , object: "A" * 10)
+context_resource = Dbd::ContextResource.new
+context_resource << Dbd::Context.new(predicate: "prov:test" , object: "A" * 10)
 
-resource = Dbd::Resource.new(context_subject: provenance_resource.subject)
+resource = Dbd::Resource.new(context_subject: context_resource.subject)
 (0...count).each do |i|
   resource << Dbd::Fact.new(predicate: "test", object: "#{'B' * 80} #{i}")
 end
 
 graph = Dbd::Graph.new
-graph << provenance_resource << resource
+graph << context_resource << resource
 
 File.open(filename, 'w') do |f|
   f << graph.to_CSV

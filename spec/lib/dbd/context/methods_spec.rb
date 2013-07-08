@@ -14,11 +14,11 @@ module Dbd
     end
 
     describe 'short' do
-      it 'for a provenance fact shows [ cont ], subj, predicate, object' do
+      it 'for a context fact shows [ cont ], subj, predicate, object' do
         context_1.short.should match(/^\[ cont \] : [0-9a-f]{8} : context:visibility       : public$/)
       end
 
-      it 'for a provenance fact with non string object also works' do
+      it 'for a context fact with non string object also works' do
         context_created.short.should match(/^\[ cont \] : [0-9a-f]{8} : dcterms:created          : \d{4}/)
       end
     end

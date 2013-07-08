@@ -47,7 +47,7 @@ module Dbd
     end
 
     describe 'short' do
-      it 'for a base fact shows provenance, subject, predicate, object' do
+      it 'for a base fact shows context, subject, predicate, object' do
         fact_1.subject = subject
         fact_1.time_stamp = TimeStamp.new
         fact_1.short.should match(/^[0-9a-f]{8} : [0-9a-f]{8} : http:\/\/example\.org\/test\/ : Gandhi$/)

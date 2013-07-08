@@ -9,7 +9,7 @@ module TestFactories
     end
 
     def self.only_context
-      factory_for.new << TestFactories::ProvenanceResource.provenance_resource
+      factory_for.new << TestFactories::ContextResource.context_resource
     end
 
     def self.only_facts(context_subject = new_subject)
@@ -17,9 +17,9 @@ module TestFactories
     end
 
     def self.full
-      provenance_resource = TestFactories::ProvenanceResource.provenance_resource
-      resource = TestFactories::Resource.facts_resource(provenance_resource.subject)
-      factory_for.new << provenance_resource << resource
+      context_resource = TestFactories::ContextResource.context_resource
+      resource = TestFactories::Resource.facts_resource(context_resource.subject)
+      factory_for.new << context_resource << resource
     end
   end
 end

@@ -1,6 +1,6 @@
 require 'dbd'
 
-context = Dbd::ProvenanceResource.new
+context = Dbd::ContextResource.new
 
 context << Dbd::Context.new(predicate: "prov:context", object: "public")
 context << Dbd::Context.new(predicate: "prov:source",  object: "http://github.com/petervandenabeele/dbd")

@@ -9,16 +9,16 @@ module Dbd
 
     let(:data_fact) { TestFactories::Fact.data_fact(new_subject, new_subject) }
     let(:fact_no_subject) { TestFactories::Fact.data_fact(new_subject, nil) }
-    let(:fact_no_provenance) { TestFactories::Fact.data_fact(nil, new_subject) }
+    let(:fact_no_subject) { TestFactories::Fact.data_fact(nil, new_subject) }
 
     let(:contexts) { TestFactories::Fact::Collection.contexts(new_subject) }
     let(:context_1) { contexts.first }
 
     let(:subject_regexp) { Fact::Subject.regexp }
 
-    let(:provenance_resource) { TestFactories::ProvenanceResource.provenance_resource }
-    let(:resource) { TestFactories::Resource.facts_resource(provenance_resource.subject) }
-    let(:resource_array) { [provenance_resource, resource]}
+    let(:context_resource) { TestFactories::ContextResource.context_resource }
+    let(:resource) { TestFactories::Resource.facts_resource(context_resource.subject) }
+    let(:resource_array) { [context_resource, resource]}
 
     describe 'create a graph' do
       it 'does not fail' do
@@ -45,8 +45,8 @@ module Dbd
           lambda { subject << fact_no_subject } . should raise_error FactError
         end
 
-        it 'fact with missing provenance raises FactError' do
-          lambda { subject << fact_no_provenance } . should raise_error FactError
+        it 'fact with missing context raises FactError' do
+          lambda { subject << fact_no_subject } . should raise_error FactError
         end
       end
 
@@ -88,19 +88,19 @@ module Dbd
         end
       end
 
-      describe 'a ProvenanceResource and a Resource' do
+      describe 'a ContextResource and a Resource' do
 
         it 'does not fail' do
-          subject << provenance_resource
+          subject << context_resource
         end
 
-        it 'Adds the facts from the provenance_resource to the graph' do
-          subject << provenance_resource
+        it 'Adds the facts from the context_resource to the graph' do
+          subject << context_resource
           subject.size.should == 2
         end
 
-        it 'Adds the facts from the provenance_resource and the resource to the graph' do
-          subject << provenance_resource
+        it 'Adds the facts from the context_resource and the resource to the graph' do
+          subject << context_resource
           subject << resource
           subject.size.should == 4
           subject.first.should be_a(Context)
@@ -113,7 +113,7 @@ module Dbd
           subject << resource_array
         end
 
-        it 'Adds the facts from the provenance_resource and the resource to the graph' do
+        it 'Adds the facts from the context_resource and the resource to the graph' do
           subject << resource_array
           subject.first.class.should == Context
           subject.last.class.should == Fact
@@ -126,7 +126,7 @@ module Dbd
         end
 
         it 'works with different levels deep in 1 collection' do
-          subject << [provenance_resource, [[resource]]]
+          subject << [context_resource, [[resource]]]
           subject.size.should == 4
         end
       end
