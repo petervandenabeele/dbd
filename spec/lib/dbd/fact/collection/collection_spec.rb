@@ -7,16 +7,16 @@ module Dbd
       let(:context_subject_1) { Fact.factory.new_subject }
       let(:context_subject_2) { Fact.factory.new_subject }
 
-      let(:context_visibility) { TestFactories::Context.visibility(context_subject_1) }
-      let(:context_created_by) { TestFactories::Context.created_by(context_subject_1) }
-      let(:context_original_source) { TestFactories::Context.original_source(context_subject_2) }
+      let(:context_fact_visibility) { TestFactories::ContextFact.visibility(context_subject_1) }
+      let(:context_fact_created_by) { TestFactories::ContextFact.created_by(context_subject_1) }
+      let(:context_fact_original_source) { TestFactories::ContextFact.original_source(context_subject_2) }
 
       let(:fact_1) { TestFactories::Fact.fact_1(context_subject_1) }
       let(:fact_2_with_subject) { TestFactories::Fact.fact_2_with_subject(context_subject_1) }
       let(:fact_3_with_subject) { TestFactories::Fact.fact_3_with_subject(context_subject_1) }
 
       let(:fact_2_3) { TestFactories::Fact::Collection.fact_2_3(context_subject_1) }
-      let(:contexts) { TestFactories::Fact::Collection.contexts(context_subject_1) }
+      let(:context_facts) { TestFactories::Fact::Collection.context_facts(context_subject_1) }
 
       let(:subject) do
         Object.new.tap do |object_with_Fact_Collection|
@@ -43,13 +43,13 @@ module Dbd
             subject.size.should == 1
           end
 
-          it 'adding a context works' do
-            subject << context_visibility
+          it 'adding a context_fact works' do
+            subject << context_fact_visibility
             subject.size.should == 1
           end
 
           it 'returns self to allow chaining' do
-            (subject << context_visibility).should == subject
+            (subject << context_fact_visibility).should == subject
           end
         end
 
@@ -68,14 +68,14 @@ module Dbd
         end
       end
 
-      describe 'adding a fact with a ref to a context' do
+      describe 'adding a fact with a ref to a context_fact' do
 
-        it 'fact_2_with_subject has a context_subject that refers to context and created_by' do
-          subject << context_visibility
-          subject << context_created_by
+        it 'fact_2_with_subject has a context_subject that refers to context_fact_visibility and context_fact_created_by' do
+          subject << context_fact_visibility
+          subject << context_fact_created_by
           subject << fact_2_with_subject
           context_subject = fact_1.context_subject
-          subject.by_subject(context_subject).should == [context_visibility, context_created_by]
+          subject.by_subject(context_subject).should == [context_fact_visibility, context_fact_created_by]
         end
       end
 
@@ -137,15 +137,15 @@ module Dbd
       end
 
       describe 'context_facts must all come before first use by a fact' do
-        it 'adding a context, depending fact, another context with same subject fail' do
-          subject << context_visibility
+        it 'adding a context_fact, depending fact, another context_fact with same subject fail' do
+          subject << context_fact_visibility
           subject << fact_2_with_subject
-          lambda{ subject << context_created_by }.should raise_error OutOfOrderError
+          lambda{ subject << context_fact_created_by }.should raise_error OutOfOrderError
         end
 
         # testing private functionality (kept temporarily as documentation)
         # A hash with all the context_subjects that are used by at least one fact.
-        # Needed for the validation that no context may be added that is
+        # Needed for the validation that no context_fact may be added that is
         # referred from a fact that is already in the fact stream.
         describe 'used_context_subjects' do
           # testing an internal variable ...
@@ -158,13 +158,13 @@ module Dbd
             used_context_subjects.should be_empty
           end
 
-          it 'adding a context alone does not create an entry' do
-            subject << context_visibility
+          it 'adding a context_fact alone does not create an entry' do
+            subject << context_fact_visibility
             used_context_subjects.should be_empty
           end
 
-          it 'adding a context and a depending fact create an entry' do
-            subject << context_visibility
+          it 'adding a context_fact and a depending fact create an entry' do
+            subject << context_fact_visibility
             subject << fact_2_with_subject
             used_context_subjects[context_subject_1].should == true
           end
@@ -177,8 +177,8 @@ module Dbd
         end
 
         it 'raises FactError with message when fact.errors has errors' do
-           context_visibility.stub(:errors).and_return(['Error 1', 'Error 2'])
-           lambda { subject << context_visibility } . should raise_error(
+           context_fact_visibility.stub(:errors).and_return(['Error 1', 'Error 2'])
+           lambda { subject << context_fact_visibility } . should raise_error(
              FactError,
              'Error 1, Error 2.')
         end
@@ -186,15 +186,15 @@ module Dbd
 
       describe 'by_subject : ' do
         it 'finds entries for a given subject' do
-          subject << context_visibility
-          subject << context_created_by
-          subject << context_original_source
-          context_visibility.subject.should == context_subject_1 # assert test set-up
-          context_created_by.subject.should == context_subject_1 # assert test set-up
-          context_original_source.subject.should == context_subject_2 # assert test set-up
-          subject.by_subject(context_subject_1).first.should == context_visibility
-          subject.by_subject(context_subject_1).last.should == context_created_by
-          subject.by_subject(context_subject_2).single.should == context_original_source
+          subject << context_fact_visibility
+          subject << context_fact_created_by
+          subject << context_fact_original_source
+          context_fact_visibility.subject.should == context_subject_1 # assert test set-up
+          context_fact_created_by.subject.should == context_subject_1 # assert test set-up
+          context_fact_original_source.subject.should == context_subject_2 # assert test set-up
+          subject.by_subject(context_subject_1).first.should == context_fact_visibility
+          subject.by_subject(context_subject_1).last.should == context_fact_created_by
+          subject.by_subject(context_subject_2).single.should == context_fact_original_source
         end
       end
 
@@ -207,28 +207,28 @@ module Dbd
           end
         end
 
-        describe '.contexts' do
+        describe '.context_facts' do
           it 'has a visibility' do
-            contexts.select do |context|
-              context.predicate == 'context:visibility'
+            context_facts.select do |context_fact|
+              context_fact.predicate == 'context:visibility'
             end.size.should == 1
           end
 
           it 'has a created_by' do
-            contexts.select do |context|
-              context.predicate == 'dcterms:creator'
+            context_facts.select do |context_fact|
+              context_fact.predicate == 'dcterms:creator'
             end.size.should == 1
           end
 
           it 'has an original_source' do
-            contexts.select do |context|
-              context.predicate == 'prov:source'
+            context_facts.select do |context_fact|
+              context_fact.predicate == 'prov:source'
             end.size.should == 1
           end
 
           it 'has the given subjects with explicit subject arg' do
-            contexts.each do |context|
-              context.subject.should == context_subject_1
+            context_facts.each do |context_fact|
+              context_fact.subject.should == context_subject_1
             end
           end
         end

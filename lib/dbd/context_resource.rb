@@ -5,7 +5,7 @@ module Dbd
   #
   # It is pointed to by a context_subject of a Fact and has
   # no context_subject itself (the context_subject
-  # relationship from Fact to Context is not recursive).
+  # relationship from Fact to ContextFact is not recursive).
   class ContextResource < Resource
 
     ##
@@ -21,10 +21,10 @@ module Dbd
     end
 
     ##
-    # Add a Context (strictly only a Context).
+    # Add a ContextFact (strictly only a ContextFact).
     #
-    # Side effect on subject:
-    # * if it has no subject, the subject is set in a duplicate context
+    # Side effect on the context_fact argument:
+    # * if it has no subject, the subject is set in the context_fact
     # * if is has the same subject as the resource, added unchanged.
     # * if it has a different subject, a SubjectError is raised.
     def <<(context)
@@ -50,13 +50,13 @@ module Dbd
 
     ##
     # Assert _only_ Contexts here
-    def assert_fact_or_context(fact)
-      raise ArgumentError, "Trying to add a non-Context to a ContextResource." unless fact.context?
+    def assert_fact_or_context_fact(context_fact)
+      raise ArgumentError, "Trying to add a non-ContextFact to a ContextResource." unless context_fact.context?
     end
 
     ##
     # A noop for ContextResource.
-    # @param [Context] context
+    # @param [ContextFact] context
     def set_fact_context_subject!(context)
       # Do nothing
     end

@@ -9,10 +9,10 @@ module Dbd
 
     let(:data_fact) { TestFactories::Fact.data_fact(new_subject, new_subject) }
     let(:fact_no_subject) { TestFactories::Fact.data_fact(new_subject, nil) }
-    let(:fact_no_subject) { TestFactories::Fact.data_fact(nil, new_subject) }
+    let(:fact_no_context) { TestFactories::Fact.data_fact(nil, new_subject) }
 
-    let(:contexts) { TestFactories::Fact::Collection.contexts(new_subject) }
-    let(:context_1) { contexts.first }
+    let(:context_facts) { TestFactories::Fact::Collection.context_facts(new_subject) }
+    let(:context_fact_1) { context_facts.first }
 
     let(:subject_regexp) { Fact::Subject.regexp }
 
@@ -32,12 +32,12 @@ module Dbd
           subject << data_fact
         end
 
-        it 'a context does not fail' do
-          subject << context_1
+        it 'a context_fact does not fail' do
+          subject << context_fact_1
         end
 
         it 'two facts does not fail' do
-          subject << context_1
+          subject << context_fact_1
           subject << data_fact
         end
 
@@ -46,7 +46,7 @@ module Dbd
         end
 
         it 'fact with missing context raises FactError' do
-          lambda { subject << fact_no_subject } . should raise_error FactError
+          lambda { subject << fact_no_context } . should raise_error FactError
         end
       end
 
@@ -103,7 +103,7 @@ module Dbd
           subject << context_resource
           subject << resource
           subject.size.should == 4
-          subject.first.should be_a(Context)
+          subject.first.should be_a(ContextFact)
           subject.last.class.should == Fact
         end
       end
@@ -115,7 +115,7 @@ module Dbd
 
         it 'Adds the facts from the context_resource and the resource to the graph' do
           subject << resource_array
-          subject.first.class.should == Context
+          subject.first.class.should == ContextFact
           subject.last.class.should == Fact
           subject.size.should == 4
         end
@@ -132,7 +132,7 @@ module Dbd
       end
 
       it 'returns self' do
-        (subject << TestFactories::Fact::Collection.contexts(new_subject)).should be_a(described_class)
+        (subject << TestFactories::Fact::Collection.context_facts(new_subject)).should be_a(described_class)
       end
     end
   end

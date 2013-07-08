@@ -93,7 +93,7 @@ module Dbd
         end
 
         it 'errors returns an array with 1 error message' do
-          fact_2_with_subject.errors.single.should match(/Context subject is missing/)
+          fact_2_with_subject.errors.single.should match(/ContextFact subject is missing/)
         end
       end
 
@@ -139,8 +139,8 @@ module Dbd
       end
     end
 
-    describe 'context?' do
-      it 'is false for a base fact or derived from it that is not a Context ' do
+    describe 'context_fact?' do
+      it 'is false for a base fact or derived from it that is not a ContextFact ' do
         fact_1.context?.should be_false
       end
     end

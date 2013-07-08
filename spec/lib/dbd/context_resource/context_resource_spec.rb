@@ -42,12 +42,11 @@ module Dbd
 
     describe 'the collection' do
 
-      let(:context_visibility) { TestFactories::Context.visibility } # nil subject
-      let(:context_visibility_with_incorrect_subject) { TestFactories::Context.visibility(TestFactories::Context.new_subject) }
-      let(:context_visibility_with_correct_subject) { TestFactories::Context.visibility(context_resource_subject) }
-      let(:fact_1) { TestFactories::Fact.fact_1(context_subject) }
+      let(:context_fact_visibility) { TestFactories::ContextFact.visibility } # nil subject
+      let(:context_visibility_with_incorrect_subject) { TestFactories::ContextFact.visibility(TestFactories::ContextFact.new_subject) }
+      let(:context_visibility_with_correct_subject) { TestFactories::ContextFact.visibility(context_resource_subject) }
 
-      describe 'adding contexts with << ' do
+      describe 'adding context_facts with << ' do
         it 'with correct subject it works' do
           context_resource << context_visibility_with_correct_subject
           context_resource.first.subject.should == context_resource_subject
@@ -61,12 +60,12 @@ module Dbd
         end
 
         it 'with nil subject it sets the subject' do
-          context_resource << context_visibility
+          context_resource << context_fact_visibility
           context_resource.first.subject.should == context_resource_subject
         end
 
         it 'with nil (=correct) context_subject it is a noop' do
-          context_resource << context_visibility
+          context_resource << context_fact_visibility
           context_resource.first.context_subject.should be_nil
         end
       end

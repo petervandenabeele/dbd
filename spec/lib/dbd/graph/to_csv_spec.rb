@@ -8,20 +8,19 @@ module Dbd
       Fact.factory.new_subject
     end
 
-    let(:contexts) { TestFactories::Fact::Collection.contexts(new_subject) }
-    let(:context_1) { contexts.first }
-    let(:fact_2_3) { TestFactories::Fact::Collection.fact_2_3(context_1.subject) }
-    let(:fact_special_characters) { TestFactories::Fact::fact_with_special_chars(context_1.subject, new_subject) }
+    let(:context_facts) { TestFactories::Fact::Collection.context_facts(new_subject) }
+    let(:context_fact_1) { context_facts.first }
+    let(:fact_2_3) { TestFactories::Fact::Collection.fact_2_3(context_fact_1.subject) }
+    let(:fact_special_characters) { TestFactories::Fact::fact_with_special_chars(context_fact_1.subject, new_subject) }
 
     let(:subject_valid_regexp) { Fact::Subject.valid_regexp }
     let(:id_valid_regexp) { Fact::ID.valid_regexp }
     let(:time_stamp_valid_regexp) { TimeStamp.valid_regexp }
 
-    describe '#to_CSV with only contexts' do
+    describe '#to_CSV with only context_facts' do
       before do
-        # TODO remove teh with_index ???
-        contexts.each_with_index do |context, index|
-          subject << context
+        context_facts.each do |context_fact|
+          subject << context_fact
         end
       end
 
@@ -37,7 +36,7 @@ module Dbd
         subject.to_CSV.should match(/\A"[^",]+","[^",]+","[^",]*","[^",]+"/)
       end
 
-      describe 'with a single context collection' do
+      describe 'with a single context_fact collection' do
         it 'has three logical lines (but one with embedded newline)' do
           subject.to_CSV.lines.count.should == 4
         end
@@ -61,7 +60,7 @@ module Dbd
           first_line.split(',')[1][1..-2].should match(time_stamp_valid_regexp)
         end
 
-        it 'has an empty third value (signature of a context)' do
+        it 'has an empty third value (signature of a context_fact)' do
           first_line.split(',')[2].should == '""'
         end
 
@@ -128,8 +127,8 @@ module Dbd
           first_line.split(',')[1][1..-2].should match(time_stamp_valid_regexp)
         end
 
-        it 'has context_1.subject as third value' do
-          first_line.split(',')[2].should == "\"#{context_1.subject.to_s}\""
+        it 'has context_fact_1.subject as third value' do
+          first_line.split(',')[2].should == "\"#{context_fact_1.subject.to_s}\""
         end
 
         it 'has subject as 4th value' do
@@ -146,11 +145,11 @@ module Dbd
       end
     end
 
-    describe '#to_CSV with contexts and facts' do
+    describe '#to_CSV with context_facts and facts' do
 
       before do
-        contexts.each do |context|
-          subject << context
+        context_facts.each do |context_fact|
+          subject << context_fact
         end
         fact_2_3.each do |fact|
           subject << fact
@@ -165,8 +164,8 @@ module Dbd
     describe '#to_CSV_file' do
 
       before do
-        contexts.each do |context|
-          subject << context
+        context_facts.each do |context_fact|
+          subject << context_fact
         end
         fact_2_3.each do |fact|
           subject << fact

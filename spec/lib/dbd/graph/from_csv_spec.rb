@@ -16,7 +16,7 @@ module Dbd
     end
 
     describe '#from_CSV reads back a csv exported graph correctly' do
-      describe 'for a graph with only contexts' do
+      describe 'for a graph with only context_facts' do
 
         let(:graph) { TestFactories::Graph.only_context }
 
@@ -24,14 +24,14 @@ module Dbd
           validate_round_trip(graph)
         end
 
-        it 'for a context, the context_subject must be equal (nil)' do
+        it 'for a context_fact, the context_subject must be equal (nil)' do
           graph_from_CSV = round_tripped_graph(graph)
           context = graph_from_CSV.first
           context.context_subject.should be_nil
         end
       end
 
-      describe 'for a graph with facts and contexts' do
+      describe 'for a graph with facts and context_facts' do
 
         let(:graph) { TestFactories::Graph.full }
 
@@ -47,7 +47,7 @@ module Dbd
     end
 
     describe '#from_CSV reads back _two_ csv exported graphs correctly' do
-      describe 'for a graph with facts and contexts' do
+      describe 'for a graph with facts and context_facts' do
 
         let(:graph_context) { TestFactories::Graph.only_context }
         let(:graph_facts) { TestFactories::Graph.only_facts(graph_context.first.subject) }

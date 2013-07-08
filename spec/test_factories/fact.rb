@@ -111,11 +111,11 @@ module TestFactories
         end
       end
 
-      def self.contexts(subject)
-        factory_for_instance.tap do |contexts|
-          contexts << Context.visibility(subject)
-          contexts << Context.created_by(subject)
-          contexts << Context.original_source(subject)
+      def self.context_facts(subject)
+        factory_for_instance.tap do |context_facts|
+          context_facts << ContextFact.visibility(subject)
+          context_facts << ContextFact.created_by(subject)
+          context_facts << ContextFact.original_source(subject)
         end
       end
     end

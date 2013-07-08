@@ -23,7 +23,7 @@ module Dbd
         end
 
         ##
-        # Constructs a Fact or Context from a string values array
+        # Constructs a Fact or ContextFact from a string values array
         # (e.g. pulled from a CSV row).
         #
         # @param [Array] string_values Required : the array with values, organized as in attributes
@@ -50,7 +50,7 @@ module Dbd
 
         def string_hash_from_values(string_values)
           attributes_strings_array = [top_class.attributes, string_values].transpose
-          # Remove empty values (e.g. the context_subject for a Context).
+          # Remove empty values (e.g. the context_subject for a ContextFact).
           attributes_strings_array.delete_if{|a,v| v.nil? || v == ''}
           Hash[attributes_strings_array]
         end
@@ -65,7 +65,7 @@ module Dbd
           if values_hash[:context_subject]
             Fact.new(values_hash)
           else
-            Context.new(values_hash)
+            ContextFact.new(values_hash)
           end
         end
 

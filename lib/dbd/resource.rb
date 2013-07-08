@@ -45,7 +45,7 @@ module Dbd
     # taken from an earlier created ContextResource.
     #
     # @param [Hash{Symbol => Object}] options
-    # @option options [Fact::Subject] :context_subject (required) the subject of the context resource for this resource
+    # @option options [Fact::Subject] :context_subject (required) the subject of the context for this resource
     # @option options [Fact::Subject] :subject (new_subject) Optional: the subject for the resource
     def initialize(options)
       set_subject(options)
@@ -54,7 +54,7 @@ module Dbd
     end
 
     ##
-    # Add a Fact (strictly not a Context)
+    # Add a Fact (strictly not a ContextFact)
     #
     # Side effects on subject and context_subject:
     # * if it has no subject, the subject is set (this modifies the fact !)
@@ -65,7 +65,7 @@ module Dbd
     # * if is has the same context_subject as the resource, added unchanged.
     # * if it has a different context_subject, a ContextError is raised.
     def <<(fact)
-      assert_fact_or_context(fact)
+      assert_fact_or_context_fact(fact)
       set_fact_subject!(fact)
       set_fact_context_subject!(fact)
       super(fact)
@@ -91,8 +91,8 @@ module Dbd
     end
 
     # Assert _no_ Contexts here
-    def assert_fact_or_context(fact)
-      raise ArgumentError, "Trying to add a Context to a Resource." if fact.context?
+    def assert_fact_or_context_fact(fact)
+      raise ArgumentError, "Trying to add a ContextFact to a Resource." if fact.context?
     end
 
   end

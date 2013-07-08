@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module TestFactories
   describe Fact do
-    let(:context_subject) { Context.new_subject }
+    let(:context_subject) { ContextFact.new_subject }
     let(:subject) { described_class.new_subject }
     let(:data_predicate)  { 'http://example.org/test/name' }
     let(:string_object_1)  { 'Gandhi' }

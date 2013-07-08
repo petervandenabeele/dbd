@@ -3,10 +3,8 @@ require 'spec_helper'
 module Dbd
   describe Resource do
 
-    let(:context_subject) { TestFactories::Context.new_subject }
-
+    let(:context_subject) { TestFactories::ContextFact.new_subject }
     let(:resource) { described_class.new(context_subject: context_subject) }
-
     let(:resource_subject) { resource.subject }
 
     describe 'the fact collection' do
@@ -17,8 +15,8 @@ module Dbd
       let(:fact_with_context) { TestFactories::Fact.data_fact(context_subject, nil) }
       let(:fact_with_resource_subject) { TestFactories::Fact.data_fact(nil, resource_subject) }
       let(:fact_with_context_and_resource_subject) { TestFactories::Fact.data_fact(context_subject, resource_subject) }
-      let(:fact_with_incorrect_context) { TestFactories::Fact.data_fact(TestFactories::Context.new_subject, resource_subject) }
-      let(:context_visibility) { TestFactories::Context.visibility }
+      let(:fact_with_incorrect_context) { TestFactories::Fact.data_fact(TestFactories::ContextFact.new_subject, resource_subject) }
+      let(:context_fact_visibility) { TestFactories::ContextFact.visibility }
 
       it 'enumerable functions work' do
         resource.to_a.should == []
@@ -33,9 +31,9 @@ module Dbd
         end
 
         it 'complains if a context_subject is added' do
-          lambda{ resource << context_visibility }.should raise_error(
+          lambda{ resource << context_fact_visibility }.should raise_error(
             ArgumentError,
-            'Trying to add a Context to a Resource.')
+            'Trying to add a ContextFact to a Resource.')
          end
 
         describe 'checks and sets subject :' do
@@ -84,7 +82,7 @@ module Dbd
         end
 
         describe 'checks and sets context_subject :' do
-          describe 'adding a fact with a context subject :' do
+          describe 'adding a fact with a context_fact subject :' do
             describe 'when the context_subject of the fact is equal to the context_subject of the resource' do
               it 'inserts the fact unaltered' do
                 resource << fact_with_context_and_resource_subject

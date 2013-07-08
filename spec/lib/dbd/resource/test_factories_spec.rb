@@ -1,10 +1,9 @@
-
 require 'spec_helper'
 
 module TestFactories
   describe Resource do
 
-    let(:context_subject) { TestFactories::Context.new_subject }
+    let(:context_subject) { TestFactories::ContextFact.new_subject }
 
     describe "TestFactories::Resource" do
       it ".empty works" do

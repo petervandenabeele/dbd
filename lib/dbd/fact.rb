@@ -182,7 +182,7 @@ module Dbd
     # is passed in as an argument (DCI). This will avoid further changes to the
     # ContextResource with this context_subject.
     #
-    # This is overridden in the Context, since only relevant for a Fact.
+    # This is overridden in the ContextFact, since only relevant for a Fact.
     #
     # @param[Hash] :h the hash that contains the context_subject index
     def update_used_context_subjects(h)
@@ -208,21 +208,21 @@ module Dbd
     #
     # Here, in (base) Fact, context_subject must be present.
     #
-    # In the derived Context it must NOT be present.
+    # In the derived ContextFact it must NOT be present.
     # This is how the difference is encoded between Fact and
-    # Context in the fact stream.
+    # ContextFact in the fact stream.
     #
     # @param [Object] context_subject
     # Return [nil, String] nil or an error message
     def context_subject_error(context_subject)
-      "Context subject is missing" unless context_subject
+      "ContextFact subject is missing" unless context_subject
     end
 
     ##
-    # Confirms this is not a Context.
+    # Confirms this is not a ContextFact.
     #
     # Needed for validations that depend on different behavior for
-    # a context (mainly, no context_subject).
+    # a context_fact (mainly, no context_subject).
     #
     # @return [trueish] false in the Fact implementation
     def context?

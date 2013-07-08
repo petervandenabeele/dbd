@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module TestFactories
   describe Graph do
-    describe 'with only context facts' do
+    describe 'with only context_facts' do
 
       let(:only_context) { described_class.only_context }
 

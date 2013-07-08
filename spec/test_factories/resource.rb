@@ -26,7 +26,7 @@ module TestFactories
   private
 
     def self.context_subject
-      TestFactories::Context.new_subject
+      TestFactories::ContextFact.new_subject
     end
 
   end

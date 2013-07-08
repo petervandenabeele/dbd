@@ -61,12 +61,12 @@ module Dbd
             with_validation(string_values)
           end
 
-          it 'for a nil context_subject (for contexts)' do
+          it 'for a nil context_subject (for context_facts)' do
             string_values[2] = nil
             with_validation(string_values)
           end
 
-          it 'for an empty context_subject (for contexts)' do
+          it 'for an empty context_subject (for context_facts)' do
             string_values[2] = ''
             with_validation(string_values)
           end

@@ -7,8 +7,8 @@ module TestFactories
 
     def self.context_resource
       factory_for.new.tap do |context_resource|
-        context_resource << TestFactories::Context.visibility
-        context_resource << TestFactories::Context.created_by
+        context_resource << TestFactories::ContextFact.visibility
+        context_resource << TestFactories::ContextFact.created_by
       end
     end
 

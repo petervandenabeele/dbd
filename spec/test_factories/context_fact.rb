@@ -1,8 +1,8 @@
 # encoding=utf-8
 module TestFactories
-  module Context
+  module ContextFact
     def self.factory_for
-      ::Dbd::Context
+      ::Dbd::ContextFact
     end
 
     def self.new_subject

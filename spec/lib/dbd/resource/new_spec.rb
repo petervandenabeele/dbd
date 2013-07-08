@@ -3,8 +3,7 @@ require 'spec_helper'
 module Dbd
   describe Resource do
 
-    let(:context_subject) { TestFactories::Context.new_subject }
-
+    let(:context_subject) { TestFactories::ContextFact.new_subject }
     let(:resource) { described_class.new(context_subject: context_subject) }
 
     describe '.new_subject' do
