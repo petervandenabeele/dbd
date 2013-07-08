@@ -9,6 +9,7 @@ module Dbd
     let(:fact_1) { TestFactories::Fact.fact_1(provenance_subject) }
     let(:fact_2_with_subject) { TestFactories::Fact.fact_2_with_subject(provenance_subject) }
     let(:fact_with_newline) { TestFactories::Fact.fact_with_newline(provenance_subject) }
+    let(:fact_with_special_chars) { TestFactories::Fact.fact_with_special_chars(provenance_subject) }
     let(:full_fact) { TestFactories::Fact.full_fact }
 
     describe '.factory' do
@@ -50,6 +51,28 @@ module Dbd
         fact_1.subject = subject
         fact_1.time_stamp = TimeStamp.new
         fact_1.short.should match(/^[0-9a-f]{8} : [0-9a-f]{8} : http:\/\/example\.org\/test\/ : Gandhi$/)
+      end
+
+      describe 'truncates the object to 80 bytes' do
+
+        before(:each) { fact_with_special_chars.subject = subject }
+
+        it "object is 80 bytes long" do
+          fact_with_special_chars.short.split(' : ')[3].size.should == 80
+        end
+
+        it "object matches the first part of the string" do
+          fact_with_special_chars.short.should match(/^[0-9a-f]{8} : [0-9a-f]{8} : http:\/\/example\.org\/test\/ : A long story with a newline_really with a comma, a double quote \" and a non-ASCI$/)
+        end
+      end
+
+      describe 'forces the predicate to 24 bytes' do
+
+        before(:each) { fact_with_special_chars.subject = subject }
+
+        it "predicate is 24 bytes long" do
+          fact_with_special_chars.short.split(' : ')[2].size.should == 24
+        end
       end
 
       it 'for a fact with a newline replaces it with a underscore' do

@@ -170,8 +170,8 @@ module Dbd
     def short
       "#{provenance_subject_short} : " \
       "#{subject.to_s[0...8]} : " \
-      "#{predicate.to_s.ljust(24, ' ')[0...24]} : " \
-      "#{object.to_s[0..60].gsub(/\n/, '_')}"
+      "#{predicate.to_s.ljust(24, ' ').truncate_utf8(24)} : " \
+      "#{object.to_s.truncate_utf8(80).gsub(/\n/, '_')}"
     end
 
     ##
