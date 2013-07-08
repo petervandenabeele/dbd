@@ -3,7 +3,7 @@ require 'csv'
 module Dbd
 
   ##
-  # The Graph stores the Facts and ProvenanceFacts in an in-memory
+  # The Graph stores the Facts and Contexts in an in-memory
   # collection structure.
   #
   # On the other hand, it acts as an "interface" that can be
@@ -40,7 +40,7 @@ module Dbd
     ##
     # Export the graph to a CSV file
     #
-    # @param [String] :filename the filename to stream the CSV to
+    # @param [String] filename the filename to stream the CSV to
     def to_CSV_file(filename)
       CSV.open(filename, 'w', csv_defaults) do |csv|
         push_facts(csv)

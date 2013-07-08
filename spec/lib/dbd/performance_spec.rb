@@ -11,23 +11,23 @@ module Dbd
       Fact.factory.new_subject
     end
 
-    let(:provenance_fact_1) { TestFactories::ProvenanceFact.context(new_subject) }
+    let(:context_1) { TestFactories::Context.visibility(new_subject) }
 
     NUMBER_OF_FACTS = 10_000
 
     describe "#{NUMBER_OF_FACTS} facts" do
       it 'reports and checks the used time' do
         graph = Graph.new
-        graph << provenance_fact_1
+        graph << context_1
         # Rehearsal
         NUMBER_OF_FACTS.times do |counter|
-          data_fact = TestFactories::Fact.data_fact(provenance_fact_1, new_subject)
+          data_fact = TestFactories::Fact.data_fact(context_1, new_subject)
           graph << data_fact
         end
         # Actual
         start = Time.now
         NUMBER_OF_FACTS.times do |counter|
-          data_fact = TestFactories::Fact.data_fact(provenance_fact_1, new_subject)
+          data_fact = TestFactories::Fact.data_fact(context_1, new_subject)
           graph << data_fact
         end
         duration = Time.now - start

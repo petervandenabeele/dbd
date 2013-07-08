@@ -4,12 +4,12 @@ module Dbd
   describe Fact do
 
     let(:factory) { described_class.factory }
-    let(:provenance_subject) { factory.new_subject }
+    let(:context_subject) { factory.new_subject }
     let(:subject) { factory.new_subject }
-    let(:fact_1) { TestFactories::Fact.fact_1(provenance_subject) }
-    let(:fact_2_with_subject) { TestFactories::Fact.fact_2_with_subject(provenance_subject) }
-    let(:fact_with_newline) { TestFactories::Fact.fact_with_newline(provenance_subject) }
-    let(:fact_with_special_chars) { TestFactories::Fact.fact_with_special_chars(provenance_subject) }
+    let(:fact_1) { TestFactories::Fact.fact_1(context_subject) }
+    let(:fact_2_with_subject) { TestFactories::Fact.fact_2_with_subject(context_subject) }
+    let(:fact_with_newline) { TestFactories::Fact.fact_with_newline(context_subject) }
+    let(:fact_with_special_chars) { TestFactories::Fact.fact_with_special_chars(context_subject) }
     let(:full_fact) { TestFactories::Fact.full_fact }
 
     describe '.factory' do
@@ -86,14 +86,14 @@ module Dbd
         fact_2_with_subject.errors.should be_empty
       end
 
-      describe 'without provenance_subject' do
+      describe 'without context_subject' do
 
         before(:each) do
-          fact_2_with_subject.stub(:provenance_subject).and_return(nil)
+          fact_2_with_subject.stub(:context_subject).and_return(nil)
         end
 
         it 'errors returns an array with 1 error message' do
-          fact_2_with_subject.errors.single.should match(/Provenance subject is missing/)
+          fact_2_with_subject.errors.single.should match(/Context subject is missing/)
         end
       end
 
@@ -139,9 +139,9 @@ module Dbd
       end
     end
 
-    describe 'provenance_fact?' do
-      it 'is false for a base fact or derived from it that is not a ProvenanceFact ' do
-        fact_1.provenance_fact?.should be_false
+    describe 'context?' do
+      it 'is false for a base fact or derived from it that is not a Context ' do
+        fact_1.context?.should be_false
       end
     end
 

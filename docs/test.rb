@@ -1,14 +1,14 @@
 require 'dbd'
 
-provenance = Dbd::ProvenanceResource.new
+context = Dbd::ProvenanceResource.new
 
-provenance << Dbd::ProvenanceFact.new(predicate: "prov:context", object: "public")
-provenance << Dbd::ProvenanceFact.new(predicate: "prov:source",  object: "http://github.com/petervandenabeele/dbd")
-provenance << Dbd::ProvenanceFact.new(predicate: "dcterms:creator", object: "@peter_v")
-provenance << Dbd::ProvenanceFact.new(predicate: "dcterms:created", object: Time.now.utc)
-provenance << Dbd::ProvenanceFact.new(predicate: "prov:license", object: "MIT")
+context << Dbd::Context.new(predicate: "prov:context", object: "public")
+context << Dbd::Context.new(predicate: "prov:source",  object: "http://github.com/petervandenabeele/dbd")
+context << Dbd::Context.new(predicate: "dcterms:creator", object: "@peter_v")
+context << Dbd::Context.new(predicate: "dcterms:created", object: Time.now.utc)
+context << Dbd::Context.new(predicate: "prov:license", object: "MIT")
 
-nobel_peace_2012 = Dbd::Resource.new(provenance_subject: provenance.subject)
+nobel_peace_2012 = Dbd::Resource.new(context_subject: context.subject)
 
 nobel_peace_2012 << Dbd::Fact.new(predicate: "todo:nobelPeacePriceWinner", object: "2012")
 nobel_peace_2012 << Dbd::Fact.new(predicate: "rdfs:label", object: "EU") #  this will use some RDF predicates in future
@@ -17,7 +17,7 @@ nobel_peace_2012 << Dbd::Fact.new(predicate: "todo:story", object: "A long perio
 
 graph = Dbd::Graph.new
 
-graph << provenance << nobel_peace_2012
+graph << context << nobel_peace_2012
 
 puts "facts in short representation:"
 puts graph.map(&:short)

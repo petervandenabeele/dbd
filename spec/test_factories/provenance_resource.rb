@@ -7,8 +7,8 @@ module TestFactories
 
     def self.provenance_resource
       factory_for.new.tap do |provenance_resource|
-        provenance_resource << TestFactories::ProvenanceFact.context
-        provenance_resource << TestFactories::ProvenanceFact.created_by
+        provenance_resource << TestFactories::Context.visibility
+        provenance_resource << TestFactories::Context.created_by
       end
     end
 

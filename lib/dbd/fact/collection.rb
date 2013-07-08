@@ -9,7 +9,7 @@ module Dbd
       def initialize
         super
         @hash_by_subject = Hash.new { |h, k| h[k] = [] }
-        @used_provenance_subjects = {}
+        @used_context_subjects = {}
       end
 
       def newest_time_stamp
@@ -33,20 +33,20 @@ module Dbd
       #
       # Validates that added fact is newer.
       #
-      # Validates that subject was never used as provenance_subject [A].
+      # Validates that subject was never used as context_subject [A].
       #
       # Adds the fact and return the index in the collection.
       #
       # Store this index in the hash_by_subject.
       #
-      # Mark the fact in the list of used provenance_subjects (for [A]).
+      # Mark the fact in the list of used context_subjects (for [A]).
       def <<(fact)
         raise FactError, "#{fact.errors.join(', ')}." unless fact.errors.empty?
         raise OutOfOrderError if (self.newest_time_stamp && fact.time_stamp <= self.newest_time_stamp)
-        raise OutOfOrderError if (@used_provenance_subjects[fact.subject])
+        raise OutOfOrderError if (@used_context_subjects[fact.subject])
         index = Helpers::OrderedSetCollection.add_and_return_index(fact, @internal_collection)
         @hash_by_subject[fact.subject] << index
-        fact.update_used_provenance_subjects(@used_provenance_subjects)
+        fact.update_used_context_subjects(@used_context_subjects)
         self
       end
 

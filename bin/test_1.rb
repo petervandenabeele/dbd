@@ -19,9 +19,9 @@ end
 
 require 'dbd'
 provenance_resource = Dbd::ProvenanceResource.new
-provenance_resource << Dbd::ProvenanceFact.new(predicate: "prov:test" , object: "A" * 10)
+provenance_resource << Dbd::Context.new(predicate: "prov:test" , object: "A" * 10)
 
-resource = Dbd::Resource.new(provenance_subject: provenance_resource.subject)
+resource = Dbd::Resource.new(context_subject: provenance_resource.subject)
 (0...count).each do |i|
   resource << Dbd::Fact.new(predicate: "test", object: "#{'B' * 80} #{i}")
 end

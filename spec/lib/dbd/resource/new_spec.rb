@@ -3,9 +3,9 @@ require 'spec_helper'
 module Dbd
   describe Resource do
 
-    let(:provenance_subject) { TestFactories::ProvenanceResource.provenance_resource.subject }
+    let(:context_subject) { TestFactories::Context.new_subject }
 
-    let(:resource) { described_class.new(provenance_subject: provenance_subject) }
+    let(:resource) { described_class.new(context_subject: context_subject) }
 
     describe '.new_subject' do
       it 'returns a Fact#new_subject' do
@@ -14,13 +14,13 @@ module Dbd
     end
 
     describe '.new' do
-      describe 'with a provenance_subject argument' do
+      describe 'with a context_subject argument' do
         it 'has created a subject' do
           resource.subject.should be_a(described_class.new_subject.class)
         end
 
-        it 'has stored the provenance_subject' do
-          resource.provenance_subject.should == provenance_subject
+        it 'has stored the context_subject' do
+          resource.context_subject.should == context_subject
         end
       end
 
@@ -29,14 +29,14 @@ module Dbd
           explicit_subject = described_class.new_subject
           described_class.new(
             subject: explicit_subject,
-            provenance_subject: provenance_subject).subject.should == explicit_subject
+            context_subject: context_subject).subject.should == explicit_subject
         end
       end
 
-      describe 'with a nil provenance_subject argument' do
-        it 'raises a ProvenanceError' do
-          lambda { described_class.new(provenance_subject: nil) } .
-            should raise_error ProvenanceError
+      describe 'with a nil context_subject argument' do
+        it 'raises a ContextError' do
+          lambda { described_class.new(context_subject: nil) } .
+            should raise_error ContextError
         end
       end
     end

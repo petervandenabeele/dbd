@@ -61,12 +61,12 @@ module Dbd
             with_validation(string_values)
           end
 
-          it 'for a nil provenance_subject (for provenance_facts)' do
+          it 'for a nil context_subject (for contexts)' do
             string_values[2] = nil
             with_validation(string_values)
           end
 
-          it 'for an empty provenance_subject (for provenance_facts)' do
+          it 'for an empty context_subject (for contexts)' do
             string_values[2] = ''
             with_validation(string_values)
           end
@@ -83,7 +83,7 @@ module Dbd
             lambda{ with_validation(string_values) }.should raise_error(FactError)
           end
 
-          it 'for invalid provenance_subject' do
+          it 'for invalid context_subject' do
             string_values[2] = 'foo'
             lambda{ with_validation(string_values) }.should raise_error(FactError)
           end

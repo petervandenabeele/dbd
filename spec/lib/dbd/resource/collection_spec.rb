@@ -3,9 +3,9 @@ require 'spec_helper'
 module Dbd
   describe Resource do
 
-    let(:provenance_subject) { TestFactories::ProvenanceResource.provenance_resource.subject }
+    let(:context_subject) { TestFactories::Context.new_subject }
 
-    let(:resource) { described_class.new(provenance_subject: provenance_subject) }
+    let(:resource) { described_class.new(context_subject: context_subject) }
 
     let(:resource_subject) { resource.subject }
 
@@ -14,11 +14,11 @@ module Dbd
       let(:fact_2_with_subject) { TestFactories::Fact.fact_2_with_subject }
       let(:fact_3_with_subject) { TestFactories::Fact.fact_3_with_subject }
       let(:fact_without_subject) { TestFactories::Fact.data_fact }
-      let(:fact_with_provenance) { TestFactories::Fact.data_fact(provenance_subject, nil) }
+      let(:fact_with_context) { TestFactories::Fact.data_fact(context_subject, nil) }
       let(:fact_with_resource_subject) { TestFactories::Fact.data_fact(nil, resource_subject) }
-      let(:fact_with_provenance_and_resource_subject) { TestFactories::Fact.data_fact(provenance_subject, resource_subject) }
-      let(:fact_with_incorrect_provenance) { TestFactories::Fact.data_fact(TestFactories::ProvenanceFact.new_subject, resource_subject) }
-      let(:provenance_fact_context) { TestFactories::ProvenanceFact.context }
+      let(:fact_with_context_and_resource_subject) { TestFactories::Fact.data_fact(context_subject, resource_subject) }
+      let(:fact_with_incorrect_context) { TestFactories::Fact.data_fact(TestFactories::Context.new_subject, resource_subject) }
+      let(:context_visibility) { TestFactories::Context.visibility }
 
       it 'enumerable functions work' do
         resource.to_a.should == []
@@ -28,22 +28,22 @@ module Dbd
 
         it 'can add a two facts (no subject set)' do
           resource << fact_without_subject
-          resource << fact_with_provenance
+          resource << fact_with_context
           resource.size.should == 2
         end
 
-        it 'complains if a provenance_subject is added' do
-          lambda{ resource << provenance_fact_context }.should raise_error(
+        it 'complains if a context_subject is added' do
+          lambda{ resource << context_visibility }.should raise_error(
             ArgumentError,
-            'Trying to add a ProvenanceFact to a Resource.')
+            'Trying to add a Context to a Resource.')
          end
 
         describe 'checks and sets subject :' do
           describe 'adding a fact with subject :' do
             describe 'when the subject of the fact is equal to the resource_subject' do
               it 'inserts the fact unaltered' do
-                resource << fact_with_provenance_and_resource_subject
-                resource.first.should be_equal(fact_with_provenance_and_resource_subject)
+                resource << fact_with_context_and_resource_subject
+                resource.first.should be_equal(fact_with_context_and_resource_subject)
               end
             end
 
@@ -60,7 +60,7 @@ module Dbd
           describe 'adding a fact without subject' do
 
             before(:each) do
-              resource << fact_with_provenance
+              resource << fact_with_context
             end
 
             let(:fact_in_resource) do
@@ -68,12 +68,12 @@ module Dbd
             end
 
             it 'insert the same instance' do
-              fact_in_resource.should be_equal(fact_with_provenance)
+              fact_in_resource.should be_equal(fact_with_context)
             end
 
             it 'has kept the other attributes' do
-              (fact_with_provenance.class.attributes - [:subject]).each do |attr|
-                fact_in_resource.send(attr).should == fact_with_provenance.send(attr)
+              (fact_with_context.class.attributes - [:subject]).each do |attr|
+                fact_in_resource.send(attr).should == fact_with_context.send(attr)
               end
             end
 
@@ -83,26 +83,26 @@ module Dbd
           end
         end
 
-        describe 'checks and sets provenance_subject :' do
-          describe 'adding a fact with a provenance subject :' do
-            describe 'when the provenance_subject of the fact is equal to the provenance_subject of the resource' do
+        describe 'checks and sets context_subject :' do
+          describe 'adding a fact with a context subject :' do
+            describe 'when the context_subject of the fact is equal to the context_subject of the resource' do
               it 'inserts the fact unaltered' do
-                resource << fact_with_provenance_and_resource_subject
-                resource.single.should be_equal(fact_with_provenance_and_resource_subject)
+                resource << fact_with_context_and_resource_subject
+                resource.single.should be_equal(fact_with_context_and_resource_subject)
               end
             end
 
-            describe 'when the provenance_subject of the fact is not equal to the resource' do
+            describe 'when the context_subject of the fact is not equal to the resource' do
               it 'raises a SetOnceError' do
-                lambda{ resource << fact_with_incorrect_provenance }.should raise_error(
+                lambda{ resource << fact_with_incorrect_context }.should raise_error(
                   RubyPeterV::SetOnceError,
-                  "Value of provenance_subject was #{fact_with_incorrect_provenance.provenance_subject}, " \
-                  "trying to set it to #{resource.provenance_subject}")
+                  "Value of context_subject was #{fact_with_incorrect_context.context_subject}, " \
+                  "trying to set it to #{resource.context_subject}")
               end
             end
           end
 
-          describe 'adding a fact without provenance_subject' do
+          describe 'adding a fact without context_subject' do
 
             before(:each) do
               resource << fact_with_resource_subject
@@ -114,8 +114,8 @@ module Dbd
               fact_in_resource.should be_equal(fact_with_resource_subject)
             end
 
-            it 'has set the provenance_subject to the Resource provenance_subject' do
-             fact_in_resource.provenance_subject.should == provenance_subject
+            it 'has set the context_subject to the Resource context_subject' do
+             fact_in_resource.context_subject.should == context_subject
             end
           end
         end

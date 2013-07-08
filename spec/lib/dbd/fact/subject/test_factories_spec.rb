@@ -5,7 +5,7 @@ module TestFactories
     describe Subject do
 
       let(:fixed_subject) { described_class.fixed_subject }
-      let(:fixed_provenance_subject) { described_class.fixed_provenance_subject }
+      let(:fixed_context_subject) { described_class.fixed_context_subject }
 
       describe 'fixed_subject' do
         it 'fixed_subject is exactly this fixed subject' do
@@ -13,9 +13,9 @@ module TestFactories
         end
       end
 
-      describe 'fixed_provenance_subject' do
-        it 'fixed_provenance_subject is exactly this fixed subject' do
-          fixed_provenance_subject.should == '40fab407-9b04-4a51-9a52-d978abfcbb1f'
+      describe 'fixed_context_subject' do
+        it 'fixed_context_subject is exactly this fixed subject' do
+          fixed_context_subject.should == '40fab407-9b04-4a51-9a52-d978abfcbb1f'
         end
       end
     end

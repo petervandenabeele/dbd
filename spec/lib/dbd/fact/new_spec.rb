@@ -3,10 +3,10 @@ require 'spec_helper'
 module Dbd
   describe Fact do
     let(:factory) { described_class.factory}
-    let(:provenance_subject) { factory.new_subject }
+    let(:context_subject) { factory.new_subject }
     let(:subject) { factory.new_subject }
-    let(:fact_1) { TestFactories::Fact.fact_1(provenance_subject) }
-    let(:fact_2_with_subject) { TestFactories::Fact.fact_2_with_subject(provenance_subject) }
+    let(:fact_1) { TestFactories::Fact.fact_1(context_subject) }
+    let(:fact_2_with_subject) { TestFactories::Fact.fact_2_with_subject(context_subject) }
     let(:data_predicate)  { 'http://example.org/test/name' }
     let(:string_object_1)  { 'Gandhi' }
     let(:id_valid_regexp) { described_class::ID.valid_regexp }
@@ -38,8 +38,8 @@ module Dbd
         lambda{ fact_with_incorrect_time_stamp }.should raise_error(ArgumentError)
       end
 
-      it 'new sets the provenance_subject' do
-        fact_1.provenance_subject.should == provenance_subject
+      it 'new sets the context_subject' do
+        fact_1.context_subject.should == context_subject
       end
 
       it 'new sets the subject' do
@@ -75,11 +75,11 @@ module Dbd
       end
     end
 
-    describe 'update_used_provenance_subjects' do
-      it 'sets the value for provenance_subject to true for a fact' do
+    describe 'update_used_context_subjects' do
+      it 'sets the value for context_subject to true for a fact' do
         h = {}
-        fact_1.update_used_provenance_subjects(h)
-        h[fact_1.provenance_subject].should == true
+        fact_1.update_used_context_subjects(h)
+        h[fact_1.context_subject].should == true
       end
     end
   end

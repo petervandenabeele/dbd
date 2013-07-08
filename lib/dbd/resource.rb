@@ -13,19 +13,19 @@ module Dbd
   # a subject is a random uuid (like a oid), not a meaningful URI
   # as it is in RDF.
   #
-  # A provenance_subject is a required field in the options hash.
+  # A context_subject is a required field in the options hash.
   # Practically, first a ProvenanceResource will be created and the
-  # subject of that will be used as provenance_subject for the
+  # subject of that will be used as context_subject for the
   # Resources that are associated with it.
   #
-  # During build-up of a Fact, the subject and the provenance_subject
+  # During build-up of a Fact, the subject and the context_subject
   # can be nil. These will then be set when the Fact is added
   # (with '<<') to a resource.
   class Resource
 
     include Helpers::OrderedSetCollection
 
-    attr_reader :subject, :provenance_subject
+    attr_reader :subject, :context_subject
 
     ##
     # @return [Fact::Subject] a new (random) Resource subject
@@ -41,32 +41,33 @@ module Dbd
     # (this is best created with the new_subject class method for forward
     # compatibility).
     #
-    # The provenance_subject argument is required. This will typically be
+    # The context_subject argument is required. This will typically be
     # taken from an earlier created ProvenanceResource.
     #
     # @param [Hash{Symbol => Object}] options
-    # @option options [Fact::Subject] :provenance_subject (required) the subject of the provenance resource for this resource
+    # @option options [Fact::Subject] :context_subject (required) the subject of the provenance resource for this resource
     # @option options [Fact::Subject] :subject (new_subject) Optional: the subject for the resource
     def initialize(options)
       set_subject(options)
-      set_provenance_subject(options)
+      set_context_subject(options)
       super()
     end
 
     ##
-    # Add a Fact (strictly not a ProvenanceFact)
+    # Add a Fact (strictly not a Context)
     #
-    # Side effects on subject and provenance_subject:
+    # Side effects on subject and context_subject:
     # * if it has no subject, the subject is set (this modifies the fact !)
     # * if is has the same subject as the resource, added unchanged.
     # * if it has a different subject, a SubjectError is raised.
-    # * if it has no provenance_subject, the provenance_subject is set (this modifies the fact !)
-    # * if is has the same provenance_subject as the resource, added unchanged.
-    # * if it has a different provenance_subject, a ProvenanceError is raised.
+    #
+    # * if it has no context_subject, the context_subject is set (this modifies the fact !)
+    # * if is has the same context_subject as the resource, added unchanged.
+    # * if it has a different context_subject, a ContextError is raised.
     def <<(fact)
-      assert_fact_provenance_fact(fact)
+      assert_fact_or_context(fact)
       set_fact_subject!(fact)
-      set_fact_provenance!(fact)
+      set_fact_context_subject!(fact)
       super(fact)
     end
 
@@ -76,22 +77,22 @@ module Dbd
       @subject = options[:subject] || self.class.new_subject
     end
 
-    def set_provenance_subject(options)
-      @provenance_subject = options[:provenance_subject]
-      raise ProvenanceError, "provenance_subject cannot be nil" if @provenance_subject.nil?
+    def set_context_subject(options)
+      @context_subject = options[:context_subject]
+      raise ContextError, "context_subject cannot be nil" if @context_subject.nil?
     end
 
     def set_fact_subject!(fact)
       fact.subject = subject
     end
 
-    def set_fact_provenance!(fact)
-      fact.provenance_subject = provenance_subject
+    def set_fact_context_subject!(fact)
+      fact.context_subject = context_subject
     end
 
-    # Assert _no_ ProvenanceFacts here
-    def assert_fact_provenance_fact(fact)
-      raise ArgumentError, "Trying to add a ProvenanceFact to a Resource." if fact.provenance_fact?
+    # Assert _no_ Contexts here
+    def assert_fact_or_context(fact)
+      raise ArgumentError, "Trying to add a Context to a Resource." if fact.context?
     end
 
   end

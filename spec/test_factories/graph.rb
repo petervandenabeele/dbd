@@ -8,12 +8,12 @@ module TestFactories
       ::Dbd::Fact.factory.new_subject
     end
 
-    def self.only_provenance
+    def self.only_context
       factory_for.new << TestFactories::ProvenanceResource.provenance_resource
     end
 
-    def self.only_facts(provenance_subject = new_subject)
-      factory_for.new << TestFactories::Resource.facts_resource(provenance_subject)
+    def self.only_facts(context_subject = new_subject)
+      factory_for.new << TestFactories::Resource.facts_resource(context_subject)
     end
 
     def self.full

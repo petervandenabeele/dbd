@@ -23,11 +23,11 @@ module Dbd
         end
 
         ##
-        # Constructs a Fact or ProvenanceFact from a string values array
+        # Constructs a Fact or Context from a string values array
         # (e.g. pulled from a CSV row).
         #
         # @param [Array] string_values Required : the array with values, organized as in attributes
-        # @return [Fact, ProvenanceFact] the constructed fact
+        # @return [Fact, Context] the constructed fact
         def from_string_values(string_values, options={})
           string_hash = string_hash_from_values(string_values)
           validate_string_hash(string_hash) if options[:validate]
@@ -39,7 +39,7 @@ module Dbd
           {
             id: [true, Fact::ID.valid_regexp],
             time_stamp: [true, TimeStamp.valid_regexp],
-            provenance_subject: [false, Fact::Subject.valid_regexp],
+            context_subject: [false, Fact::Subject.valid_regexp],
             subject: [true, Fact::Subject.valid_regexp],
             predicate: [true, /./],
             object: [true, /./]
@@ -50,7 +50,7 @@ module Dbd
 
         def string_hash_from_values(string_values)
           attributes_strings_array = [top_class.attributes, string_values].transpose
-          # Remove empty values (e.g. the provenance_subject for a ProvenanceFact).
+          # Remove empty values (e.g. the context_subject for a Context).
           attributes_strings_array.delete_if{|a,v| v.nil? || v == ''}
           Hash[attributes_strings_array]
         end
@@ -62,10 +62,10 @@ module Dbd
         end
 
         def fact_from_values_hash(values_hash)
-          if values_hash[:provenance_subject]
+          if values_hash[:context_subject]
             Fact.new(values_hash)
           else
-            ProvenanceFact.new(values_hash)
+            Context.new(values_hash)
           end
         end
 

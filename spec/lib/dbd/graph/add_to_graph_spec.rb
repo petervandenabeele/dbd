@@ -11,8 +11,8 @@ module Dbd
     let(:fact_no_subject) { TestFactories::Fact.data_fact(new_subject, nil) }
     let(:fact_no_provenance) { TestFactories::Fact.data_fact(nil, new_subject) }
 
-    let(:provenance_facts) { TestFactories::Fact::Collection.provenance_facts(new_subject) }
-    let(:provenance_fact_1) { provenance_facts.first }
+    let(:contexts) { TestFactories::Fact::Collection.contexts(new_subject) }
+    let(:context_1) { contexts.first }
 
     let(:subject_regexp) { Fact::Subject.regexp }
 
@@ -32,12 +32,12 @@ module Dbd
           subject << data_fact
         end
 
-        it 'a provenance_fact does not fail' do
-          subject << provenance_fact_1
+        it 'a context does not fail' do
+          subject << context_1
         end
 
         it 'two facts does not fail' do
-          subject << provenance_fact_1
+          subject << context_1
           subject << data_fact
         end
 
@@ -103,7 +103,7 @@ module Dbd
           subject << provenance_resource
           subject << resource
           subject.size.should == 4
-          subject.first.should be_a(ProvenanceFact)
+          subject.first.should be_a(Context)
           subject.last.class.should == Fact
         end
       end
@@ -115,7 +115,7 @@ module Dbd
 
         it 'Adds the facts from the provenance_resource and the resource to the graph' do
           subject << resource_array
-          subject.first.class.should == ProvenanceFact
+          subject.first.class.should == Context
           subject.last.class.should == Fact
           subject.size.should == 4
         end
@@ -132,7 +132,7 @@ module Dbd
       end
 
       it 'returns self' do
-        (subject << TestFactories::Fact::Collection.provenance_facts(new_subject)).should be_a(described_class)
+        (subject << TestFactories::Fact::Collection.contexts(new_subject)).should be_a(described_class)
       end
     end
   end

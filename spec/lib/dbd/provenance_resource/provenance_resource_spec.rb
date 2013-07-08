@@ -20,21 +20,21 @@ module Dbd
         end
       end
 
-      describe 'with a provenance_subject argument' do
-        it 'raises an ProvenanceError' do
-          lambda{ described_class.new(provenance_subject: provenance_resource_subject) }.
+      describe 'with a context_subject argument' do
+        it 'raises an ContextError' do
+          lambda{ described_class.new(context_subject: provenance_resource_subject) }.
             should raise_error(ArgumentError)
         end
       end
     end
 
-    describe 'provenance_subject' do
+    describe 'context_subject' do
       it 'raises NoMethodError when called' do
-        lambda{ provenance_resource.provenance_subject }.should raise_error(NoMethodError)
+        lambda{ provenance_resource.context_subject }.should raise_error(NoMethodError)
       end
     end
 
-    describe 'TestFactories::Resource' do
+    describe 'TestFactories::ProvenanceResource' do
       it '.provenance_resource works' do
         TestFactories::ProvenanceResource.provenance_resource
       end
@@ -42,32 +42,32 @@ module Dbd
 
     describe 'the collection' do
 
-      let(:provenance_fact_context) { TestFactories::ProvenanceFact.context }
-      let(:provenance_fact_context_with_incorrect_subject) { TestFactories::ProvenanceFact.context(TestFactories::ProvenanceFact.new_subject) }
-      let(:provenance_fact_context_with_correct_subject) { TestFactories::ProvenanceFact.context(provenance_resource_subject) }
+      let(:context_visibility) { TestFactories::Context.visibility } # nil subject
+      let(:context_visibility_with_incorrect_subject) { TestFactories::Context.visibility(TestFactories::Context.new_subject) }
+      let(:context_visibility_with_correct_subject) { TestFactories::Context.visibility(provenance_resource_subject) }
       let(:fact_1) { TestFactories::Fact.fact_1(provenance_resource_subject) }
 
       describe 'adding provenance facts with << ' do
         it 'with correct subject it works' do
-          provenance_resource << provenance_fact_context_with_correct_subject
+          provenance_resource << context_visibility_with_correct_subject
           provenance_resource.first.subject.should == provenance_resource_subject
         end
 
         it 'with incorrect subject it raises SetOnceError' do
-          lambda{ provenance_resource << provenance_fact_context_with_incorrect_subject }.
+          lambda{ provenance_resource << context_visibility_with_incorrect_subject }.
             should raise_error(RubyPeterV::SetOnceError),
-              'Value of subject was #{provenance_fact_context_with_incorrect_subject.subject}, ' \
-              'trying to set it to #{provenance_resource.subject}'
+              "Value of subject was #{context_visibility_with_incorrect_subject.subject}, " \
+              "trying to set it to #{provenance_resource.subject}"
         end
 
         it 'with nil subject it sets the subject' do
-          provenance_resource << provenance_fact_context
+          provenance_resource << context_visibility
           provenance_resource.first.subject.should == provenance_resource_subject
         end
 
-        it 'with nil (=correct) provenance_subject it is a noop' do
-          provenance_resource << provenance_fact_context
-          provenance_resource.first.provenance_subject.should be_nil
+        it 'with nil (=correct) context_subject it is a noop' do
+          provenance_resource << context_visibility
+          provenance_resource.first.context_subject.should be_nil
         end
       end
     end

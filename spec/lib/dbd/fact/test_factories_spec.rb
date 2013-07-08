@@ -2,23 +2,23 @@ require 'spec_helper'
 
 module TestFactories
   describe Fact do
-    let(:provenance_subject) { ProvenanceFact.new_subject }
+    let(:context_subject) { Context.new_subject }
     let(:subject) { described_class.new_subject }
     let(:data_predicate)  { 'http://example.org/test/name' }
     let(:string_object_1)  { 'Gandhi' }
-    let(:fact_2_with_subject) { described_class.fact_2_with_subject(provenance_subject) }
+    let(:fact_2_with_subject) { described_class.fact_2_with_subject(context_subject) }
     let(:full_fact) { described_class.full_fact }
 
     describe 'factory works' do
-      it 'with explicit provenance_subject' do
-        fact_2_with_subject.provenance_subject.should be_a(provenance_subject.class)
+      it 'with explicit context_subject' do
+        fact_2_with_subject.context_subject.should be_a(context_subject.class)
         fact_2_with_subject.subject.should be_a(subject.class)
         fact_2_with_subject.predicate.should be_a(data_predicate.class)
         fact_2_with_subject.object.should be_a(string_object_1.class)
       end
 
-      it 'without explicit provenance_subject' do
-        described_class.fact_1.provenance_subject.should be_nil
+      it 'without explicit context_subject' do
+        described_class.fact_1.context_subject.should be_nil
       end
 
       it 'fact_2_with_subject should not raise_error' do
@@ -31,8 +31,8 @@ module TestFactories
 
       describe 'data_fact' do
         describe 'without arguments' do
-          it 'has empty provenance_subject' do
-            described_class.data_fact.provenance_subject.should be_nil
+          it 'has empty context_subject' do
+            described_class.data_fact.context_subject.should be_nil
           end
 
           it 'has empty subject' do
@@ -40,25 +40,25 @@ module TestFactories
           end
         end
 
-        describe 'with provenance_subject' do
-          it 'has provenance_subject' do
-            described_class.data_fact(provenance_subject).
-              provenance_subject.should == provenance_subject
+        describe 'with context_subject' do
+          it 'has context_subject' do
+            described_class.data_fact(context_subject).
+              context_subject.should == context_subject
           end
 
           it 'has empty subject' do
-            described_class.data_fact(provenance_subject).subject.should be_nil
+            described_class.data_fact(context_subject).subject.should be_nil
           end
         end
 
-        describe 'with provenance_subject and subject' do
-          it 'has provenance_subject' do
-            described_class.data_fact(provenance_subject, subject).
-              provenance_subject.should == provenance_subject
+        describe 'with context_subject and subject' do
+          it 'has context_subject' do
+            described_class.data_fact(context_subject, subject).
+              context_subject.should == context_subject
           end
 
           it 'has subject' do
-            described_class.data_fact(provenance_subject, subject).
+            described_class.data_fact(context_subject, subject).
               subject.should == subject
           end
         end

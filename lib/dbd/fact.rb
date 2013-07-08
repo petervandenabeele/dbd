@@ -26,9 +26,9 @@ module Dbd
   #   creation of the fact, but it has to increase in strictly monotic
   #   order in a fact stream.
   #
-  # * a *provenance_subject* (a uuid)
+  # * a *context_subject* (a uuid)
   #
-  #   The subject of the ProvenanceResource (a set of ProvenanceFacts with
+  #   The subject of the ProvenanceResource (a set of Contexts with
   #   the same subject) about this fact. Each Fact, points *back* to a
   #   ProvenanceResource (the ProvenanceResource must have been fully
   #   defined, earlier in a fact stream).
@@ -69,7 +69,7 @@ module Dbd
     def self.attributes
       [:id,
        :time_stamp,
-       :provenance_subject,
+       :context_subject,
        :subject,
        :predicate,
        :object]
@@ -88,24 +88,24 @@ module Dbd
     #
     # The input class is validated (easy confusion with String or Time).
     #
-    # @param [TimeStamp] :time_stamp a time_stamp (not a Time or a String)
+    # @param [TimeStamp] time_stamp a time_stamp (not a Time or a String)
     def time_stamp=(time_stamp)
       validate_time_stamp_class(time_stamp)
       set_once(:time_stamp, time_stamp)
     end
 
     ##
-    # A set_once setter for provenance_subject.
+    # A set_once setter for context_subject.
     #
-    # @param [String] :provenance_subject a string representation of the uuid
-    def provenance_subject=(provenance_subject)
-      set_once(:provenance_subject, provenance_subject)
+    # @param [String] context_subject a string representation of the uuid
+    def context_subject=(context_subject)
+      set_once(:context_subject, context_subject)
     end
 
     ##
     # A set_once setter for subject.
     #
-    # @param [String] :subject a string representation of the uuid
+    # @param [String] subject a string representation of the uuid
     def subject=(subject)
       set_once(:subject, subject)
     end
@@ -113,17 +113,17 @@ module Dbd
     ##
     # Builds a new Fact.
     #
-    # @param [Hash{Symbol => Object}] :options
+    # @param [Hash{Symbol => Object}] options
     # @option options [#to_s] :predicate Required : the predicate for this Fact
     # @option options [#to_s] :object Required :  the object for this Fact (required)
-    # @option options [String (uuid)] :provenance_subject (nil) Optional: the subject of the provenance(resource|fact)
+    # @option options [String (uuid)] :context_subject (nil) Optional: the subject of the ProvenanceResource
     # @option options [String (uuid)] :subject (nil) Optional: the subject for this Fact
     # @option options [TimeStamp] :time_stamp (nil) Optional: the time_stamp for this Fact
     # @option options [String (uuid)] :id Optional : set the id
     def initialize(options)
       @id = options[:id] || self.class.factory.new_id
       @time_stamp = options[:time_stamp]
-      @provenance_subject = options[:provenance_subject]
+      @context_subject = options[:context_subject]
       @subject = options[:subject]
       @predicate = options[:predicate]
       @object = options[:object]
@@ -157,7 +157,7 @@ module Dbd
     # of a few nanoseconds will be required to resolve collisions
     # on merge).
     #
-    # @param [Fact] :other the other fact to compare with
+    # @param [Fact] other the other fact to compare with
     # @return [trueish]
     def equivalent?(other)
       (self.class.attributes - [:time_stamp]).
@@ -168,26 +168,26 @@ module Dbd
     ##
     # @return [String] a short string representation of a Fact
     def short
-      "#{provenance_subject_short} : " \
+      "#{context_subject_short} : " \
       "#{subject.to_s[0...8]} : " \
       "#{predicate.to_s.ljust(24, ' ').truncate_utf8(24)} : " \
       "#{object.to_s.truncate_utf8(80).gsub(/\n/, '_')}"
     end
 
     ##
-    # Executes the required update in used_provenance_subjects.
+    # Executes the required update in used_context_subjects.
     #
-    # For a Fact, pointing to a ProvenanceResource in it's provenance_subject,
-    # marks this provenance_subject in the "used_provenance_subjects" hash that
+    # For a Fact, pointing to a ProvenanceResource in it's context_subject,
+    # marks this context_subject in the "used_context_subjects" hash that
     # is passed in as an argument (DCI). This will avoid further changes to the
-    # ProvenanceResource with this provenance_subject.
+    # ProvenanceResource with this context_subject.
     #
-    # This is overridden in the ProvenanceFact, since only relevant for a Fact.
+    # This is overridden in the Context, since only relevant for a Fact.
     #
-    # @param[Hash] :h the hash that contains the provenance_subject index
-    def update_used_provenance_subjects(h)
-      # using a provenance_subject sets the key
-      h[provenance_subject] = true
+    # @param[Hash] :h the hash that contains the context_subject index
+    def update_used_context_subjects(h)
+      # using a context_subject sets the key
+      h[context_subject] = true
     end
 
     ##
@@ -199,40 +199,40 @@ module Dbd
       # * time_stamp not validated, is set automatically later
       # * predicate not validated, is validated upon creation
       # * object not validated, is validated upon creation
-      [provenance_subject_error(provenance_subject),
+      [context_subject_error(context_subject),
        subject ? nil : "Subject is missing"].compact
     end
 
     ##
-    # Validates the presence or absence of provenance_subject.
+    # Validates the presence or absence of context_subject.
     #
-    # Here, in (base) Fact, provenance_subject must be present.
+    # Here, in (base) Fact, context_subject must be present.
     #
-    # In the derived ProvenanceFact it must NOT be present.
+    # In the derived Context it must NOT be present.
     # This is how the difference is encoded between Fact and
-    # ProvenanceFact in the fact stream.
+    # Context in the fact stream.
     #
-    # @param [Object] provenance_subject
+    # @param [Object] context_subject
     # Return [nil, String] nil or an error message
-    def provenance_subject_error(provenance_subject)
-      "Provenance subject is missing" unless provenance_subject
+    def context_subject_error(context_subject)
+      "Context subject is missing" unless context_subject
     end
 
     ##
-    # Confirms this is not a ProvenanceFact.
+    # Confirms this is not a Context.
     #
     # Needed for validations that depend on different behavior for
-    # a provenance_fact (mainly, no provenance_subject).
+    # a context (mainly, no context_subject).
     #
     # @return [trueish] false in the Fact implementation
-    def provenance_fact?
+    def context?
       false
     end
 
   private
 
-    def provenance_subject_short
-      "#{provenance_subject.to_s[0...8]}"
+    def context_subject_short
+      "#{context_subject.to_s[0...8]}"
     end
 
     def validate_time_stamp_class(time_stamp)
