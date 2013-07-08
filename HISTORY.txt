@@ -61,3 +61,9 @@
   (removing the dependency injection violations from the Fact class)
 * work-arounds for JRuby nanosecond rounding issues (#1)
 * renamed Factories to TestFactories
+
+0.0.11 (8 July 2013)
+======
+
+* object in Fact#short now truncated to 80 bytes
+* using a utf-8 safe truncation (from ruby_peter_v)
