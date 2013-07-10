@@ -27,7 +27,7 @@ module Dbd
     # * if it has no subject, the subject is set in the context_fact
     # * if is has the same subject as the resource, added unchanged.
     # * if it has a different subject, a SubjectError is raised.
-    def <<(context)
+    def <<(context_fact)
       super
     end
 
@@ -51,13 +51,13 @@ module Dbd
     ##
     # Assert _only_ Contexts here
     def assert_fact_or_context_fact(context_fact)
-      raise ArgumentError, "Trying to add a non-ContextFact to a ContextResource." unless context_fact.context?
+      raise ArgumentError, "Trying to add a non-ContextFact to a ContextResource." unless context_fact.context_fact?
     end
 
     ##
     # A noop for ContextResource.
-    # @param [ContextFact] context
-    def set_fact_context_subject!(context)
+    # @param [ContextFact] context_fact
+    def set_fact_context_subject!(context_fact)
       # Do nothing
     end
 

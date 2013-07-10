@@ -225,7 +225,7 @@ module Dbd
     # a context_fact (mainly, no context_subject).
     #
     # @return [trueish] false in the Fact implementation
-    def context?
+    def context_fact?
       false
     end
 

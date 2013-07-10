@@ -92,7 +92,7 @@ module Dbd
 
     # Assert _no_ Contexts here
     def assert_fact_or_context_fact(fact)
-      raise ArgumentError, "Trying to add a ContextFact to a Resource." if fact.context?
+      raise ArgumentError, "Trying to add a ContextFact to a Resource." if fact.context_fact?
     end
 
   end

@@ -56,7 +56,7 @@ module Dbd
     #
     # Needed for validations that depend on different behavior for
     # a context_fact (mainly, no context_subject).
-    def context?
+    def context_fact?
       true
     end
 

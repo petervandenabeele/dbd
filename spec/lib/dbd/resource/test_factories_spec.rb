@@ -11,7 +11,7 @@ module TestFactories
         resource.context_subject.should == context_subject
       end
 
-      context ".facts_resource" do
+      describe ".facts_resource" do
         it "works with explicit context_subject" do
           described_class.facts_resource(context_subject)
         end

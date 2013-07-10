@@ -26,8 +26,8 @@ module Dbd
 
         it 'for a context_fact, the context_subject must be equal (nil)' do
           graph_from_CSV = round_tripped_graph(graph)
-          context = graph_from_CSV.first
-          context.context_subject.should be_nil
+          context_fact = graph_from_CSV.first
+          context_fact.context_subject.should be_nil
         end
       end
 
