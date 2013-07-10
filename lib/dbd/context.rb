@@ -1,15 +1,15 @@
 module Dbd
   ##
-  # A ContextResource is derived from a Resource, and is the
+  # A Context is derived from a Resource, and is the
   # set of all Contexts that share the same subject.
   #
   # It is pointed to by a context_subject of a Fact and has
   # no context_subject itself (the context_subject
   # relationship from Fact to ContextFact is not recursive).
-  class ContextResource < Resource
+  class Context < Resource
 
     ##
-    # Build a new ContextResource.
+    # Build a new Context.
     #
     # The subject can be either given as an argument or a new (random)
     # subject is automatically set (see Resource for details).
@@ -33,9 +33,9 @@ module Dbd
 
   private
 
-    # Should not be called in ContextResource subclass.
+    # Should not be called in Context subclass.
     def context_subject
-      raise NoMethodError, "context_subject should not be called in ContextResource."
+      raise NoMethodError, "context_subject should not be called in Context."
     end
 
     def set_context_subject(options)
@@ -51,11 +51,11 @@ module Dbd
     ##
     # Assert _only_ Contexts here
     def assert_fact_or_context_fact(context_fact)
-      raise ArgumentError, "Trying to add a non-ContextFact to a ContextResource." unless context_fact.context_fact?
+      raise ArgumentError, "Trying to add a non-ContextFact to a Context." unless context_fact.context_fact?
     end
 
     ##
-    # A noop for ContextResource.
+    # A noop for Context.
     # @param [ContextFact] context_fact
     def set_fact_context_subject!(context_fact)
       # Do nothing

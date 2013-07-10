@@ -16,9 +16,9 @@ module Dbd
 
     let(:subject_regexp) { Fact::Subject.regexp }
 
-    let(:context_resource) { TestFactories::ContextResource.context_resource }
-    let(:resource) { TestFactories::Resource.facts_resource(context_resource.subject) }
-    let(:resource_array) { [context_resource, resource]}
+    let(:context) { TestFactories::Context.context }
+    let(:resource) { TestFactories::Resource.facts_resource(context.subject) }
+    let(:resource_array) { [context, resource]}
 
     describe 'create a graph' do
       it 'does not fail' do
@@ -88,19 +88,19 @@ module Dbd
         end
       end
 
-      describe 'a ContextResource and a Resource' do
+      describe 'a Context and a Resource' do
 
         it 'does not fail' do
-          subject << context_resource
+          subject << context
         end
 
-        it 'Adds the facts from the context_resource to the graph' do
-          subject << context_resource
+        it 'Adds the facts from the context to the graph' do
+          subject << context
           subject.size.should == 2
         end
 
-        it 'Adds the facts from the context_resource and the resource to the graph' do
-          subject << context_resource
+        it 'Adds the facts from the context and the resource to the graph' do
+          subject << context
           subject << resource
           subject.size.should == 4
           subject.first.should be_a(ContextFact)
@@ -113,7 +113,7 @@ module Dbd
           subject << resource_array
         end
 
-        it 'Adds the facts from the context_resource and the resource to the graph' do
+        it 'Adds the facts from the context and the resource to the graph' do
           subject << resource_array
           subject.first.class.should == ContextFact
           subject.last.class.should == Fact
@@ -126,7 +126,7 @@ module Dbd
         end
 
         it 'works with different levels deep in 1 collection' do
-          subject << [context_resource, [[resource]]]
+          subject << [context, [[resource]]]
           subject.size.should == 4
         end
       end

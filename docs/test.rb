@@ -1,12 +1,12 @@
 require 'dbd'
 
-context = Dbd::ContextResource.new
+context = Dbd::Context.new
 
-context << Dbd::Context.new(predicate: "prov:context_fact", object: "public")
-context << Dbd::Context.new(predicate: "prov:source",  object: "http://github.com/petervandenabeele/dbd")
-context << Dbd::Context.new(predicate: "dcterms:creator", object: "@peter_v")
-context << Dbd::Context.new(predicate: "dcterms:created", object: Time.now.utc)
-context << Dbd::Context.new(predicate: "prov:license", object: "MIT")
+context << Dbd::ContextFact.new(predicate: "prov:context_fact", object: "public")
+context << Dbd::ContextFact.new(predicate: "prov:source",  object: "http://github.com/petervandenabeele/dbd")
+context << Dbd::ContextFact.new(predicate: "dcterms:creator", object: "@peter_v")
+context << Dbd::ContextFact.new(predicate: "dcterms:created", object: Time.now.utc)
+context << Dbd::ContextFact.new(predicate: "prov:license", object: "MIT")
 
 nobel_peace_2012 = Dbd::Resource.new(context_subject: context.subject)
 

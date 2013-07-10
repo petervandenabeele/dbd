@@ -23,15 +23,15 @@ start = Time.now
 graph = Dbd::Graph.new
 
 (0...count).each do |i|
-  context_resource = Dbd::ContextResource.new
-  context_resource << Dbd::Context.new(predicate: "prov:test" , object: "A" * 10)
+  context = Dbd::Context.new
+  context << Dbd::ContextFact.new(predicate: "prov:test" , object: "A" * 10)
 
-  resource = Dbd::Resource.new(context_subject: context_resource.subject)
+  resource = Dbd::Resource.new(context_subject: context.subject)
   (0...FACTS_PER_RESOURCE).each do |j|
     resource << Dbd::Fact.new(predicate: "test", object: "#{'B' * 80} #{i * FACTS_PER_RESOURCE + j}")
   end
 
-  graph << context_resource << resource
+  graph << context << resource
   puts ("added resource #{i} to the graph")
 end
 

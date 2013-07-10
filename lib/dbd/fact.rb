@@ -28,9 +28,9 @@ module Dbd
   #
   # * a *context_subject* (a uuid)
   #
-  #   The subject of the ContextResource (a set of Contexts with
+  #   The subject of the Context (a set of Contexts with
   #   the same subject) about this fact. Each Fact, points *back* to a
-  #   ContextResource (the ContextResource must have been fully
+  #   Context (the Context must have been fully
   #   defined, earlier in a fact stream).
   #
   # * a *subject* (a uuid)
@@ -116,7 +116,7 @@ module Dbd
     # @param [Hash{Symbol => Object}] options
     # @option options [#to_s] :predicate Required : the predicate for this Fact
     # @option options [#to_s] :object Required :  the object for this Fact (required)
-    # @option options [String (uuid)] :context_subject (nil) Optional: the subject of the ContextResource
+    # @option options [String (uuid)] :context_subject (nil) Optional: the subject of the Context
     # @option options [String (uuid)] :subject (nil) Optional: the subject for this Fact
     # @option options [TimeStamp] :time_stamp (nil) Optional: the time_stamp for this Fact
     # @option options [String (uuid)] :id Optional : set the id
@@ -177,10 +177,10 @@ module Dbd
     ##
     # Executes the required update in used_context_subjects.
     #
-    # For a Fact, pointing to a ContextResource in it's context_subject,
+    # For a Fact, pointing to a Context in it's context_subject,
     # marks this context_subject in the "used_context_subjects" hash that
     # is passed in as an argument (DCI). This will avoid further changes to the
-    # ContextResource with this context_subject.
+    # Context with this context_subject.
     #
     # This is overridden in the ContextFact, since only relevant for a Fact.
     #

@@ -5,7 +5,7 @@ module Dbd
   #
   # ContextFact is derived from Fact and behaves very similar.
   #
-  # The ContextFacts with same subject form a ContextResource and
+  # The ContextFacts with same subject form a Context and
   # this is used as the target for the context_subject of a Fact.
   #
   # The context_subject of a ContextFact itself is empty, so the
@@ -15,7 +15,7 @@ module Dbd
   # In the serialisation of a fact stream, the presence or absence of a
   # context_subject marks the difference between a Fact and a ContextFact.
   #
-  # The predicates of the ContextFacts in a ContextResource would
+  # The predicates of the ContextFacts in a Context would
   # typically come from a defined context ontology (including provenance).
   # Experimental examples of ontologies are built in the dbd_onto project.
   class ContextFact < Fact

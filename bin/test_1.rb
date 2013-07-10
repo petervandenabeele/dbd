@@ -18,16 +18,16 @@ unless filename
 end
 
 require 'dbd'
-context_resource = Dbd::ContextResource.new
-context_resource << Dbd::Context.new(predicate: "prov:test" , object: "A" * 10)
+context = Dbd::Context.new
+context << Dbd::ContextFact.new(predicate: "prov:test" , object: "A" * 10)
 
-resource = Dbd::Resource.new(context_subject: context_resource.subject)
+resource = Dbd::Resource.new(context_subject: context.subject)
 (0...count).each do |i|
   resource << Dbd::Fact.new(predicate: "test", object: "#{'B' * 80} #{i}")
 end
 
 graph = Dbd::Graph.new
-graph << context_resource << resource
+graph << context << resource
 
 File.open(filename, 'w') do |f|
   f << graph.to_CSV

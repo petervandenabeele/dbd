@@ -67,3 +67,12 @@
 
 * object in Fact#short now truncated to 80 bytes
 * using a utf-8 safe truncation (from ruby_peter_v)
+
+0.0.12 (10 July 2013)
+======
+
+* major renaming
+  * ProvenanceFact => ContextFact
+  * ProvenanceResource => Context
+* because the context of a fact is much more than the provenance
+  (also visibility, encryption, license, ...)

@@ -9,7 +9,7 @@ module TestFactories
     end
 
     def self.only_context
-      factory_for.new << TestFactories::ContextResource.context_resource
+      factory_for.new << TestFactories::Context.context
     end
 
     def self.only_facts(context_subject = new_subject)
@@ -17,9 +17,9 @@ module TestFactories
     end
 
     def self.full
-      context_resource = TestFactories::ContextResource.context_resource
-      resource = TestFactories::Resource.facts_resource(context_resource.subject)
-      factory_for.new << context_resource << resource
+      context = TestFactories::Context.context
+      resource = TestFactories::Resource.facts_resource(context.subject)
+      factory_for.new << context << resource
     end
   end
 end

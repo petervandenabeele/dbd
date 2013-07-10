@@ -14,7 +14,7 @@ module Dbd
   # as it is in RDF.
   #
   # A context_subject is a required field in the options hash.
-  # Practically, first a ContextResource will be created and the
+  # Practically, first a Context will be created and the
   # subject of that will be used as context_subject for the
   # Resources that are associated with it.
   #
@@ -42,7 +42,7 @@ module Dbd
     # compatibility).
     #
     # The context_subject argument is required. This will typically be
-    # taken from an earlier created ContextResource.
+    # taken from an earlier created Context.
     #
     # @param [Hash{Symbol => Object}] options
     # @option options [Fact::Subject] :context_subject (required) the subject of the context for this resource
