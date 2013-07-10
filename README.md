@@ -9,7 +9,7 @@ This is facts based data store, inspired by [RDF] concepts, but adding a log bas
 
 [![Gem Version](https://badge.fury.io/rb/dbd.png)](http://badge.fury.io/rb/dbd)
 [![Build Status](https://travis-ci.org/petervandenabeele/dbd.png?branch=master)](http://travis-ci.org/petervandenabeele/dbd)
-[![Code Climate](https://codeclimate.com/repos/51ddbce5c7f3a37aa7018529/badges/7e9fd61a39d8cb58c1de/gpa.png)](https://codeclimate.com/repos/51ddbce5c7f3a37aa7018529/feed)
+[![Code Climate](https://codeclimate.com/github/petervandenabeele/dbd.png)](https://codeclimate.com/github/petervandenabeele/dbd)
 
 ## Features
 
