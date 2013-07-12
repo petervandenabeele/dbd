@@ -1,0 +1,18 @@
+014_escape_newlines_in_csv
+
+As a user of the system
+I can manipulate CSV files that are written by Dbd with basic
+  UNIX command line tools (e.g. split by dates, merge, ...)
+And the facts in that format are aligned by a newline
+So, the newlines in the String object need to be escaped
+
+* minimal profiling of write + read speed
+* escape on writing, suggest:
+  * "\n" => "\\n" (a slash and a letter n)
+  * do we need to escape a "real" slash (or slash + n) now ??
+
+* escape on reading, suggest:
+  * "\\n" => "\n" (a newline)
+  * what with a slash + n ?
+
+* validate that write + read performance is not degraded to much

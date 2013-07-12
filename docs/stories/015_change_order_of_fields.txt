@@ -1,0 +1,10 @@
+015_change_order_of_fields
+
+As a user of the system
+When playing with the files
+I want to sort on time_stamp if needed
+
+* have time_stamp first
+* then the ID
+* then the context_subject
+* then subject, predicate, object
