@@ -8,7 +8,8 @@ So, the newlines in the String object need to be escaped
 
 * minimal profiling of write + read speed
 * escape on writing, suggest:
-  * "\n" => "\\n" (a slash and a letter n)
+  * "\n" => "\\n" (a back slash and a letter n)
+  "C:\nuby" => "C:\\nuby"
   * do we need to escape a "real" slash (or slash + n) now ??
 
 * escape on reading, suggest:

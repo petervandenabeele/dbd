@@ -38,7 +38,7 @@ module Dbd
 
       describe 'with a single context_fact collection' do
         it 'has three logical lines (but one with embedded newline)' do
-          subject.to_CSV.lines.count.should == 4
+          subject.to_CSV.lines.count.should == 3
         end
 
         it 'ends with a newline' do
@@ -79,7 +79,7 @@ module Dbd
 
       describe 'handles comma, double quote and newline correctly' do
         it 'has original_source with special characters and double quote escaped' do
-          subject.to_CSV.should match(/"this has a comma , a newline \n and a double quote """/)
+          subject.to_CSV.should match(/"this has a comma , a newline \\n and a double quote """/)
         end
       end
     end
@@ -156,8 +156,8 @@ module Dbd
          end
       end
 
-      it 'has six lines' do
-        subject.to_CSV.lines.count.should == 6
+      it 'has 5 lines' do
+        subject.to_CSV.lines.count.should == 5
       end
     end
 
@@ -173,11 +173,11 @@ module Dbd
         subject << fact_special_characters
       end
 
-      it 'has eight lines' do
+      it 'has six lines' do
         filename = 'data/foo.csv'
         subject.to_CSV_file(filename)
         File.open(filename) do |f|
-          f.readlines.count.should == 8
+          f.readlines.count.should == 6
         end
       end
 
