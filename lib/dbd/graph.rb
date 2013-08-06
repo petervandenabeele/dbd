@@ -76,7 +76,7 @@ module Dbd
 
     def push_facts(target)
       @internal_collection.each do |fact|
-        target << fact.values
+        target << fact.values.map {|v| v.is_a?(String) ? v.gsub(/\n/, "\\n") : v}
       end
     end
 
