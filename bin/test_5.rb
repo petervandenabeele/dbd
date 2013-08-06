@@ -1,6 +1,25 @@
 #!/usr/bin/env ruby
 
 # This implementation now streams to disk.
+#
+# Some performance (ruby 2.0 on MacBook Pro)
+# /Users/peter_v/dbd/bin $ time ./test_5.rb 100 t_5_100
+# added resource 0 to the graph
+# ...
+# added resource 99 to the graph
+# Graph is ready (took 4.285428s), now starting the write to disk
+#
+# real  0m8.515s
+# user  0m8.331s
+# sys 0m0.181s
+# ...
+# /Users/peter_v/dbd/bin $ time ./test_6.rb t_5_100
+# Graph is ready (took 14.455278s).
+# graph.size is 100100
+#
+# real  0m14.922s
+# user  0m14.728s
+# sys 0m0.189s
 
 FACTS_PER_RESOURCE = 1000
 

@@ -15,4 +15,4 @@ So, the newlines in the String object need to be escaped
   * "\\n" => "\n" (a newline)
   * what with a slash + n ?
 
-* validate that write + read performance is not degraded to much
+* validate that write + read performance is not degraded too much

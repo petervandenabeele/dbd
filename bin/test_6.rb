@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 
 # This implementation streams from disk
+#
+# See test_5.rb for usage and basic performance test
 
 filename = ARGV[0]
 unless filename
