@@ -9,6 +9,9 @@ RSpec.configure do |config|
 
   config.order = 'random'
 
+  config.filter_run :focus => true
+  config.run_all_when_everything_filtered = true
+
   # exclude neo4j tests for now (not working on Travis)
   config.filter_run_excluding :neo4j => true
   config.filter_run_excluding :neo4j_performance => true
