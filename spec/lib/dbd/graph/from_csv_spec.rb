@@ -84,7 +84,7 @@ module Dbd
         resource << special_fact
         graph = described_class.new << resource
         csv = graph.to_CSV
-        csv.should match(%r{A long story with a newline\nreally with a comma, a double quote "" and a non-ASCII char éà Über.})
+        csv.should match(%r{A long story with a newline\\nreally with a comma, a double quote "" and a non-ASCII char éà Über.})
         graph_from_CSV = described_class.new.from_CSV(csv)
         graph_from_CSV.first.should be_equivalent(graph.first)
       end

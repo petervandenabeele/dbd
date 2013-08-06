@@ -137,6 +137,10 @@ module Dbd
       it 'the second element (time_stamp) is a String' do
         full_fact.string_values[1].should be_a(String)
       end
+
+      it 'escapes a newline into \n' do
+        full_fact.string_values[5].should == 'Gandhi\nKing' # backslash newline
+      end
     end
 
     describe 'context_fact?' do

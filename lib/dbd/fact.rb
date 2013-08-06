@@ -140,9 +140,12 @@ module Dbd
 
     ##
     # @return [Array] The 6 values of a Fact converted to a string.
-    # This is similar to the 6 entries in the to_CSV mapping
+    # The individual strings are escaped:
+    # * newlines are escaped to '\n'
+    # This is used for the 6 entries in the to_CSV mapping.
+    #
     def string_values
-      values.map(&:to_s)
+      values.map{ |value| escaped_string(value.to_s) }
     end
 
     ##
@@ -239,6 +242,10 @@ module Dbd
       unless time_stamp.nil? || time_stamp.is_a?(TimeStamp)
         raise ArgumentError, "time_stamp is of class #{time_stamp.class}, should be TimeStamp"
       end
+    end
+
+    def escaped_string(string)
+      string.gsub(%r{\n}, '\n')
     end
 
   end

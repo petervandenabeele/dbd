@@ -39,6 +39,11 @@ module Dbd
           fact.string_values.should == string_values
         end
 
+        it 'converts a \n (backslash n, no newline) to newline' do
+          fact = described_class.from_string_values(string_values)
+          fact.object.should match(/\n/) # a newline
+        end
+
         it 'calls validate_string_hash if options[:validate]' do
           described_class.should_receive(:validate_string_hash)
           described_class.from_string_values(string_values, validate: true)
@@ -61,11 +66,6 @@ module Dbd
             with_validation(string_values)
           end
 
-          it 'for a nil context_subject (for context_facts)' do
-            string_values[2] = nil
-            with_validation(string_values)
-          end
-
           it 'for an empty context_subject (for context_facts)' do
             string_values[2] = ''
             with_validation(string_values)
@@ -73,6 +73,11 @@ module Dbd
         end
 
         describe 'does raise exception' do
+          it 'for a nil context_subject (for context_facts)' do
+            string_values[2] = nil
+            lambda{ with_validation(string_values) }.should raise_error(NoMethodError)
+          end
+
           it 'for invalid id' do
             string_values[0] = 'foo'
             lambda{ with_validation(string_values) }.should raise_error(FactError)

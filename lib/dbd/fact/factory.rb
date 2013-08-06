@@ -48,10 +48,19 @@ module Dbd
 
       private
 
+        def unescaped_string_values(string_values)
+          string_values.map{ |string_value| unescaped_string(string_value) }
+        end
+
+        def unescaped_string(string)
+          string.gsub(%r{\\n}, "\n")
+        end
+
         def string_hash_from_values(string_values)
-          attributes_strings_array = [top_class.attributes, string_values].transpose
+          unescaped_values = unescaped_string_values(string_values)
+          attributes_strings_array = [top_class.attributes, unescaped_values].transpose
           # Remove empty values (e.g. the context_subject for a ContextFact).
-          attributes_strings_array.delete_if{|a,v| v.nil? || v == ''}
+          attributes_strings_array.delete_if{ |a, v| v == '' }
           Hash[attributes_strings_array]
         end
 
