@@ -44,6 +44,11 @@ module Dbd
           fact.object.should match(/\n/) # a newline
         end
 
+        it 'converts a \\\\ (double backslash) into a single backslash' do
+          fact = described_class.from_string_values(string_values)
+          fact.object.should match(%r{[^\\]\\n}) # a backslash + newline
+        end
+
         it 'calls validate_string_hash if options[:validate]' do
           described_class.should_receive(:validate_string_hash)
           described_class.from_string_values(string_values, validate: true)
@@ -73,11 +78,6 @@ module Dbd
         end
 
         describe 'does raise exception' do
-          it 'for a nil context_subject (for context_facts)' do
-            string_values[2] = nil
-            lambda{ with_validation(string_values) }.should raise_error(NoMethodError)
-          end
-
           it 'for invalid id' do
             string_values[0] = 'foo'
             lambda{ with_validation(string_values) }.should raise_error(FactError)

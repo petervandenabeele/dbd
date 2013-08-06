@@ -15,7 +15,7 @@ module TestFactories
        '40fab407-9b04-4a51-9a52-d978abfcbb1f',
        '2e9fbc87-2e94-47e9-a8fd-121cc4bc3e8f',
        'http://example.org/test/name',
-       'Gandhi\nKing']
+       "Gandhi\\nKing\\\\n"]
     end
 
     def self.fact_1(context_subject = nil)
@@ -29,7 +29,7 @@ module TestFactories
       factory_for.new(
         id: forced_id,
         predicate: 'http://example.org/test/name',
-        object: "Gandhi\nKing")
+        object: "Gandhi\nKing\\n") # newline and \n
     end
 
     def self.fact_with_special_chars(context_subject = nil, subject = nil)
@@ -76,7 +76,7 @@ module TestFactories
         context_subject: context_subject,
         subject: subject,
         predicate: 'http://example.org/test/name',
-        object: 'European Union')
+        object: "\\n\n\\n\n\\\n\\\\\n\\\\\\\nEuropean\nUnion\\n")
     end
 
     def self.fact_with_newline(context_subject = nil, subject = nil)

@@ -138,8 +138,8 @@ module Dbd
         full_fact.string_values[1].should be_a(String)
       end
 
-      it 'escapes a newline into \n' do
-        full_fact.string_values[5].should == 'Gandhi\nKing' # backslash newline
+      it 'escapes a newline into \n and \n into \\\\n (two backslashes and a n)' do
+        full_fact.string_values[5].should == "Gandhi\\nKing\\\\n" # backslash newline
       end
     end
 

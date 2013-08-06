@@ -245,7 +245,8 @@ module Dbd
     end
 
     def escaped_string(string)
-      string.gsub(%r{\n}, '\n')
+      doubled_back_slashes = string.gsub(/\\/, '\\\\\\\\') # single \ => double \\
+      doubled_back_slashes.gsub(%r{\n}, '\n') # newline => \n
     end
 
   end
