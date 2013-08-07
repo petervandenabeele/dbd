@@ -76,3 +76,12 @@
   * ProvenanceResource => Context
 * because the context of a fact is much more than the provenance
   (also visibility, encryption, license, ...)
+
+0.0.13 (7 Aug 2013)
+======
+
+* text inside quotes in the CSV format now has newlines and backslashed escaped
+  * newline => '\n'
+  * backslash => '\\\\' (double backslash)
+  => now 1 fact is 1 "line" in the CSV file
+     (allowing file operations that are line oriented)

@@ -20,6 +20,13 @@
 # real  0m14.922s
 # user  0m14.728s
 # sys 0m0.189s
+#
+# From version 0.0.13 with newline escaping, the times went up:
+# writing (test_5)
+# real  0m11.656s
+#
+# reading back (test_6)
+# real  0m18.442s
 
 FACTS_PER_RESOURCE = 1000
 
@@ -47,7 +54,7 @@ graph = Dbd::Graph.new
 
   resource = Dbd::Resource.new(context_subject: context.subject)
   (0...FACTS_PER_RESOURCE).each do |j|
-    resource << Dbd::Fact.new(predicate: "test", object: "#{'B' * 80} #{i * FACTS_PER_RESOURCE + j}")
+    resource << Dbd::Fact.new(predicate: "test", object: "#{'B' * 75} #{i * FACTS_PER_RESOURCE + j} \n CD")
   end
 
   graph << context << resource

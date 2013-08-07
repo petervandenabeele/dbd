@@ -30,6 +30,9 @@ module Dbd
     ##
     # Export the graph to a CSV string
     #
+    # Newlines in the fields are escaped to "backslash n".
+    # Backslashes in the field are escape to "double backslash".
+    #
     # @return [String] comma separated string with double quoted cells
     def to_CSV
       CSV.generate(csv_defaults) do |csv|
@@ -40,6 +43,9 @@ module Dbd
     ##
     # Export the graph to a CSV file
     #
+    # Newlines in the fields are escaped to "backslash n".
+    # Backslashes in the field are escape to "double backslash".
+    #
     # @param [String] filename the filename to stream the CSV to
     def to_CSV_file(filename)
       CSV.open(filename, 'w', csv_defaults) do |csv|
@@ -49,6 +55,9 @@ module Dbd
 
     ##
     # Import a graph from a CSV IO stream
+    #
+    # Tokens "backslash n" in the CSV fields will be unescaped to newlines.
+    # Tokens "double backslash" in the CSV fields will be unescaped to single backslash
     #
     # @param [IO Stream] csv an IO Stream that contains the CSV serialization
     # @return [Graph] the imported graph
