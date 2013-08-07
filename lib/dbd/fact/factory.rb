@@ -53,16 +53,11 @@ module Dbd
         end
 
         def unescaped_string(string)
-          r = %r{(([^\\]|^)(\\\\)*)\\n} # even number of \ + \n
-          with_newlines = ''
-          consumed_string = string.dup
-          while r.match(consumed_string) do
-            with_newlines << $` << $1 << "\n"
-            consumed_string = $'
-          end
-          with_newlines << consumed_string
-
-          with_newlines.gsub(%r{\\\\}, '\\') # each pair of \\ => \
+          r = %r{(\\\\|\\n)}
+          repl = {
+            "\\\\" => "\\",  # double backslash => single backslash
+            "\\n" => "\n"}   # backslash n => newline
+          string.gsub(r, repl)
         end
 
         def string_hash_from_values(string_values)
