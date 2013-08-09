@@ -10,10 +10,16 @@ So, the newlines in the String object need to be escaped
 * escape on writing, suggest:
   * "\n" => "\\n" (a back slash and a letter n)
   "C:\nuby" => "C:\\nuby"
-  * do we need to escape a "real" slash (or slash + n) now ??
+  * do we need to escape a "real" backslash ??
+    => yes, escape single backslash to double backslash
 
-* escape on reading, suggest:
-  * "\\n" => "\n" (a newline)
-  * what with a slash + n ?
+* unescape on reading, suggest:
+  * "\\n" (backslash n) => "\n" (a newline)
+  * "\\\\" (double backslash) => "\\" (single backslash)
+
+* the magic upon unescaping is that a uneven amount of backslashes,
+  followed by a 'n' can only be an escaped newline. A real
+  "backslash n" will always trigger an even amount of backslashes
+  in the escaped version.
 
 * validate that write + read performance is not degraded too much
