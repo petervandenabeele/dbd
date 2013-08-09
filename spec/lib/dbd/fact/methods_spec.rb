@@ -8,7 +8,7 @@ module Dbd
     let(:subject) { factory.new_subject }
     let(:fact_1) { TestFactories::Fact.fact_1(context_subject) }
     let(:fact_2_with_subject) { TestFactories::Fact.fact_2_with_subject(context_subject) }
-    let(:fact_with_newline) { TestFactories::Fact.fact_with_newline(context_subject) }
+    let(:fact_with_newline) { TestFactories::Fact.data_fact_EU(context_subject) }
     let(:fact_with_special_chars) { TestFactories::Fact.fact_with_special_chars(context_subject) }
     let(:full_fact) { TestFactories::Fact.full_fact }
 
@@ -77,7 +77,7 @@ module Dbd
 
       it 'for a fact with a newline replaces it with a underscore' do
         fact_with_newline.subject = subject
-        fact_with_newline.short.should match(/^[0-9a-f]{8} : [0-9a-f]{8} : http:\/\/example\.org\/test\/ : A long story_really.$/)
+        fact_with_newline.short.should match(/^[0-9a-f]{8} : [0-9a-f]{8} : http:\/\/example\.org\/test\/ : \\n_\\n_\\_\\\\_\\\\\\_European_Union\\n$/)
       end
     end
 

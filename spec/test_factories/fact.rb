@@ -79,14 +79,6 @@ module TestFactories
         object: "\\n\n\\n\n\\\n\\\\\n\\\\\\\nEuropean\nUnion\\n")
     end
 
-    def self.fact_with_newline(context_subject = nil, subject = nil)
-      factory_for.new(
-        context_subject: context_subject,
-        subject: subject,
-        predicate: 'http://example.org/test/comment',
-        object: "A long story\nreally.")
-    end
-
     def self.full_fact
       fixed_id = TestFactories::Fact::ID.fixed_id
       fact_with_forced_id(fixed_id).tap do |fact|
