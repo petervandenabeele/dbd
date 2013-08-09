@@ -14,10 +14,6 @@ module Dbd
   # Framework) concept, but with different and extended functionality.
   #
   # Each basic fact has:
-  # * a unique and invariant *id* (a uuid)
-  #
-  #   To allow referencing back to it (e.g. to invalidate it later in a fact stream).
-  #
   # * a *time_stamp*  (time with nanosecond granularity)
   #
   #   To allow verifying that the order in a fact stream is correct.
@@ -25,6 +21,10 @@ module Dbd
   #   A time_stamp does not need to represent the exact time of the
   #   creation of the fact, but it has to increase in strictly monotic
   #   order in a fact stream.
+  #
+  # * a unique and invariant *id* (a uuid)
+  #
+  #   To allow referencing back to it (e.g. to invalidate it later in a fact stream).
   #
   # * a *context_subject* (a uuid)
   #
@@ -67,8 +67,8 @@ module Dbd
     ##
     # @return [Array] The 6 attributes of a Fact.
     def self.attributes
-      [:id,
-       :time_stamp,
+      [:time_stamp,
+       :id,
        :context_subject,
        :subject,
        :predicate,
@@ -114,15 +114,15 @@ module Dbd
     # Builds a new Fact.
     #
     # @param [Hash{Symbol => Object}] options
-    # @option options [#to_s] :predicate Required : the predicate for this Fact
     # @option options [#to_s] :object Required :  the object for this Fact (required)
-    # @option options [String (uuid)] :context_subject (nil) Optional: the subject of the Context
-    # @option options [String (uuid)] :subject (nil) Optional: the subject for this Fact
-    # @option options [TimeStamp] :time_stamp (nil) Optional: the time_stamp for this Fact
+    # @option options [#to_s] :predicate Required : the predicate for this Fact
+    # @option options [String (uuid)] :subject Optional : the subject for this Fact
+    # @option options [String (uuid)] :context_subject Optional : the subject of the Context
     # @option options [String (uuid)] :id Optional : set the id
+    # @option options [TimeStamp] :time_stamp Optional : the time_stamp for this Fact
     def initialize(options)
-      @id = options[:id] || self.class.factory.new_id
       @time_stamp = options[:time_stamp]
+      @id = options[:id] || self.class.factory.new_id
       @context_subject = options[:context_subject]
       @subject = options[:subject]
       @predicate = options[:predicate]

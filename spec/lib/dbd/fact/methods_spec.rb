@@ -114,8 +114,12 @@ module Dbd
         described_class.attributes.size.should == 6
       end
 
-      it 'first attribute is :id' do
-        described_class.attributes.first.should == :id
+      it 'first attribute is :time_stamp' do
+        described_class.attributes.first.should == :time_stamp
+      end
+
+      it 'second attribute is :id' do
+        described_class.attributes[1].should == :id
       end
     end
 
@@ -124,8 +128,8 @@ module Dbd
         full_fact.values.size.should == 6
       end
 
-      it 'the second element (time_stamp) is a TimeStamp' do
-        full_fact.values[1].should be_a(TimeStamp)
+      it 'the first element (time_stamp) is a TimeStamp' do
+        full_fact.values.first.should be_a(TimeStamp)
       end
     end
 
@@ -134,12 +138,12 @@ module Dbd
         full_fact.string_values.size.should == 6
       end
 
-      it 'the second element (time_stamp) is a String' do
-        full_fact.string_values[1].should be_a(String)
+      it 'the first element (time_stamp) is a String' do
+        full_fact.string_values.first.should be_a(String)
       end
 
       it 'escapes a newline into \n and \n into \\\\n (two backslashes and a n)' do
-        full_fact.string_values[5].should == "Gandhi\\nKing\\\\n" # backslash newline
+        full_fact.string_values.last.should == "Gandhi\\nKing\\\\n" # backslash newline
       end
     end
 
@@ -175,7 +179,7 @@ module Dbd
 
       it 'is true when the time_stamp is 500 ns larger' do
         string_values_time_modified = string_values.dup.tap { |_string_values|
-          _string_values[1] = '2013-06-17 21:55:09.967653513 UTC'
+          _string_values[0] = '2013-06-17 21:55:09.967653513 UTC'
         }
         other = factory.from_string_values(string_values_time_modified)
         other.should be_equivalent(ref)

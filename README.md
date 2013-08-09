@@ -29,7 +29,7 @@ This is facts based data store, inspired by [RDF] concepts, but adding a log bas
     provenance is possible per fact (e.g. different properties about the same  
     resource can come from different sources, different visibility etc.)
   * can keep the original_source reference, creator, date, …
-  * can have a context that allows filtering data (e.g. private, professional, …)
+  * can have a context that allows filtering data (e.g. public, private, professional, …)
   * separate encryption schemes per context are possible
   * Context is flexible, since built itself from Facts
 * Schemaless
@@ -38,7 +38,6 @@ This is facts based data store, inspired by [RDF] concepts, but adding a log bas
 * Graph based
   * the object of each Fact can be another Resource
   * aimed at exporting to a graph database (e.g. Neo4j) for analysis
-
 
 ## License
 
@@ -63,7 +62,7 @@ require 'dbd'
 
 context = Dbd::Context.new
 
-context << Dbd::ContextFact.new(predicate: "prov:context_fact", object: "public")
+context << Dbd::ContextFact.new(predicate: "prov:visibility", object: "public")
 context << Dbd::ContextFact.new(predicate: "prov:source",  object: "http://github.com/petervandenabeele/dbd")
 context << Dbd::ContextFact.new(predicate: "dcterms:creator", object: "@peter_v")
 context << Dbd::ContextFact.new(predicate: "dcterms:created", object: Time.now.utc)
@@ -84,15 +83,15 @@ puts "facts in short representation:"
 puts graph.map(&:short)
 
 # facts in short representation:
-# [ cont ] : 7d0ccaa8 : prov:context_fact        : public
-# [ cont ] : 7d0ccaa8 : prov:source              : http://github.com/petervandenabeele/dbd
-# [ cont ] : 7d0ccaa8 : dcterms:creator          : @peter_v
-# [ cont ] : 7d0ccaa8 : dcterms:created          : 2013-07-10 21:34:32 UTC
-# [ cont ] : 7d0ccaa8 : prov:license             : MIT
-# 7d0ccaa8 : 47acd35d : todo:nobelPeacePriceWinn : 2012
-# 7d0ccaa8 : 47acd35d : rdfs:label               : EU
-# 7d0ccaa8 : 47acd35d : rdfs:comment             : European Union
-# 7d0ccaa8 : 47acd35d : todo:story               : A long period of peace,_ that is a "bliss".
+# [ cont ] : d5ad0ca1 : prov:visibility          : public
+# [ cont ] : d5ad0ca1 : prov:source              : http://github.com/petervandenabeele/dbd
+# [ cont ] : d5ad0ca1 : dcterms:creator          : @peter_v
+# [ cont ] : d5ad0ca1 : dcterms:created          : 2013-08-09 20:15:24 UTC
+# [ cont ] : d5ad0ca1 : prov:license             : MIT
+# d5ad0ca1 : dede3cf8 : todo:nobelPeacePriceWinn : 2012
+# d5ad0ca1 : dede3cf8 : rdfs:label               : EU
+# d5ad0ca1 : dede3cf8 : rdfs:comment             : European Union
+# d5ad0ca1 : dede3cf8 : todo:story               : A long period of peace,_ that is a "bliss".
 
 csv = graph.to_CSV
 
@@ -100,30 +99,29 @@ puts "facts in full detail in CSV:"
 puts csv
 
 # facts in full detail in CSV:
-# "be44bc07-0c0e-450b-8bbc-4cc1f472be33","2013-07-10 21:34:32.759424573 UTC","","7d0ccaa8-b641-4f1b-82ad-f36ba3757aa0","prov:context_fact","public"
-# "dae577a3-f210-4aab-9079-d87a4a362bd5","2013-07-10 21:34:32.759475097 UTC","","7d0ccaa8-b641-4f1b-82ad-f36ba3757aa0","prov:source","http://github.com/petervandenabeele/dbd"
-# "750904f8-c052-46af-8b0a-266a701a6e06","2013-07-10 21:34:32.759497534 UTC","","7d0ccaa8-b641-4f1b-82ad-f36ba3757aa0","dcterms:creator","@peter_v"
-# "a62ff09f-76a5-42ab-be9a-fc66c727ba41","2013-07-10 21:34:32.759513249 UTC","","7d0ccaa8-b641-4f1b-82ad-f36ba3757aa0","dcterms:created","2013-07-10 21:34:32 UTC"
-# "427f9dc3-0544-4f33-9b30-ffa32930f5a8","2013-07-10 21:34:32.759528346 UTC","","7d0ccaa8-b641-4f1b-82ad-f36ba3757aa0","prov:license","MIT"
-# "a8dbdfe6-6ead-4a35-bb6e-ec3f233aed5b","2013-07-10 21:34:32.759546366 UTC","7d0ccaa8-b641-4f1b-82ad-f36ba3757aa0","47acd35d-f2b1-4b36-8a37-90b0f08217d5","todo:nobelPeacePriceWinner","2012"
-# "186571ac-1eca-4621-8b7e-9f263550e27b","2013-07-10 21:34:32.759564395 UTC","7d0ccaa8-b641-4f1b-82ad-f36ba3757aa0","47acd35d-f2b1-4b36-8a37-90b0f08217d5","rdfs:label","EU"
-# "5a58d782-59bc-4ac0-b410-7ac637572f74","2013-07-10 21:34:32.759579688 UTC","7d0ccaa8-b641-4f1b-82ad-f36ba3757aa0","47acd35d-f2b1-4b36-8a37-90b0f08217d5","rdfs:comment","European Union"
-# "2c3e9e63-fd94-4c0f-ac39-7a85b4dbb20d","2013-07-10 21:34:32.759594496 UTC","7d0ccaa8-b641-4f1b-82ad-f36ba3757aa0","47acd35d-f2b1-4b36-8a37-90b0f08217d5","todo:story","A long period of peace,
-#  that is a ""bliss""."
+#  "2013-08-09 20:15:24.022368550 UTC","9cc48236-cb12-40e8-8641-08407b9a03fb","","d5ad0ca1-645f-41a8-8384-7f411a1f94e2","prov:visibility","public"
+# "2013-08-09 20:15:24.022416066 UTC","86afeade-0802-4fe7-b0d7-9a09d5441dbf","","d5ad0ca1-645f-41a8-8384-7f411a1f94e2","prov:source","http://github.com/petervandenabeele/dbd"
+# "2013-08-09 20:15:24.022435168 UTC","97d7fd9f-77e1-45e9-bdaa-9a283345c8ec","","d5ad0ca1-645f-41a8-8384-7f411a1f94e2","dcterms:creator","@peter_v"
+# "2013-08-09 20:15:24.022449630 UTC","aa0897ce-d5ea-497a-8c4b-3a9339f6cc52","","d5ad0ca1-645f-41a8-8384-7f411a1f94e2","dcterms:created","2013-08-09 20:15:24 UTC"
+# "2013-08-09 20:15:24.022463761 UTC","154d2b46-99df-4eaf-8a75-9e3b7d5df2a7","","d5ad0ca1-645f-41a8-8384-7f411a1f94e2","prov:license","MIT"
+# "2013-08-09 20:15:24.022480963 UTC","0590f53a-346a-4ece-b510-fc1179e76e05","d5ad0ca1-645f-41a8-8384-7f411a1f94e2","dede3cf8-2d3f-4170-8ce5-3fe7c0db5529","todo:nobelPeacePriceWinner","2012"
+# "2013-08-09 20:15:24.022497483 UTC","b28dc6fb-1779-47d3-9109-882075b28d08","d5ad0ca1-645f-41a8-8384-7f411a1f94e2","dede3cf8-2d3f-4170-8ce5-3fe7c0db5529","rdfs:label","EU"
+# "2013-08-09 20:15:24.022512505 UTC","5474dbc0-ee47-4e7a-aa0a-cd60f8467d84","d5ad0ca1-645f-41a8-8384-7f411a1f94e2","dede3cf8-2d3f-4170-8ce5-3fe7c0db5529","rdfs:comment","European Union"
+# "2013-08-09 20:15:24.022526505 UTC","a8c0a137-8c45-49bf-9a87-5915a24725b9","d5ad0ca1-645f-41a8-8384-7f411a1f94e2","dede3cf8-2d3f-4170-8ce5-3fe7c0db5529","todo:story","A long period of peace,\n that is a ""bliss""."
 
 imported_graph = Dbd::Graph.new.from_CSV(csv)
 
 puts imported_graph.map(&:short)
 
-# [ cont ] : 7d0ccaa8 : prov:context_fact        : public
-# [ cont ] : 7d0ccaa8 : prov:source              : http://github.com/petervandenabeele/dbd
-# [ cont ] : 7d0ccaa8 : dcterms:creator          : @peter_v
-# [ cont ] : 7d0ccaa8 : dcterms:created          : 2013-07-10 21:34:32 UTC
-# [ cont ] : 7d0ccaa8 : prov:license             : MIT
-# 7d0ccaa8 : 47acd35d : todo:nobelPeacePriceWinn : 2012
-# 7d0ccaa8 : 47acd35d : rdfs:label               : EU
-# 7d0ccaa8 : 47acd35d : rdfs:comment             : European Union
-# 7d0ccaa8 : 47acd35d : todo:story               : A long period of peace,_ that is a "bliss".
+# [ cont ] : d5ad0ca1 : prov:visibility          : public
+# [ cont ] : d5ad0ca1 : prov:source              : http://github.com/petervandenabeele/dbd
+# [ cont ] : d5ad0ca1 : dcterms:creator          : @peter_v
+# [ cont ] : d5ad0ca1 : dcterms:created          : 2013-08-09 20:15:24 UTC
+# [ cont ] : d5ad0ca1 : prov:license             : MIT
+# d5ad0ca1 : dede3cf8 : todo:nobelPeacePriceWinn : 2012
+# d5ad0ca1 : dede3cf8 : rdfs:label               : EU
+# d5ad0ca1 : dede3cf8 : rdfs:comment             : European Union
+# d5ad0ca1 : dede3cf8 : todo:story               : A long period of peace,_ that is a "bliss".
 ```
 
 ## Performance tests on 10 M facts
@@ -163,6 +161,10 @@ Read from CSV (to_CSV) 10 M facts (of 250 Bytes; 2.5 GB netto data):
 The significantly larger times to read from_CSV versus writing to_CSV are _not_
 significantly caused by input validation (a test in JRuby without validation on
 reading 1M facts was only 6% faster with the input validation turned off).
+
+Version 0.0.13 introduced newline escaping for to_CSV and from_CSV and this
+has added a performance penalty of approx. 30% (all strings are sent through
+gsub with a regexp).
 
 [RDF]:              http://www.w3.org/RDF/
 [Rationale]:        http://github.com/petervandenabeele/dbd/blob/master/docs/rationale.md

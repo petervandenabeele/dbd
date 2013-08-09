@@ -52,12 +52,12 @@ module Dbd
           subject.to_CSV.lines.to_a.first.chomp
         end
 
-        it 'has id (a Fact::ID) as first value' do
-          first_line.split(',')[0].gsub(/"/, '').should match(id_valid_regexp)
+        it 'has time_stamp as first value' do
+          first_line.split(',')[0][1..-2].should match(time_stamp_valid_regexp)
         end
 
-        it 'has time_stamp as second value' do
-          first_line.split(',')[1][1..-2].should match(time_stamp_valid_regexp)
+        it 'has id (a Fact::ID) as second value' do
+          first_line.split(',')[1].gsub(/"/, '').should match(id_valid_regexp)
         end
 
         it 'has an empty third value (signature of a context_fact)' do
@@ -119,12 +119,12 @@ module Dbd
           subject.to_CSV.lines.to_a.first.chomp
         end
 
-        it 'has id (a Fact::ID) as first value' do
-          first_line.split(',')[0].gsub(/"/, '').should match(id_valid_regexp)
+        it 'has time_stamp as first value' do
+          first_line.split(',')[0][1..-2].should match(time_stamp_valid_regexp)
         end
 
-        it 'has time_stamp as second value' do
-          first_line.split(',')[1][1..-2].should match(time_stamp_valid_regexp)
+        it 'has id (a Fact::ID) as second value' do
+          first_line.split(',')[1].gsub(/"/, '').should match(id_valid_regexp)
         end
 
         it 'has context_fact_1.subject as third value' do

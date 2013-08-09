@@ -85,3 +85,9 @@
   * backslash => '\\\\' (double backslash)
   => now 1 fact is 1 "line" in the CSV file
      (allowing file operations that are line oriented)
+
+0.0.14 (9 Aug 2013)
+======
+
+* in to_CSV the time_stamp now comes first (swapped with id)
+  * this will allow file level 'sort' on the ISO dates 
