@@ -1,6 +1,8 @@
 # Dbd: A data store that (almost) never forgets
 
-This is facts based data store, inspired by [RDF] concepts, but adding a log based structure and fine-grained provenance.
+This is facts based data store, inspired by [RDF] concepts, but adding a
+log based structure and fine-grained context (with provenance) for each fact.
+I am building a simple demo application in [DbdDemo].
 
 * [Why?][Rationale]
 * <https://github.com/petervandenabeele/dbd>
@@ -169,3 +171,4 @@ gsub with a regexp).
 [RDF]:              http://www.w3.org/RDF/
 [Rationale]:        http://github.com/petervandenabeele/dbd/blob/master/docs/rationale.md
 [MIT]:              https://github.com/petervandenabeele/dbd/blob/master/LICENSE.txt
+[DbdDemo]:          https://github.com/petervandenabeele/dbd_demo#readme
