@@ -152,7 +152,7 @@ This version also has input validation on the strings in the CSV. The time neede
 and memory size (RSS) for reading the file (and populating the in-memory dataset
 was):
 
-Read from CSV (to_CSV) 10 M facts (of 250 Bytes; 2.5 GB netto data):
+Read from CSV (from_CSV) 10 M facts (of 250 Bytes; 2.5 GB netto data):
 
 | ruby	     | time          |  memory (RSS) |
 |------------|---------------|--------------:|
