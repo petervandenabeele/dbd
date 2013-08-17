@@ -178,22 +178,6 @@ module Dbd
     end
 
     ##
-    # Executes the required update in used_context_subjects.
-    #
-    # For a Fact, pointing to a Context in it's context_subject,
-    # marks this context_subject in the "used_context_subjects" hash that
-    # is passed in as an argument (DCI). This will avoid further changes to the
-    # Context with this context_subject.
-    #
-    # This is overridden in the ContextFact, since only relevant for a Fact.
-    #
-    # @param[Hash] :h the hash that contains the context_subject index
-    def update_used_context_subjects(h)
-      # using a context_subject sets the key
-      h[context_subject] = true
-    end
-
-    ##
     # Checks if a fact has errors for storing in the graph.
     #
     # @return [Array] an Array of error messages

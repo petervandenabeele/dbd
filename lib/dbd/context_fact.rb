@@ -33,15 +33,6 @@ module Dbd
     end
 
     ##
-    # Executes the required update in used_context_subjects.
-    #
-    # For a ContextFact, there is no context_subject, so
-    # pointless to mark it in used_context_subjects hash.
-    def update_used_context_subjects(h)
-      # Do nothing (override the behaviour from super).
-    end
-
-    ##
     # Validates the presence or absence of context_subject.
     #
     # Here, in the derived ContextFact, it must not be present.

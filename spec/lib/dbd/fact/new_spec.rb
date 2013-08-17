@@ -74,13 +74,5 @@ module Dbd
         end
       end
     end
-
-    describe 'update_used_context_subjects' do
-      it 'sets the value for context_subject to true for a fact' do
-        h = {}
-        fact_1.update_used_context_subjects(h)
-        h[fact_1.context_subject].should == true
-      end
-    end
   end
 end

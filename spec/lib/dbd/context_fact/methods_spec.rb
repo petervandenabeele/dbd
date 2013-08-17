@@ -52,14 +52,6 @@ module Dbd
       end
     end
 
-    describe 'update_used_context_subjects' do
-      it 'does nothing for a context_fact' do
-        h = {}
-        context_fact_1.update_used_context_subjects(h)
-        h.should be_empty
-      end
-    end
-
     describe 'attributes and values' do
       it 'there are 6 attributes' do
         described_class.attributes.size.should == 6

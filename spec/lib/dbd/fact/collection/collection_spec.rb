@@ -136,41 +136,6 @@ module Dbd
         end
       end
 
-      describe 'context_facts must all come before first use by a fact' do
-        it 'adding a context_fact, depending fact, another context_fact with same subject fail' do
-          subject << context_fact_visibility
-          subject << fact_2_with_subject
-          lambda{ subject << context_fact_created_by }.should raise_error OutOfOrderError
-        end
-
-        # testing private functionality (kept temporarily as documentation)
-        # A hash with all the context_subjects that are used by at least one fact.
-        # Needed for the validation that no context_fact may be added that is
-        # referred from a fact that is already in the fact stream.
-        describe 'used_context_subjects' do
-          # testing an internal variable ...
-
-          let(:used_context_subjects) do
-            subject.instance_variable_get(:@used_context_subjects)
-          end
-
-          it 'is empty initially' do
-            used_context_subjects.should be_empty
-          end
-
-          it 'adding a context_fact alone does not create an entry' do
-            subject << context_fact_visibility
-            used_context_subjects.should be_empty
-          end
-
-          it 'adding a context_fact and a depending fact create an entry' do
-            subject << context_fact_visibility
-            subject << fact_2_with_subject
-            used_context_subjects[context_subject_1].should == true
-          end
-        end
-      end
-
       describe 'validate that facts do not have errors when loading in the Fact::Collection' do
         it 'succeeds with a fact from factory' do
            subject << fact_2_with_subject # should_not raise_error
