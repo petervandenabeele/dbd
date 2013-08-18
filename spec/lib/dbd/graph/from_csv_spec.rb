@@ -89,5 +89,14 @@ module Dbd
         graph_from_CSV.first.should be_equivalent(graph.first)
       end
     end
+
+    describe 'error handling' do
+      it 'gives better description on incorrect fact size' do
+        #TODO present a nicer error (check the amount of entries in a CSV input line)
+        csv = 'foo, bar'
+        lambda { described_class.new.from_CSV(csv) }.should raise_error IndexError
+      end
+
+    end
   end
 end
