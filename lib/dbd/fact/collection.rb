@@ -37,7 +37,7 @@ module Dbd
       # Store this index in the hash_by_subject.
       def <<(fact)
         raise FactError, "#{fact.errors.join(', ')}." unless fact.errors.empty?
-        raise OutOfOrderError if (self.newest_time_stamp && fact.time_stamp <= self.newest_time_stamp)
+        validate_time_stamp(fact)
         index = Helpers::OrderedSetCollection.add_and_return_index(fact, @internal_collection)
         @hash_by_subject[fact.subject] << index
         self
@@ -45,6 +45,14 @@ module Dbd
 
       def by_subject(fact_subject)
         @hash_by_subject[fact_subject].map{ |index| @internal_collection[index]}
+      end
+
+    private
+
+      def validate_time_stamp(fact)
+        if (newest_time_stamp && fact.time_stamp <= newest_time_stamp)
+          raise OutOfOrderError,  "time_stamp of fact was too old : #{fact.time_stamp}"
+        end
       end
 
     end

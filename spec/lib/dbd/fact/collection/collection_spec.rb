@@ -110,12 +110,16 @@ module Dbd
         it 'adding an element with an older time_stamp fails' do
           fact_2_with_subject # will be older then fact_3_with_subject
           subject << fact_3_with_subject
-          lambda { subject << fact_2_with_subject } . should raise_error OutOfOrderError
+          lambda{ subject << fact_2_with_subject }.should raise_error(
+            OutOfOrderError,
+            "time_stamp of fact was too old : #{fact_2_with_subject.time_stamp}")
         end
 
         it 'adding an element with an equal time_stamp fails' do
           subject << fact_2_with_subject
-          lambda { subject << fact_2_with_subject } . should raise_error OutOfOrderError
+          lambda{ subject << fact_2_with_subject }.should raise_error(
+            OutOfOrderError,
+            "time_stamp of fact was too old : #{fact_2_with_subject.time_stamp}")
         end
       end
 

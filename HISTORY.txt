@@ -90,4 +90,9 @@
 ======
 
 * in to_CSV the time_stamp now comes first (swapped with id)
-  * this will allow file level 'sort' on the ISO dates 
+  * this will allow file level 'sort' on the ISO dates
+
+0.0.15 (25 Aug 2013)
+======
+
+* better exception message for an OutOfOrder exception
