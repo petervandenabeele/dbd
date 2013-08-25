@@ -42,5 +42,7 @@ module Dbd
         lambda{ described_class.new(time: time_CET) }.should raise_error ArgumentError
       end
     end
+
+    #NOTE: for '+' and '-' see the comparisons_spec.rb
   end
 end
