@@ -43,6 +43,20 @@ module Dbd
         self
       end
 
+      def add_unsorted(fact)
+        raise FactError, "#{fact.errors.join(', ')}." unless fact.errors.empty?
+        self.push(fact)
+        #index = Helpers::OrderedSetCollection.add_and_return_index(fact, @internal_collection)
+        #@hash_by_subject[fact.subject] << index
+        self
+      end
+
+      def sort!
+        @internal_collection.sort_by! { |fact| fact.time_stamp.time }
+        @hash_by_subject = Hash.new { |h, k| h[k] = [] }
+        # TODO rebuild the hash_by_subject index
+      end
+
       def by_subject(fact_subject)
         @hash_by_subject[fact_subject].map{ |index| @internal_collection[index]}
       end

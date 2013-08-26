@@ -28,6 +28,20 @@ module Dbd
     end
 
     ##
+    # Add a Fact, Resource or other recursive collection of facts.
+    #
+    # This will not set time_stamp and allows out of order time_stamp
+    #
+    # @param [#time_stamp, #time_stamp=, #each] fact_collection a recursive collection of facts
+    # @return [Graph] self
+    def add_unsorted(fact_collection)
+      fact_collection.each_recursively do |fact|
+        super(fact)
+      end
+      self
+    end
+
+    ##
     # Export the graph to a CSV string
     #
     # Newlines in the fields are escaped to "backslash n".
@@ -65,6 +79,22 @@ module Dbd
       CSV.new(csv).each do |row|
         self << Fact.factory.from_string_values(row, validate: true)
       end
+      self
+    end
+
+    ##
+    # Import a graph from an unsorted CSV IO stream
+    #
+    # Tokens "backslash n" in the CSV fields will be unescaped to newlines.
+    # Tokens "double backslash" in the CSV fields will be unescaped to single backslash
+    #
+    # @param [IO Stream] csv an IO Stream that contains the CSV serialization
+    # @return [Graph] the imported graph
+    def from_unsorted_CSV(csv)
+      CSV.new(csv).each do |row|
+        add_unsorted(Fact.factory.from_string_values(row, validate: true))
+      end
+      self.sort!
       self
     end
 

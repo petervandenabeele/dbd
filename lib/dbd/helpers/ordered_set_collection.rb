@@ -37,6 +37,8 @@ module Dbd
         self
       end
 
+      alias :push :<<
+
       ##
       # For the Enumerable functionality.
       def each
