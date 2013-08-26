@@ -96,7 +96,43 @@ module Dbd
         csv = 'foo, bar'
         lambda { described_class.new.from_CSV(csv) }.should raise_error IndexError
       end
+    end
 
+    describe '#from_unsorted_CSV_file' do
+
+      let(:graph_context) { TestFactories::Graph.only_context }
+      let(:graph_facts) { TestFactories::Graph.only_facts(graph_context.first.subject) }
+      let(:graph_facts_csv) { graph_facts.to_CSV }
+      let(:inverted_graph_facts_csv) do
+        graph_facts_csv.split("\n").reverse.join("\n")
+      end
+
+      it "inverted_graph_facts_csv is really inverted" do
+        first_line = inverted_graph_facts_csv.split("\n").first
+        last_line = inverted_graph_facts_csv.split("\n").last
+        first_line.should > last_line
+      end
+
+      it "reads the inverted_graph" do
+        filename = 'data/reverse.csv'
+        File.open(filename, 'w') do |f|
+          f << inverted_graph_facts_csv
+        end
+
+        graph = Graph.new
+        graph.from_unsorted_CSV_file(filename)
+        graph.first.time_stamp.should < graph.last.time_stamp
+      end
+
+      it "returns a graph" do
+        filename = 'data/reverse.csv'
+        File.open(filename, 'w') do |f|
+          f << inverted_graph_facts_csv
+        end
+
+        graph = Graph.new
+        graph.from_unsorted_CSV_file(filename).should be_a(described_class)
+      end
     end
   end
 end

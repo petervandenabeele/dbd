@@ -1,4 +1,5 @@
 require 'csv'
+require 'tempfile'
 
 module Dbd
 
@@ -54,7 +55,9 @@ module Dbd
     end
 
     ##
-    # Import a graph from a CSV IO stream
+    # Import a graph from a sorted CSV IO stream
+    #
+    # time_stamps need to be strictly monotonic increasing
     #
     # Tokens "backslash n" in the CSV fields will be unescaped to newlines.
     # Tokens "double backslash" in the CSV fields will be unescaped to single backslash
@@ -66,6 +69,20 @@ module Dbd
         self << Fact.factory.from_string_values(row, validate: true)
       end
       self
+    end
+
+    ##
+    # Import a graph from an unsorted CSV file (by filename)
+    #
+    # time_stamps need to be unique (but can be random order)
+    #
+    # Tokens "backslash n" in the CSV fields will be unescaped to newlines.
+    # Tokens "double backslash" in the CSV fields will be unescaped to single backslash
+    #
+    # @param [String] filename the filename of the unsorted CSV file
+    # @return [Graph] the imported graph
+    def from_unsorted_CSV_file(filename)
+      on_sorted_file(filename) { |sorted_file| from_CSV(sorted_file) }
     end
 
   private
@@ -87,6 +104,18 @@ module Dbd
       @internal_collection.each do |fact|
         target << fact.string_values
       end
+    end
+
+    def on_sorted_file(filename)
+      Tempfile.open('foo', 'data/') do |sorted_file|
+        create_sorted_file(filename, sorted_file)
+        yield(sorted_file)
+      end
+    end
+
+    def create_sorted_file(filename, sorted_file)
+      temp_name = sorted_file.path
+      `sort #{filename} > #{temp_name}`
     end
 
   end

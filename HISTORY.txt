@@ -96,3 +96,9 @@
 ======
 
 * better exception message for an OutOfOrder exception
+
+0.0.16 (26 Aug 2013)
+======
+
+* add Graph#from_unsorted_CSV_file (sorts in temp file)
+* adds minimal delay (test_7 on 100K facts from 18.2 to 18.8 s)
