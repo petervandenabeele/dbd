@@ -47,6 +47,10 @@ module Dbd
         @hash_by_subject[fact_subject].map{ |index| @internal_collection[index]}
       end
 
+      def subjects
+        @hash_by_subject.keys
+      end
+
     private
 
       def validate_time_stamp(fact)
