@@ -52,6 +52,13 @@ module Dbd
           context.first.subject.should == context_subject
         end
 
+        it 'works with an array of contexts_facts' do
+          pending "TODO"
+          # NOTE: also use it in dbd_onto meta_context file
+          context << [context_visibility_with_correct_subject]
+          context.first.subject.should == context_subject
+        end
+
         it 'with incorrect subject it raises SetOnceError' do
           lambda{ context << context_visibility_with_incorrect_subject }.
             should raise_error(RubyPeterV::SetOnceError),
