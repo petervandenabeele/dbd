@@ -30,6 +30,17 @@ module Dbd
           resource.size.should == 2
         end
 
+        it 'works with an array facts' do
+          resource << [fact_without_subject, fact_with_context]
+          resource.size.should == 2
+          resource.first.should == fact_without_subject
+          resource.last.should == fact_with_context
+        end
+
+        it 'returns self' do
+          (resource << [fact_without_subject, fact_with_context]).should be_a(Resource)
+        end
+
         it 'complains if a context_subject is added' do
           lambda{ resource << context_fact_visibility }.should raise_error(
             ArgumentError,

@@ -54,7 +54,7 @@ module Dbd
     end
 
     ##
-    # Add a Fact (strictly not a ContextFact)
+    # Add a Fact (strictly not a ContextFact) or recursive collection of facts
     #
     # Side effects on subject and context_subject:
     # * if it has no subject, the subject is set (this modifies the fact !)
@@ -64,11 +64,17 @@ module Dbd
     # * if it has no context_subject, the context_subject is set (this modifies the fact !)
     # * if is has the same context_subject as the resource, added unchanged.
     # * if it has a different context_subject, a ContextError is raised.
-    def <<(fact)
-      assert_fact_or_context_fact(fact)
-      set_fact_subject!(fact)
-      set_fact_context_subject!(fact)
-      super(fact)
+    #
+    # @param [Fact, #each] fact_collection a recursive collection of Facts
+    # @return [Resource] self
+    def <<(fact_collection)
+      fact_collection.each_recursively do |fact|
+        assert_fact_or_context_fact(fact)
+        set_fact_subject!(fact)
+        set_fact_context_subject!(fact)
+        super(fact)
+      end
+      self
     end
 
   private

@@ -21,13 +21,18 @@ module Dbd
     end
 
     ##
-    # Add a ContextFact (strictly only a ContextFact).
+    # Add a ContextFact (strictly only a ContextFact) or recursive collection of ContextFacts
     #
     # Side effect on the context_fact argument:
     # * if it has no subject, the subject is set in the context_fact
     # * if is has the same subject as the resource, added unchanged.
     # * if it has a different subject, a SubjectError is raised.
-    def <<(context_fact)
+    #
+    # NOTE: this implementation is really only here for the documentation
+    #
+    # @param [ContextFact, #each] context_fact_collection a recursive collection of ContextFacts
+    # @return [Context] self
+    def <<(context_fact_collection)
       super
     end
 

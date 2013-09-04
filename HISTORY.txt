@@ -112,3 +112,8 @@
 ======
 
 * add Fact::Collection#subjects (all subjects for contexts and resources)
+
+0.0.19 (4 Sept 2013)
+======
+
+* Resource|Context << also accepts an array of Facts|ContextFacts

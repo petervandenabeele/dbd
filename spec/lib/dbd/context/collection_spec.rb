@@ -6,40 +6,6 @@ module Dbd
     let(:context) { described_class.new }
     let(:context_subject) { context.subject }
 
-    describe '.new' do
-      describe 'without a subject argument' do
-        it 'has created a new subject' do
-          context.subject.should be_a(described_class.new_subject.class)
-        end
-      end
-
-      describe 'with a subject argument' do
-        it 'has stored the resource_subject' do
-          described_class.new(subject: context_subject).subject.
-            should == context_subject
-        end
-      end
-
-      describe 'with a context_subject argument' do
-        it 'raises an ContextError' do
-          lambda{ described_class.new(context_subject: context_subject) }.
-            should raise_error(ArgumentError)
-        end
-      end
-    end
-
-    describe 'context_subject' do
-      it 'raises NoMethodError when called' do
-        lambda{ context.context_subject }.should raise_error(NoMethodError)
-      end
-    end
-
-    describe 'TestFactories::Context' do
-      it '.context works' do
-        TestFactories::Context.context
-      end
-    end
-
     describe 'the collection' do
 
       let(:context_fact_visibility) { TestFactories::ContextFact.visibility } # nil subject
@@ -53,10 +19,12 @@ module Dbd
         end
 
         it 'works with an array of contexts_facts' do
-          pending "TODO"
-          # NOTE: also use it in dbd_onto meta_context file
           context << [context_visibility_with_correct_subject]
           context.first.subject.should == context_subject
+        end
+
+        it 'returns self' do
+          (context << [context_visibility_with_correct_subject]).should be_a(Context)
         end
 
         it 'with incorrect subject it raises SetOnceError' do

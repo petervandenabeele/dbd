@@ -97,7 +97,6 @@ module Dbd
         end
 
       end
-
     end
   end
 end
