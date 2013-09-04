@@ -69,9 +69,7 @@ module Dbd
     # @return [Resource] self
     def <<(fact_collection)
       fact_collection.each_recursively do |fact|
-        assert_fact_or_context_fact(fact)
-        set_fact_subject!(fact)
-        set_fact_context_subject!(fact)
+        prepare_fact!(fact)
         super(fact)
       end
       self
@@ -94,6 +92,12 @@ module Dbd
 
     def set_fact_context_subject!(fact)
       fact.context_subject = context_subject
+    end
+
+    def prepare_fact!(fact)
+      assert_fact_or_context_fact(fact)
+      set_fact_subject!(fact)
+      set_fact_context_subject!(fact)
     end
 
     # Assert _no_ Contexts here
