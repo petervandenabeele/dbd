@@ -41,6 +41,10 @@ module Dbd
     # (this is best created with the new_subject class method for forward
     # compatibility).
     #
+    # FIXME: context_subject must also be variable between facts in the same resource
+    #        A default is possible, but it can also be left open (and then individual
+    #        facts should supply there context_subject)
+    #
     # The context_subject argument is required. This will typically be
     # taken from an earlier created Context.
     #
@@ -60,6 +64,10 @@ module Dbd
     # * if it has no subject, the subject is set (this modifies the fact !)
     # * if is has the same subject as the resource, added unchanged.
     # * if it has a different subject, a SubjectError is raised.
+    #
+    # FIXME: context_subject must also be variable between facts in the same resource
+    #        A default is possible, but it can also be left open (and then individual
+    #        facts should supply there context_subject)
     #
     # * if it has no context_subject, the context_subject is set (this modifies the fact !)
     # * if is has the same context_subject as the resource, added unchanged.
