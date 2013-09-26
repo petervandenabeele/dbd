@@ -1,7 +1,7 @@
 module Dbd
   ##
   # A Context is derived from a Resource, and is the
-  # set of all Contexts that share the same subject.
+  # set of all ContextFacts that share the same subject.
   #
   # It is pointed to by a context_subject of a Fact and has
   # no context_subject itself (the context_subject

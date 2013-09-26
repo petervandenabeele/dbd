@@ -85,7 +85,27 @@ module Dbd
       on_sorted_file(filename) { |sorted_file| from_CSV(sorted_file) }
     end
 
+    ##
+    # Return an array of resources for graph
+    #
+    # @return [Array] array with all resources
+    def resources
+      subjects.map do |subject|
+        facts = by_subject(subject)
+        resource_from_facts(subject, facts)
+      end.compact
+    end
+
   private
+
+    # FIXME : the context_subject argument must not be given here
+    def resource_from_facts(subject, facts)
+      unless facts.first.is_a?(ContextFact)
+        context_subject = facts.first.context_subject
+        resource = Resource.new(subject: subject, context_subject: context_subject)
+        resource << facts
+      end
+    end
 
     ##
     # Setting a strictly monotonically increasing time_stamp (if not yet set).
