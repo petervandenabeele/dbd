@@ -13,10 +13,9 @@ module Dbd
   # a subject is a random uuid (like a oid), not a meaningful URI
   # as it is in RDF.
   #
-  # A context_subject is a required field in the options hash.
-  # Practically, first a Context will be created and the
-  # subject of that will be used as context_subject for the
-  # Resources that are associated with it.
+  # A context_subject can optionally be given in the options hash.
+  # The context_subject of the Resource will be used as a default
+  # for Facts that are added to the Resource.
   #
   # During build-up of a Fact, the subject and the context_subject
   # can be nil. These will then be set when the Fact is added
@@ -41,17 +40,13 @@ module Dbd
     # (this is best created with the new_subject class method for forward
     # compatibility).
     #
-    # FIXME: context_subject must also be variable between facts in the same resource
-    #        A default is possible, but it can also be left open (and then individual
-    #        facts should supply there context_subject)
+    # The context_subject argument is optional (if all facts in the resource
+    # have the same context).
     #
-    # The context_subject argument is required. This will typically be
-    # taken from an earlier created Context.
-    #
-    # @param [Hash{Symbol => Object}] options
-    # @option options [Fact::Subject] :context_subject (required) the subject of the context for this resource
+    # @param [Hash{Symbol => Object}] options (optional)
+    # @option options [Fact::Subject] :context_subject (nil) Optional: the subject of the context for this resource
     # @option options [Fact::Subject] :subject (new_subject) Optional: the subject for the resource
-    def initialize(options)
+    def initialize(options = {})
       set_subject(options)
       set_context_subject(options)
       super()
@@ -64,14 +59,11 @@ module Dbd
     # * if it has no subject, the subject is set (this modifies the fact !)
     # * if is has the same subject as the resource, added unchanged.
     # * if it has a different subject, a SubjectError is raised.
-    #
-    # FIXME: context_subject must also be variable between facts in the same resource
-    #        A default is possible, but it can also be left open (and then individual
-    #        facts should supply there context_subject)
+    # * inside one resource, all facts must have same subject
     #
     # * if it has no context_subject, the context_subject is set (this modifies the fact !)
-    # * if is has the same context_subject as the resource, added unchanged.
-    # * if it has a different context_subject, a ContextError is raised.
+    # * if is has a context_subject this remains unchanged
+    # * inside one resource, different facts can have different context_subjects
     #
     # @param [Fact, #each] fact_collection a recursive collection of Facts
     # @return [Resource] self
@@ -90,16 +82,17 @@ module Dbd
     end
 
     def set_context_subject(options)
-      @context_subject = options[:context_subject]
-      raise ContextError, "context_subject cannot be nil" if @context_subject.nil?
+      @context_subject = options[:context_subject] # nil default
     end
 
     def set_fact_subject!(fact)
+      # this is protected by a SetOnce immutable behavior
       fact.subject = subject
     end
 
     def set_fact_context_subject!(fact)
-      fact.context_subject = context_subject
+      #context_subject from fact has priority
+      fact.context_subject ||= context_subject
     end
 
     def prepare_fact!(fact)

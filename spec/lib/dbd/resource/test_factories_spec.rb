@@ -7,18 +7,19 @@ module TestFactories
 
     describe "TestFactories::Resource" do
       it ".empty works" do
-        resource = described_class.empty(context_subject)
-        resource.context_subject.should == context_subject
+        resource = described_class.empty
+        resource.context_subject.should == nil
       end
 
       describe ".facts_resource" do
         it "works with explicit context_subject" do
-          described_class.facts_resource(context_subject)
+          resource = described_class.facts_resource(context_subject)
+          resource.context_subject.should == context_subject
         end
 
         it "works without explicit context_subject" do
           resource = described_class.facts_resource()
-          resource.context_subject.should_not be_nil
+          resource.context_subject.should be_nil
         end
       end
     end

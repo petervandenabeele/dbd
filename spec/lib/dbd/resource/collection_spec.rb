@@ -4,8 +4,11 @@ module Dbd
   describe Resource do
 
     let(:context_subject) { TestFactories::ContextFact.new_subject }
-    let(:resource) { described_class.new(context_subject: context_subject) }
-    let(:resource_subject) { resource.subject }
+    let(:other_context_subject) { TestFactories::ContextFact.new_subject }
+    let(:resource_subject) { TestFactories::Fact.new_subject }
+    let(:resource) { described_class.new(subject: resource_subject) }
+    let(:resource_with_context_subject) { described_class.new(context_subject: context_subject,
+                                                              subject: resource_subject) }
 
     describe 'the fact collection' do
 
@@ -15,7 +18,7 @@ module Dbd
       let(:fact_with_context) { TestFactories::Fact.data_fact(context_subject, nil) }
       let(:fact_with_resource_subject) { TestFactories::Fact.data_fact(nil, resource_subject) }
       let(:fact_with_context_and_resource_subject) { TestFactories::Fact.data_fact(context_subject, resource_subject) }
-      let(:fact_with_incorrect_context) { TestFactories::Fact.data_fact(TestFactories::ContextFact.new_subject, resource_subject) }
+      let(:fact_with_other_context_and_resource_subject) { TestFactories::Fact.data_fact(other_context_subject, resource_subject) }
       let(:context_fact_visibility) { TestFactories::ContextFact.visibility }
 
       it 'enumerable functions work' do
@@ -96,17 +99,22 @@ module Dbd
           describe 'adding a fact with a context_fact subject :' do
             describe 'when the context_subject of the fact is equal to the context_subject of the resource' do
               it 'inserts the fact unaltered' do
-                resource << fact_with_context_and_resource_subject
-                resource.single.should be_equal(fact_with_context_and_resource_subject)
+                resource_with_context_subject << fact_with_context
+                resource_with_context_subject.single.should be_equal(fact_with_context)
               end
             end
 
             describe 'when the context_subject of the fact is not equal to the resource' do
-              it 'raises a SetOnceError' do
-                lambda{ resource << fact_with_incorrect_context }.should raise_error(
-                  RubyPeterV::SetOnceError,
-                  "Value of context_subject was #{fact_with_incorrect_context.context_subject}, " \
-                  "trying to set it to #{resource.context_subject}")
+              it 'the context_fact of the fact wins' do
+                resource_with_context_subject << fact_with_other_context_and_resource_subject
+                resource_with_context_subject.single.should be_equal(fact_with_other_context_and_resource_subject)
+              end
+            end
+
+            describe 'when the context_subject of the fact is set and the resource has no context_subject' do
+              it 'the context_fact of the fact wins' do
+                resource << fact_with_context_and_resource_subject
+                resource.single.should be_equal(fact_with_context_and_resource_subject)
               end
             end
           end
@@ -114,10 +122,11 @@ module Dbd
           describe 'adding a fact without context_subject' do
 
             before(:each) do
-              resource << fact_with_resource_subject
+              fact_with_resource_subject.context_subject.should be_nil # assert pre-condition
+              resource_with_context_subject << fact_with_resource_subject
             end
 
-            let(:fact_in_resource) { resource.single }
+            let(:fact_in_resource) { resource_with_context_subject.single }
 
             it 'inserts the same instance' do
               fact_in_resource.should be_equal(fact_with_resource_subject)
