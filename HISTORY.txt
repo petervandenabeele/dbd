@@ -117,3 +117,8 @@
 ======
 
 * Resource|Context << also accepts an array of Facts|ContextFacts
+
+0.0.20 (6 Oct 2013)
+======
+
+* Resource can have facts with different context_subjects
