@@ -53,12 +53,12 @@ module Dbd
     end
 
     describe 'attributes and values' do
-      it 'there are 6 attributes' do
-        described_class.attributes.size.should == 6
+      it 'there are 7 attributes' do
+        described_class.attributes.size.should == 7
       end
 
-      it 'there are 6 values' do
-        context_fact_1.values.size.should == 6
+      it 'there are 7 values' do
+        context_fact_1.values.size.should == 7
       end
     end
 

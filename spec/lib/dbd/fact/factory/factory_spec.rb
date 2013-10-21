@@ -103,8 +103,18 @@ module Dbd
             lambda{ with_validation(string_values) }.should raise_error(FactError)
           end
 
+          it 'for invalid object_type' do
+            string_values[5] = 'z'
+            lambda{ with_validation(string_values) }.should raise_error(FactError)
+          end
+
+          it 'for other invalid object_type' do
+            string_values[5] = 'int'
+            lambda{ with_validation(string_values) }.should raise_error(FactError)
+          end
+
           it 'for invalid object' do
-            string_values[5] = ''
+            string_values[6] = ''
             lambda{ with_validation(string_values) }.should raise_error(FactError)
           end
         end

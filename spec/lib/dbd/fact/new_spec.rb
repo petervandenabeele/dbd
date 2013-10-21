@@ -61,6 +61,14 @@ module Dbd
             object: nil)
         end.should raise_error(ObjectError)
       end
+
+      it 'a nil object_type raises ObjectError' do
+        lambda do
+          described_class.new(
+            predicate: data_predicate,
+            object: 'foo')
+        end.should raise_error(ObjectError)
+      end
     end
 
     describe 'create fact_1' do

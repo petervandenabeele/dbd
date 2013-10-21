@@ -111,7 +111,7 @@ module Dbd
 
     describe 'attributes' do
       it 'there are 6 attributes' do
-        described_class.attributes.size.should == 6
+        described_class.attributes.size.should == 7
       end
 
       it 'first attribute is :time_stamp' do
@@ -124,8 +124,8 @@ module Dbd
     end
 
     describe 'values' do
-      it 'there are 6 values' do
-        full_fact.values.size.should == 6
+      it 'there are 7 values' do
+        full_fact.values.size.should == 7
       end
 
       it 'the first element (time_stamp) is a TimeStamp' do
@@ -134,8 +134,8 @@ module Dbd
     end
 
     describe 'string_values' do
-      it 'there are 6 string_values' do
-        full_fact.string_values.size.should == 6
+      it 'there are 7 string_values' do
+        full_fact.string_values.size.should == 7
       end
 
       it 'the first element (time_stamp) is a String' do
@@ -168,10 +168,11 @@ module Dbd
       end
 
       it 'is false for each of the entries largely different' do
-        (0...string_values.size).each do |index|
+        ((0...string_values.size).to_a - [5]).each do |index|
           string_values_1_modified = string_values.dup.tap { |_string_values|
             _string_values[index][3] = '4' # different and valid for all cases
           }
+          string_values_1_modified[5] = 'u'
           other = factory.from_string_values(string_values_1_modified)
           other.should_not be_equivalent(ref)
         end

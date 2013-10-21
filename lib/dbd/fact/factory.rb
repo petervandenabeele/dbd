@@ -42,6 +42,7 @@ module Dbd
             context_subject: [false, Fact::Subject.valid_regexp],
             subject: [true, Fact::Subject.valid_regexp],
             predicate: [true, /./],
+            object_type: [true, /^[sbr]$/],
             object: [true, /./]
           }
         end

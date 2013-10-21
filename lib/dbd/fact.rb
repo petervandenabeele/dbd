@@ -22,20 +22,20 @@ module Dbd
   #   creation of the fact, but it has to increase in strictly monotic
   #   order in a fact stream.
   #
-  # * a unique and invariant *id* (a uuid)
+  # * a *id* (unique and invariant)
   #
   #   To allow referencing back to it (e.g. to invalidate it later in a fact stream).
+  #   The id is implemented as a uuid. In the CSV serialization the 32+4 character
+  #   representation is used.
   #
   # * a *context_subject* (a uuid)
   #
-  #   The subject of the Context (a set of Contexts with
-  #   the same subject) about this fact. Each Fact, points *back* to a
-  #   Context (the Context must have been fully
-  #   defined, earlier in a fact stream).
+  #   The subject of the Context (a set of ContextFacts with the same subject)
+  #   about this fact. Each Fact, points *back* to a Context.
   #
   # * a *subject* (a uuid)
   #
-  #   "About which Resource is this fact?".
+  #   "About which Resource is this fact?"
   #
   #   Similar to the subject of an  RDF triple, except that this subject is not
   #   a URI, but an abstract uuid (that is world-wide unique and invariant).
@@ -45,17 +45,39 @@ module Dbd
   #
   # * a *predicate* (a string)
   #
-  #   "Which property of the resource are we describing?".
+  #   "Which property of the resource are we describing?"
   #
   #   Currently this is a string, but I suggest modeling this similar to predicate
   #   in RDF. Probably more detailed modeling using RDF predicate will follow.
   #
-  # * an *object* (a string)
+  # * an *object_type* (a short string)
+  #
+  #   "What is the type of the object?"
+  #
+  #   A short string that encodes the type of the object. Based loosely on
+  #   thrift and RDF (xsd), following types are suggested:
+  #
+  #   data types:
+  #   * s : String (like xsd:string and thrift string)
+  #   * b : Boolean (like xsd:boolean and thrift bool)  ("true" or "false")
+  #   * d : Decimal (like xsd:decimal ; not present in thrift)
+  #   * f : Float (like xsd:double and thrift double)
+  #   * l : Long Int (like thrift i64 signed 64 bit integer)
+  #   * t : Time (like xsd:dateTime and Ruby Time (date + time combined))
+  #
+  #   references:
+  #   * i : ID (currently a UUID, with its 32+4 char representation)
+  #   * r : Resource (currently a UUID, with its 32+4 char representation)
+  #   * c : Context (currently a UUID, with its 32+4 char representation)
+  #   * u : URI (like RDF URI's)
+  #
+  #   In this version, only String, Boolean and Resource are implemented.
+  #
+  # * an *object* (a value, of type object_type)
   #
   #   "What is the value of the property of the resource we are describing?".
   #
-  #   Currently this is a string, but I suggest modeling this similar to object
-  #   in RDF. Probably more detailed modeling using RDF object will follow.
+  #   Serialized to a string, but can be of any of the object_types.
   class Fact
 
     ##
@@ -72,6 +94,7 @@ module Dbd
        :context_subject,
        :subject,
        :predicate,
+       :object_type,
        :object]
     end
 
@@ -115,6 +138,7 @@ module Dbd
     #
     # @param [Hash{Symbol => Object}] options
     # @option options [#to_s] :object Required :  the object for this Fact (required)
+    # @option options [#to_s] :object_type Required :  the object_type for this Fact (required)
     # @option options [#to_s] :predicate Required : the predicate for this Fact
     # @option options [String (uuid)] :subject Optional : the subject for this Fact
     # @option options [String (uuid)] :context_subject Optional : the subject of the Context
@@ -126,9 +150,11 @@ module Dbd
       @context_subject = options[:context_subject]
       @subject = options[:subject]
       @predicate = options[:predicate]
+      @object_type = options[:object_type]
       @object = options[:object]
       validate_time_stamp_class(@time_stamp)
       raise PredicateError, "predicate cannot be nil" if predicate.nil?
+      raise ObjectError, "object_type cannot be nil" if object_type.nil?
       raise ObjectError, "object cannot be nil" if object.nil?
     end
 

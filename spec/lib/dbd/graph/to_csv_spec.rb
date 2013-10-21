@@ -72,8 +72,12 @@ module Dbd
           first_line.split(',')[4].should == '"context:visibility"'
         end
 
-        it 'has object as 6th value' do
-          first_line.split(',')[5].should == '"public"'
+        it 'has object_type as 6th value' do
+          first_line.split(',')[5].should == '"s"'
+        end
+
+        it 'has object as 7th value' do
+          first_line.split(',')[6].should == '"public"'
         end
       end
 
@@ -139,8 +143,12 @@ module Dbd
           first_line.split(',')[4].should == '"http://example.org/test/name"'
         end
 
-        it 'has object as 6th value' do
-          first_line.split(',')[5].should == '"Mandela"'
+        it 'has object_type as 6th value' do
+          first_line.split(',')[5].should == '"s"'
+        end
+
+        it 'has object as 7th value' do
+          first_line.split(',')[6].should == '"Mandela"'
         end
       end
     end

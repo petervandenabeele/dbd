@@ -8,6 +8,8 @@ module TestFactories
     let(:string_object_1)  { 'Gandhi' }
     let(:fact_2_with_subject) { described_class.fact_2_with_subject(context_subject) }
     let(:full_fact) { described_class.full_fact }
+    let(:fact_with_boolean_object) { described_class.fact_with_boolean_object }
+    let(:fact_with_resource_object) { described_class.fact_with_resource_object }
 
     describe 'factory works' do
       it 'with explicit context_subject' do
@@ -61,6 +63,20 @@ module TestFactories
             described_class.data_fact(context_subject, subject).
               subject.should == subject
           end
+        end
+      end
+
+      describe 'fact_with_boolean_object' do
+        it 'has "b" as object_type' do
+          described_class.fact_with_boolean_object(context_subject, subject).
+            object_type.should == 'b'
+        end
+      end
+
+      describe 'fact_with_resource_object' do
+        it 'has "r" as object_type' do
+          described_class.fact_with_resource_object(context_subject, subject).
+            object_type.should == 'r'
         end
       end
 

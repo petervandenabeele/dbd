@@ -13,6 +13,7 @@ module TestFactories
       factory_for.new(
         subject: subject,
         predicate: 'context:visibility',
+        object_type: 's',
         object: 'public')
     end
 
@@ -20,6 +21,7 @@ module TestFactories
       factory_for.new(
         subject: subject,
         predicate: 'dcterms:creator',
+        object_type: 's',
         object: 'peter_v')
     end
 
@@ -27,6 +29,7 @@ module TestFactories
       factory_for.new(
         subject: subject,
         predicate: 'prov:source',
+        object_type: 's',
         object: "this has a comma , a newline \n and a double quote \"")
     end
 
@@ -34,6 +37,7 @@ module TestFactories
       factory_for.new(
         subject: subject,
         predicate: 'dcterms:created',
+        object_type: 's',
         object: Time.now.utc)
     end
   end
