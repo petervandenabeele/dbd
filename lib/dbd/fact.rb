@@ -87,7 +87,7 @@ module Dbd
     end
 
     ##
-    # @return [Array] The 6 attributes of a Fact.
+    # @return [Array] The 7 attributes of a Fact.
     def self.attributes
       [:time_stamp,
        :id,
@@ -159,16 +159,16 @@ module Dbd
     end
 
     ##
-    # @return [Array] The 6 values of a Fact.
+    # @return [Array] The 7 values of a Fact.
     def values
       self.class.attributes.map{ |attribute| self.send(attribute) }
     end
 
     ##
-    # @return [Array] The 6 values of a Fact converted to a string.
+    # @return [Array] The 7 values of a Fact converted to a string.
     # The individual strings are escaped:
     # * newlines are escaped to '\n'
-    # This is used for the 6 entries in the to_CSV mapping.
+    # This is used for the 7 entries in the to_CSV mapping.
     #
     def string_values
       values.map{ |value| escaped_string(value.to_s) }
