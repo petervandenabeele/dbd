@@ -90,22 +90,24 @@ module Dbd
     #
     # @return [Array] array with all resources
     def resources
-      subjects.map do |subject|
+      resource_subjects.map do |subject|
         facts = by_subject(subject)
-        resource_from_facts(subject, facts)
-      end.compact
+        Resource.new(subject: subject) << facts
+      end
+    end
+
+    ##
+    # Return an array of contexts for graph
+    #
+    # @return [Array] array with all contexts
+    def contexts
+      context_subjects.map do |subject|
+        context_facts = by_subject(subject)
+        Context.new(subject: subject) << context_facts
+      end
     end
 
   private
-
-    # FIXME : the context_subject argument must not be given here
-    def resource_from_facts(subject, facts)
-      unless facts.first.is_a?(ContextFact)
-        context_subject = facts.first.context_subject
-        resource = Resource.new(subject: subject, context_subject: context_subject)
-        resource << facts
-      end
-    end
 
     ##
     # Setting a strictly monotonically increasing time_stamp (if not yet set).
