@@ -172,10 +172,17 @@ module Dbd
           string_values_1_modified = string_values.dup.tap { |_string_values|
             _string_values[index][3] = '4' # different and valid for all cases
           }
-          string_values_1_modified[5] = 'u'
-          other = factory.from_string_values(string_values_1_modified)
-          other.should_not be_equivalent(ref)
+          should_not_be_equivalent(string_values_1_modified, ref)
         end
+
+        string_values_1_modified = string_values.dup
+        string_values_1_modified[5] = 'r'
+        should_not_be_equivalent(string_values_1_modified, ref)
+      end
+
+      def should_not_be_equivalent(modified, ref)
+        other = factory.from_string_values(modified)
+        other.should_not be_equivalent(ref)
       end
 
       it 'is true when the time_stamp is 500 ns larger' do

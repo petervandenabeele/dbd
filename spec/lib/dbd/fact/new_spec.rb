@@ -50,6 +50,7 @@ module Dbd
         lambda do
           described_class.new(
             predicate: nil,
+            object_type: 's',
             object: string_object_1)
         end.should raise_error(PredicateError)
       end
@@ -58,16 +59,17 @@ module Dbd
         lambda do
           described_class.new(
             predicate: data_predicate,
+            object_type: 's',
             object: nil)
         end.should raise_error(ObjectError)
       end
 
-      it 'a nil object_type raises ObjectError' do
+      it 'an nil object_type raises ObjectError' do
         lambda do
           described_class.new(
             predicate: data_predicate,
             object: 'foo')
-        end.should raise_error(ObjectError)
+        end.should raise_error(ObjectTypeError)
       end
     end
 

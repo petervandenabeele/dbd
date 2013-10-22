@@ -6,6 +6,7 @@ module Dbd
   class ContextError < StandardError ; end
   class SubjectError < StandardError ; end
   class PredicateError < StandardError ; end
+  class ObjectTypeError < StandardError ; end
   class ObjectError < StandardError ; end
 
 end

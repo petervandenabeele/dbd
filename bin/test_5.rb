@@ -32,13 +32,13 @@ FACTS_PER_RESOURCE = 1000
 
 count = ARGV[0].to_i
 unless count > 0
-  puts "Give a 'count' as first argument."
+  puts 'Give a "count" as first argument.'
   exit(1)
 end
 
 filename = ARGV[1]
 unless filename
-  puts "Give a 'filename' as second argument."
+  puts 'Give a "filename" as second argument.'
   exit(1)
 end
 
@@ -50,11 +50,17 @@ graph = Dbd::Graph.new
 
 (0...count).each do |i|
   context = Dbd::Context.new
-  context << Dbd::ContextFact.new(predicate: "prov:test" , object: "A" * 10)
+  context << Dbd::ContextFact.new(
+    predicate: 'prov:test',
+    object_type: 's',
+    object: 'A' * 10)
 
   resource = Dbd::Resource.new(context_subject: context.subject)
   (0...FACTS_PER_RESOURCE).each do |j|
-    resource << Dbd::Fact.new(predicate: "test", object: "#{'B' * 75} #{i * FACTS_PER_RESOURCE + j} \n CD")
+    resource << Dbd::Fact.new(
+      predicate: 'test',
+      object_type: 's',
+      object: "#{'B' * 75} #{i * FACTS_PER_RESOURCE + j} \n CD")
   end
 
   graph << context << resource

@@ -78,44 +78,53 @@ module Dbd
         end
 
         describe 'does raise exception' do
+
+          def should_raise_fact_error
+            lambda{ with_validation(string_values) }.should raise_error(FactError)
+          end
+
+          def should_raise_object_type_error
+            lambda{ with_validation(string_values) }.should raise_error(ObjectTypeError)
+          end
+
           it 'for invalid id' do
             string_values[0] = 'foo'
-            lambda{ with_validation(string_values) }.should raise_error(FactError)
+            should_raise_fact_error
           end
 
           it 'for invalid time_stamp' do
             string_values[1] = 'foo'
-            lambda{ with_validation(string_values) }.should raise_error(FactError)
+            should_raise_fact_error
           end
 
           it 'for invalid context_subject' do
             string_values[2] = 'foo'
-            lambda{ with_validation(string_values) }.should raise_error(FactError)
+            should_raise_fact_error
           end
 
           it 'for invalid subject' do
             string_values[3] = 'foo'
-            lambda{ with_validation(string_values) }.should raise_error(FactError)
+            should_raise_fact_error
           end
 
           it 'for invalid predicate' do
             string_values[4] = ''
-            lambda{ with_validation(string_values) }.should raise_error(FactError)
+            lambda{ with_validation(string_values) }.should raise_error(PredicateError)
           end
 
           it 'for invalid object_type' do
-            string_values[5] = 'z'
-            lambda{ with_validation(string_values) }.should raise_error(FactError)
+            string_values[5] = 'sb'
+            should_raise_object_type_error
           end
 
           it 'for other invalid object_type' do
             string_values[5] = 'int'
-            lambda{ with_validation(string_values) }.should raise_error(FactError)
+            should_raise_object_type_error
           end
 
           it 'for invalid object' do
             string_values[6] = ''
-            lambda{ with_validation(string_values) }.should raise_error(FactError)
+            lambda{ with_validation(string_values) }.should raise_error(ObjectError)
           end
         end
       end

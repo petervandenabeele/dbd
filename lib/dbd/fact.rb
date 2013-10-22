@@ -153,9 +153,9 @@ module Dbd
       @object_type = options[:object_type]
       @object = options[:object]
       validate_time_stamp_class(@time_stamp)
-      raise PredicateError, "predicate cannot be nil" if predicate.nil?
-      raise ObjectError, "object_type cannot be nil" if object_type.nil?
-      raise ObjectError, "object cannot be nil" if object.nil?
+      raise PredicateError, "predicate cannot be nil" if @predicate.nil?
+      raise ObjectTypeError, "object_type cannot be nil" if @object_type !~ /^(s|b|r)$/
+      raise ObjectError, "object cannot be nil" if @object.nil?
     end
 
     ##

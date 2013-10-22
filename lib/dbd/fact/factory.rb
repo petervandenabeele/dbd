@@ -34,16 +34,15 @@ module Dbd
           fact_from_values_hash(values_hash(string_hash))
         end
 
+        ##
+        # Formats for checking CSV fields
+        # the predicate, object_type and object are tested in the initializer
         def attribute_formats
-          # TODO clean this up
           {
             id: [true, Fact::ID.valid_regexp],
             time_stamp: [true, TimeStamp.valid_regexp],
             context_subject: [false, Fact::Subject.valid_regexp],
-            subject: [true, Fact::Subject.valid_regexp],
-            predicate: [true, /./],
-            object_type: [true, /^[sbr]$/],
-            object: [true, /./]
+            subject: [true, Fact::Subject.valid_regexp]
           }
         end
 
@@ -65,7 +64,7 @@ module Dbd
           unescaped_values = unescaped_string_values(string_values)
           attributes_strings_array = [top_class.attributes, unescaped_values].transpose
           # Remove empty values (e.g. the context_subject for a ContextFact).
-          attributes_strings_array.delete_if{ |a, v| v == '' }
+          attributes_strings_array.delete_if{ |_, v| v == '' }
           Hash[attributes_strings_array]
         end
 
@@ -87,14 +86,19 @@ module Dbd
           attribute_formats.each do |attr, validation|
             string = string_hash[attr]
             mandatory, format = validation
-            validate_string(mandatory, string, format)
+            validate_string_by_regexp(mandatory, string, format)
+          end
+
+        end
+
+        def validate_string_by_regexp(mandatory, string, format)
+          if (mandatory || string) && (string !~ format)
+            report_invalid_entry(string)
           end
         end
 
-        def validate_string(mandatory, string, format)
-          if (mandatory || string) && (string !~ format)
-            raise FactError, "invalid entry found : #{string}"
-          end
+        def report_invalid_entry(string)
+          raise FactError, "invalid entry found : #{string}"
         end
 
       end
