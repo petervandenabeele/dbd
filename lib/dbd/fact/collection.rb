@@ -9,6 +9,8 @@ module Dbd
       def initialize
         super
         @hash_by_subject = Hash.new { |h, k| h[k] = [] }
+        @resource_indices_by_subject = Hash.new { |h, k| h[k] = [] }
+        @context_indices_by_subject = Hash.new { |h, k| h[k] = [] }
       end
 
       def newest_time_stamp
@@ -38,8 +40,7 @@ module Dbd
       def <<(fact)
         raise FactError, "#{fact.errors.join(', ')}." unless fact.errors.empty?
         validate_time_stamp(fact)
-        index = Helpers::OrderedSetCollection.add_and_return_index(fact, @internal_collection)
-        @hash_by_subject[fact.subject] << index
+        add_to_collection(fact)
         self
       end
 
@@ -51,6 +52,14 @@ module Dbd
         @hash_by_subject.keys
       end
 
+      def resource_subjects
+        @resource_indices_by_subject.keys
+      end
+
+      def context_subjects
+        @context_indices_by_subject.keys
+      end
+
     private
 
       def validate_time_stamp(fact)
@@ -59,6 +68,19 @@ module Dbd
         end
       end
 
+      def add_to_collection(fact)
+        index = Helpers::OrderedSetCollection.add_and_return_index(fact, @internal_collection)
+        add_to_index_hash(fact, index)
+      end
+
+      def add_to_index_hash(fact, index)
+        @hash_by_subject[fact.subject] << index
+        if fact.context_fact?
+          @context_indices_by_subject[fact.subject] << index
+        else
+          @resource_indices_by_subject[fact.subject] << index
+        end
+      end
     end
   end
 end

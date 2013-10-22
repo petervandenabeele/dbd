@@ -177,6 +177,28 @@ module Dbd
         end
       end
 
+      describe 'resource_subjects : ' do
+        it 'finds all and only subjects of resources' do
+          subject << context_fact_visibility
+          subject << context_fact_created_by # same subject as previous line
+          subject << fact_2_with_subject
+          subject << fact_3_with_subject
+          subject.resource_subjects.first.should == fact_2_with_subject.subject
+          subject.resource_subjects.last.should == fact_3_with_subject.subject
+          subject.resource_subjects.size.should == 2
+        end
+      end
+
+      describe 'context_subjects : ' do
+        it 'finds all and only subjects of contexts' do
+          subject << context_fact_visibility
+          subject << context_fact_created_by # same subject as previous line
+          subject << fact_2_with_subject
+          subject << fact_3_with_subject
+          subject.context_subjects.single.should == context_fact_visibility.subject
+        end
+      end
+
       describe 'TestFactories::Fact::Collection' do
         describe '.fact_2_3' do
           it 'has the given context_subject with explicit subject arg' do
