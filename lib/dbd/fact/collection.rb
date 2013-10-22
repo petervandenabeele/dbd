@@ -55,7 +55,7 @@ module Dbd
 
       def validate_time_stamp(fact)
         if (newest_time_stamp && fact.time_stamp <= newest_time_stamp)
-          raise OutOfOrderError,  "time_stamp of fact was too old : #{fact.time_stamp}"
+          raise OutOfOrderError, "time_stamp of fact was too old : #{fact.time_stamp}"
         end
       end
 

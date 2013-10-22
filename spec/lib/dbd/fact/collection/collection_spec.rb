@@ -62,10 +62,6 @@ module Dbd
           subject << fact_2_with_subject
           lambda { subject[0] } . should raise_exception NoMethodError
         end
-
-        it '#<< returns self, so chaining is possible' do
-          (subject << fact_2_with_subject).should == subject
-        end
       end
 
       describe 'adding a fact with a ref to a context_fact' do
@@ -147,7 +143,7 @@ module Dbd
 
         it 'raises FactError with message when fact.errors has errors' do
            context_fact_visibility.stub(:errors).and_return(['Error 1', 'Error 2'])
-           lambda { subject << context_fact_visibility } . should raise_error(
+           lambda { subject << context_fact_visibility }.should raise_error(
              FactError,
              'Error 1, Error 2.')
         end
@@ -158,12 +154,14 @@ module Dbd
           subject << context_fact_visibility
           subject << context_fact_created_by
           subject << context_fact_original_source
+          subject << fact_2_with_subject
           context_fact_visibility.subject.should == context_subject_1 # assert test set-up
           context_fact_created_by.subject.should == context_subject_1 # assert test set-up
           context_fact_original_source.subject.should == context_subject_2 # assert test set-up
           subject.by_subject(context_subject_1).first.should == context_fact_visibility
           subject.by_subject(context_subject_1).last.should == context_fact_created_by
           subject.by_subject(context_subject_2).single.should == context_fact_original_source
+          subject.by_subject(fact_2_with_subject.subject).single.should == fact_2_with_subject
         end
       end
 

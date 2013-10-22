@@ -15,12 +15,12 @@ module Dbd
         end
       end
 
-      it 'the resource has the facts' do
+      it 'the resources has the facts' do
         facts = full_graph.reject(&:context_fact?)
         full_graph.resources.single.should include(*facts)
       end
 
-      it 'the resource does not have has the context_facts' do
+      it 'the resources does not have has the context_facts' do
         context_facts = full_graph.select(&:context_fact?)
         full_graph.resources.single.should_not include(*context_facts)
       end
