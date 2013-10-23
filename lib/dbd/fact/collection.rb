@@ -43,22 +43,37 @@ module Dbd
         self
       end
 
+      ##
+      # This method works on resource and context subjects.
+      #
+      # Should be less relevant, now that resources and contexts
+      # are available as methods to get proper access.
       def by_subject(fact_subject)
         hash_entry_from_indices(fact_subject).map do |index|
           @internal_collection[index]
         end
       end
 
+      ##
+      # Use this to get all resource subjects. But if the resources
+      # themselves are needed, there is a direct Graph#resources method.
       def resource_subjects
         @resource_indices_by_subject.keys
       end
 
+      ##
+      # Use this to get all contexte subjects. But if the contexts
+      # themselves are needed, there is a direct Graph#contexts method.
       def context_subjects
         @context_indices_by_subject.keys
       end
 
     private
 
+      ##
+      # Because the subject are either in the resource or the context index,
+      # we need to search both. A subject should never be in both, but we
+      # do currently not defend against that error.
       def hash_entry_from_indices(fact_subject)
         @resource_indices_by_subject[fact_subject] || @context_indices_by_subject[fact_subject]
       end

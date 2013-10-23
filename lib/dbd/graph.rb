@@ -115,6 +115,10 @@ module Dbd
       fact.time_stamp = TimeStamp.new(larger_than: newest_time_stamp) unless fact.time_stamp
     end
 
+    ##
+    # Reach deep into the @internal_collection for the facts.
+    # In later implementations with external stores, this
+    # will probably change.
     def facts_from_indices(fact_indices)
       fact_indices.map do |index|
         @internal_collection[index]
@@ -126,12 +130,19 @@ module Dbd
         encoding: 'utf-8' }
     end
 
+    ##
+    # Reach deep into the @internal_collection for the facts.
+    # In later implementations with external stores, this
+    # will probably change.
     def push_facts(target)
       @internal_collection.each do |fact|
         target << fact.string_values
       end
     end
 
+    ##
+    # It seems that sometimes temp files are not properly
+    # cleaned up.
     def on_sorted_file(filename)
       Tempfile.open('foo', 'data/') do |sorted_file|
         create_sorted_file(filename, sorted_file)
