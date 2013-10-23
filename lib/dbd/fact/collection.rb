@@ -8,9 +8,8 @@ module Dbd
 
       def initialize
         super
-        @hash_by_subject = Hash.new { |h, k| h[k] = [] }
-        @resource_indices_by_subject = Hash.new { |h, k| h[k] = [] }
-        @context_indices_by_subject = Hash.new { |h, k| h[k] = [] }
+        @resource_indices_by_subject = {}
+        @context_indices_by_subject = {}
       end
 
       def newest_time_stamp
@@ -45,11 +44,9 @@ module Dbd
       end
 
       def by_subject(fact_subject)
-        @hash_by_subject[fact_subject].map{ |index| @internal_collection[index]}
-      end
-
-      def subjects
-        @hash_by_subject.keys
+        hash_entry_from_indices(fact_subject).map do |index|
+          @internal_collection[index]
+        end
       end
 
       def resource_subjects
@@ -61,6 +58,10 @@ module Dbd
       end
 
     private
+
+      def hash_entry_from_indices(fact_subject)
+        @resource_indices_by_subject[fact_subject] || @context_indices_by_subject[fact_subject]
+      end
 
       def validate_time_stamp(fact)
         if (newest_time_stamp && fact.time_stamp <= newest_time_stamp)
@@ -74,11 +75,18 @@ module Dbd
       end
 
       def add_to_index_hash(fact, index)
-        @hash_by_subject[fact.subject] << index
         if fact.context_fact?
-          @context_indices_by_subject[fact.subject] << index
+          add_to_index_hash_with_default_array(@context_indices_by_subject, fact.subject, index)
         else
-          @resource_indices_by_subject[fact.subject] << index
+          add_to_index_hash_with_default_array(@resource_indices_by_subject, fact.subject, index)
+        end
+      end
+
+      def add_to_index_hash_with_default_array(index_hash, subject, index)
+        if (array = index_hash[subject])
+          array << index
+        else
+          index_hash[subject] = [index]
         end
       end
     end

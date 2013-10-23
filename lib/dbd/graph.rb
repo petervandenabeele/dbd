@@ -90,9 +90,8 @@ module Dbd
     #
     # @return [Array] array with all resources
     def resources
-      resource_subjects.map do |subject|
-        facts = by_subject(subject)
-        Resource.new(subject: subject) << facts
+      @resource_indices_by_subject.map do |subject, fact_indices|
+        Resource.new(subject: subject) << facts_from_indices(fact_indices)
       end
     end
 
@@ -101,9 +100,8 @@ module Dbd
     #
     # @return [Array] array with all contexts
     def contexts
-      context_subjects.map do |subject|
-        context_facts = by_subject(subject)
-        Context.new(subject: subject) << context_facts
+      @context_indices_by_subject.map do |subject, fact_indices|
+        Context.new(subject: subject) << facts_from_indices(fact_indices)
       end
     end
 
@@ -117,9 +115,15 @@ module Dbd
       fact.time_stamp = TimeStamp.new(larger_than: newest_time_stamp) unless fact.time_stamp
     end
 
+    def facts_from_indices(fact_indices)
+      fact_indices.map do |index|
+        @internal_collection[index]
+      end
+    end
+
     def csv_defaults
-      {force_quotes: true,
-       encoding: 'utf-8'}
+      { force_quotes: true,
+        encoding: 'utf-8' }
     end
 
     def push_facts(target)
