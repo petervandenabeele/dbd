@@ -122,3 +122,12 @@
 ======
 
 * Resource can have facts with different context_subjects
+
+0.1.0 (23 Oct 2013)
+=====
+
+* Not backwards compatible !
+* Fact now has 7 attributes, added an object_type (required; can be 's','b','r')
+* Graph#subjects method removed
+* Graph#resource_subjects and Graph#Fact::Context.context_subjects added
+* Graph#resources and Graph#contexts added
