@@ -131,3 +131,8 @@
 * Graph#subjects method removed
 * Graph#resource_subjects and Graph#Fact::Context.context_subjects added
 * Graph#resources and Graph#contexts added
+
+0.1.1 (26 Oct 2013)
+=====
+
+* Collection.freeze (included in Graph, Resource, etc.)
