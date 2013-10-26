@@ -83,6 +83,7 @@ module Dbd
 
       def freeze
         @internal_collection.freeze
+        self
       end
 
     end

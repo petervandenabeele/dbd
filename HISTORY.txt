@@ -135,4 +135,9 @@
 0.1.1 (26 Oct 2013)
 =====
 
-* Collection.freeze (included in Graph, Resource, etc.)
+* Collection#freeze (included in Graph, Resource, etc.)
+
+0.1.2 (26 Oct 2013)
+=====
+
+* Collection#freeze returns self (like Object.freeze)

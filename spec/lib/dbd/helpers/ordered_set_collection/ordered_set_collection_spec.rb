@@ -90,6 +90,12 @@ module Dbd
           subject.freeze
           lambda{ subject << element_2 }.should raise_error(RuntimeError, /frozen/)
         end
+
+        it 'returns self' do
+          subject << element_1
+          original_object_id = subject.object_id
+          subject.freeze.object_id.should == original_object_id
+        end
       end
     end
   end
