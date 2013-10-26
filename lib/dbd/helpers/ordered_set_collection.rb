@@ -81,6 +81,10 @@ module Dbd
         collection.rindex(element)
       end
 
+      def freeze
+        @internal_collection.freeze
+      end
+
     end
   end
 end

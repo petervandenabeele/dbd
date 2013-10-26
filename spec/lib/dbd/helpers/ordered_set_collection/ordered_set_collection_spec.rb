@@ -83,6 +83,14 @@ module Dbd
           subject.last.should be_nil
         end
       end
+
+      describe 'after freeze' do
+        it 'adding an element raise error' do
+          subject << element_1
+          subject.freeze
+          lambda{ subject << element_2 }.should raise_error(RuntimeError, /frozen/)
+        end
+      end
     end
   end
 end
