@@ -156,7 +156,7 @@ module Dbd
     end
 
     def tempfile_dir
-      'data/'
+      'data'
     end
 
   end
