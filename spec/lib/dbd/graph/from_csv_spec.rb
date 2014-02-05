@@ -133,6 +133,38 @@ module Dbd
         graph = Graph.new
         graph.from_unsorted_CSV_file(filename).should be_a(described_class)
       end
+
+      describe 'tempfile_dir' do
+        context 'DbdDataEngine.default_data_dir is defined and present' do
+          before(:each) do
+            module DbdDataEngine
+              def self.default_data_dir
+                'data/test'
+              end
+            end
+          end
+
+          after(:each) do
+            if defined?(DbdDataEngine)
+              begin
+                Object.send(:remove_const, :DbdDataEngine)
+              rescue NameError
+              end
+            end
+          end
+
+          it 'uses the default_data_dir for the temp file' do
+            filename = 'data/reverse.csv'
+            File.open(filename, 'w') do |f|
+              f << inverted_graph_facts_csv
+            end
+
+            graph = Graph.new
+            expect(Tempfile).to receive(:open).with('foo', 'data/test')
+            graph.from_unsorted_CSV_file(filename)
+          end
+        end
+      end
     end
   end
 end

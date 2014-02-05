@@ -156,7 +156,11 @@ module Dbd
     end
 
     def tempfile_dir
-      'data'
+      if defined?(DbdDataEngine) && DbdDataEngine.respond_to?(:default_data_dir)
+        DbdDataEngine.default_data_dir
+      else
+        'data'
+      end
     end
 
   end
