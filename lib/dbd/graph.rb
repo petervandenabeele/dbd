@@ -144,7 +144,7 @@ module Dbd
     # It seems that sometimes temp files are not properly
     # cleaned up.
     def on_sorted_file(filename)
-      Tempfile.open('foo', 'data/') do |sorted_file|
+      Tempfile.open('foo', tempfile_dir) do |sorted_file|
         create_sorted_file(filename, sorted_file)
         yield(sorted_file)
       end
@@ -153,6 +153,10 @@ module Dbd
     def create_sorted_file(filename, sorted_file)
       temp_name = sorted_file.path
       `sort #{filename} > #{temp_name}`
+    end
+
+    def tempfile_dir
+      'data/'
     end
 
   end
