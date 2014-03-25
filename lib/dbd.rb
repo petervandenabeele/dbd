@@ -11,4 +11,3 @@ require 'dbd/context'
 require 'dbd/graph'
 
 require 'dbd/rdf_base'
-require 'dbd/repo'
