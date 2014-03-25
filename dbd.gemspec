@@ -24,6 +24,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rb-fsevent'
   spec.add_development_dependency 'terminal-notifier-guard'
   spec.add_development_dependency 'yard'
+  spec.add_development_dependency 'simplecov'
   spec.add_runtime_dependency 'rdf'
   spec.add_runtime_dependency 'ruby_peter_v', '>= 0.0.13'
 end

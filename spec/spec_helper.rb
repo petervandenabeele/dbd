@@ -1,3 +1,20 @@
+require 'simplecov'
+
+module SimpleCov::Configuration
+  def clean_filters
+    @filters = []
+  end
+end
+
+SimpleCov.configure do
+  clean_filters
+  load_adapter 'test_frameworks'
+end
+
+ENV['COVERAGE'] && SimpleCov.start do
+  add_filter '/.rvm/'
+end
+
 require 'dbd'
 
 # load all test_factories
