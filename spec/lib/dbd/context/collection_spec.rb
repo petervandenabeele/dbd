@@ -44,6 +44,18 @@ module Dbd
           context.first.context_subject.should be_nil
         end
       end
+
+      describe 'adding facts with << ' do
+
+        let(:fact) { TestFactories::Fact.fact_1 }
+
+        it 'fails with ArgumentError' do
+          expect { context << fact }.to raise_error(
+            ArgumentError,
+            'Trying to add a non-ContextFact to a Context.'
+          )
+        end
+      end
     end
   end
 end

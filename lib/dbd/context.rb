@@ -36,21 +36,13 @@ module Dbd
       super
     end
 
-  private
-
     # Should not be called in Context subclass.
-    def context_subject
-      raise NoMethodError, "context_subject should not be called in Context."
-    end
+    private :context_subject
+
+    private
 
     def set_context_subject(options)
       raise ArgumentError, "context_subject must not be in the options" if options[:context_subject]
-    end
-
-    # Validate that context_subject is not present here.
-    # This should never raise as the setter was blocked above.
-    def validate_context_subject
-      raise ContextError if @context_subject
     end
 
     ##
