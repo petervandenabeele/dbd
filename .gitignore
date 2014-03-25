@@ -16,4 +16,6 @@ test/tmp
 test/version_tmp
 tmp
 /data/foo.csv
+/data/reverse.csv
 /.idea
+/bin/t_*
