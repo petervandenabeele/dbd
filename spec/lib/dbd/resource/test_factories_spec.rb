@@ -8,7 +8,7 @@ module TestFactories
     describe "TestFactories::Resource" do
       it ".empty works" do
         resource = described_class.empty
-        resource.context_subject.should == nil
+        expect(resource.context_subject).to be_nil
       end
 
       describe ".facts_resource" do

@@ -47,12 +47,12 @@ module Dbd
       end
 
       it 'a nil predicate raises PredicateError' do
-        lambda do
+        expect do
           described_class.new(
             predicate: nil,
             object_type: 's',
             object: string_object_1)
-        end.should raise_error(PredicateError)
+        end.to raise_error(PredicateError)
       end
 
       it 'a nil object raises ObjectError' do

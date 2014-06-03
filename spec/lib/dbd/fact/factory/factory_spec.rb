@@ -50,12 +50,12 @@ module Dbd
         end
 
         it 'calls validate_string_hash if options[:validate]' do
-          described_class.should_receive(:validate_string_hash)
+          expect(described_class).to receive(:validate_string_hash)
           described_class.from_string_values(string_values, validate: true)
         end
 
         it 'does not call validate_string_hash if not options[:validate]' do
-          described_class.should_not_receive(:validate_string_hash)
+          expect(described_class).to_not receive(:validate_string_hash)
           described_class.from_string_values(string_values)
         end
       end

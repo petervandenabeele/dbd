@@ -32,8 +32,8 @@ module Dbd
         end
         duration = Time.now - start
         puts "\nDuration for inserting #{NUMBER_OF_FACTS} facts in the in-memory graph was #{duration*1000_000/NUMBER_OF_FACTS} us PER FACT"
-        graph.size.should == 2 * NUMBER_OF_FACTS + 1
-        duration.should < 0.000_20 * NUMBER_OF_FACTS
+        expect(graph.size).to eq(2 * NUMBER_OF_FACTS + 1)
+        expect(duration).to be < (0.000_20 * NUMBER_OF_FACTS)
         # typ. 37 us on Mac Ruby 2.0.0 (on 2013-05-15 over 15K iterations)
         # typ. 45 us on Mac Ruby 2.0.0 (on 2013-06-05 over 10K iterations)
         # typ. 47 us on Mac Ruby 2.0.0 (on 2013-06-21 over 10K iterations)

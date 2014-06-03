@@ -7,7 +7,7 @@ module TestFactories
       let(:fixed_id) { described_class.fixed_id }
 
       it 'fixed_id is exactly this fixed id' do
-        fixed_id.should == '825e44d5-af33-4858-8047-549bd813daa8'
+        expect(fixed_id).to eq '825e44d5-af33-4858-8047-549bd813daa8'
       end
     end
   end

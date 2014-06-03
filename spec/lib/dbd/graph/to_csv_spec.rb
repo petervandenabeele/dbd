@@ -193,7 +193,7 @@ module Dbd
         filename = 'data/foo.csv'
         subject.to_CSV_file(filename)
         File.open(filename) do |f|
-          f.readlines.detect{|l| l.match(%r{really with a comma, a double quote "" and a non-ASCII char éà Über.})}.should_not be_nil
+          expect(f.readlines.detect{|l| l.match(%r{really with a comma, a double quote "" and a non-ASCII char éà Über.})}).to_not be_nil
         end
       end
     end

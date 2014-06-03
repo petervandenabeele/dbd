@@ -16,35 +16,35 @@ module Dbd
 
     describe '#new' do
       it 'has a unique id (new_id.class)' do
-        context_fact_1.id.should be_a(id_class)
+        expect(context_fact_1.id).to be_a(id_class)
       end
 
       it 'two context_facts have different id' do
-        context_fact_1.id.should_not == context_fact_2.id
+        expect(context_fact_1.id).to_not eq context_fact_2.id
       end
 
       it 'has nil context_subject' do
-        context_fact_1.context_subject.should be_nil
+        expect(context_fact_1.context_subject).to be_nil
       end
 
       it 'has correct subject' do
-        context_fact_1.subject.should == subject
+        expect(context_fact_1.subject).to eq subject
       end
 
       it 'has correct predicate' do
-        context_fact_1.predicate.should == 'context:visibility'
+        expect(context_fact_1.predicate).to eq 'context:visibility'
       end
 
       it 'has correct object' do
-        context_fact_1.object.should == 'public'
+        expect(context_fact_1.object).to eq 'public'
       end
 
       it 'raises a ContextError when context_subject is present in options hash' do
-        lambda { described_class.new(
+        expect { described_class.new(
           context_subject: subject,
           predicate: 'test',
-          object: 'test') } .
-            should raise_error ContextError
+          object: 'test') }.
+            to raise_error ContextError
       end
     end
   end

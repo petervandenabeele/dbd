@@ -32,7 +32,7 @@ module Dbd
 
     context 'contexts' do
       it 'is an array' do
-        full_graph.contexts.should be_a(Array)
+        expect(full_graph.contexts).to be_a(Array)
       end
 
       it 'is an array of contexts' do
@@ -52,7 +52,7 @@ module Dbd
       end
 
       it 'has at least one entry' do
-        full_graph.contexts.should_not be_empty
+        expect(full_graph.contexts).to_not be_empty
       end
     end
   end

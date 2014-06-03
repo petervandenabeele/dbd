@@ -14,7 +14,7 @@ module Dbd
 
     describe '.factory' do
       it 'should return the factory for a Fact' do
-        factory.should == described_class::Factory
+        expect(factory).to eq described_class::Factory
       end
     end
 
@@ -100,7 +100,7 @@ module Dbd
       describe 'without subject' do
 
         before(:each) do
-          fact_2_with_subject.stub(:subject).and_return(nil)
+          allow(fact_2_with_subject).to receive(:subject) { nil }
         end
 
         it 'errors returns an array with an errorm message' do
@@ -111,7 +111,7 @@ module Dbd
 
     describe 'attributes' do
       it 'there are 6 attributes' do
-        described_class.attributes.size.should == 7
+        expect(described_class.attributes.size).to eq 7
       end
 
       it 'first attribute is :time_stamp' do
@@ -135,7 +135,7 @@ module Dbd
 
     describe 'string_values' do
       it 'there are 7 string_values' do
-        full_fact.string_values.size.should == 7
+        expect(full_fact.string_values.size).to eq 7
       end
 
       it 'the first element (time_stamp) is a String' do

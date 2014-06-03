@@ -22,7 +22,7 @@ module Dbd
       let(:context_fact_visibility) { TestFactories::ContextFact.visibility }
 
       it 'enumerable functions work' do
-        resource.to_a.should == []
+        expect(resource.to_a).to eq []
       end
 
       describe '#<<' do
@@ -41,7 +41,7 @@ module Dbd
         end
 
         it 'returns self' do
-          (resource << [fact_without_subject, fact_with_context]).should be_a(Resource)
+          expect(resource << [fact_without_subject, fact_with_context]).to be_a Resource
         end
 
         it 'complains if a context_subject is added' do
