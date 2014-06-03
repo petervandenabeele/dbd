@@ -149,7 +149,7 @@ module Dbd
 
     describe 'context_fact?' do
       it 'is false for a base fact or derived from it that is not a ContextFact ' do
-        fact_1.context_fact?.should be_false
+        expect(fact_1.context_fact?).to eq false
       end
     end
 

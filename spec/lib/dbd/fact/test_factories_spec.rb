@@ -86,7 +86,7 @@ module TestFactories
         end
 
         it 'has values for all attributes' do
-          full_fact.values.all?.should be_true
+          expect(full_fact.values.all?).to eq true
         end
 
         it 'is valid (no errors)' do

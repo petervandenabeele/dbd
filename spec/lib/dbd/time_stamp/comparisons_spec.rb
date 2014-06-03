@@ -24,19 +24,19 @@ module Dbd
 
     describe 'near?(other)' do
       it 'is true when the time_stamp is 1000 ns larger' do
-        time_stamp_2.near?(time_stamp_3).should be_true
+        expect(time_stamp_2.near?(time_stamp_3)).to eq true
       end
 
       it 'is true when the time_stamp is 1000 ns smaller' do
-        time_stamp_2.near?(time_stamp_4).should be_true
+        expect(time_stamp_2.near?(time_stamp_4)).to eq true
       end
 
       it 'is false when the time_stamp is 2000 ns larger' do
-        time_stamp_2.near?(time_stamp_5).should_not be_true
+        expect(time_stamp_2.near?(time_stamp_5)).to_not eq true
       end
 
       it 'is false when the time_stamp is 2000 ns smaller' do
-        time_stamp_2.near?(time_stamp_6).should_not be_true
+        expect(time_stamp_2.near?(time_stamp_6)).to_not eq true
       end
     end
 

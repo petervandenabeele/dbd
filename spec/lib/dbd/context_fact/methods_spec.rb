@@ -1,6 +1,5 @@
 require 'spec_helper'
 
-
 module Dbd
   describe ContextFact do
 
@@ -64,7 +63,7 @@ module Dbd
 
     describe 'context_fact?' do
       it 'is true for ContextFact or derived from it' do
-        context_fact_1.context_fact?.should be_true
+        expect(context_fact_1.context_fact?).to eq true
       end
     end
   end
