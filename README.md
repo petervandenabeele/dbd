@@ -2,7 +2,14 @@
 
 This is facts based data store, inspired by [RDF] concepts, but adding a
 log based structure and fine-grained context (with provenance) for each fact.
-I am building a simple demo application in [DbdDemo].
+
+In hindsight, this really is a naive (but strongly motivated),
+independent reinvention of "Event Sourcing", combined with RDF ...
+
+I have started to partially reimplement this functionality in Scala in the
+[AllMyData][AllMyData] project as part of building up
+[All Things Data][AllThingsData]. Further developments will happen in the
+AllMyData project.
 
 * [Why?][Rationale]
 * <https://github.com/petervandenabeele/dbd>
@@ -22,13 +29,13 @@ I am building a simple demo application in [DbdDemo].
   * 1 data source has _all_ my data : never more loose stuff :-)
   * facts can be invalidated (and replaced) later on
 * Privacy
-  * a "hard delete" is possible: all downstream readers of the fact stream  
+  * a "hard delete" is possible: all downstream readers of the fact stream
     must remove this fact and replace the back-up
-  * since one single back-up file suffices, replacing the *single* back-up  
+  * since one single back-up file suffices, replacing the *single* back-up
     file will actually remove the hard deleted fact(s) for good
 * Fine grained context (including provenance)
-  * Each base Fact points to a Context, so separate context and  
-    provenance is possible per fact (e.g. different properties about the same  
+  * Each base Fact points to a Context, so separate context and
+    provenance is possible per fact (e.g. different properties about the same
     resource can come from different sources, different visibility etc.)
   * can keep the original_source reference, creator, date, …
   * can have a context that allows filtering data (e.g. public, private, professional, …)
@@ -173,4 +180,5 @@ gsub with a regexp).
 [RDF]:              http://www.w3.org/RDF/
 [Rationale]:        http://github.com/petervandenabeele/dbd/blob/master/docs/rationale.md
 [MIT]:              https://github.com/petervandenabeele/dbd/blob/master/LICENSE.txt
-[DbdDemo]:          https://github.com/petervandenabeele/dbd_demo#readme
+[AllMyData]:        https://github.com/petervandenabeele/AllMyData
+[AllThingsData]:    http://www.allthingsdata.io
