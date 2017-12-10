@@ -10,6 +10,10 @@ module Dbd
       RDF # should not raise error
     end
 
+    it 'The RDF::DC module is loaded' do
+      RDF::DC # should not raise error
+    end
+
     describe 'play with a rdf_graph' do
 
       let(:rdf_graph) { RDF::Graph.new << [:hi, RDF::DC.title, 'Hello, world!'] }
