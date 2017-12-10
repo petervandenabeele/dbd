@@ -2,10 +2,7 @@ language: ruby
 bundler_args: --without debug
 script: "bundle exec rspec spec"
 rvm:
-  - 2.0.0
-  - 1.9.3
-  - jruby-19mode
-  - jruby-head
+  - 2.2.3
 branches:
   only:
     - master
